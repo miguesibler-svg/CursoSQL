@@ -1,0 +1,6 @@
+agregar una nueva columna a una tabla (alter table add)
+
+Syntax
+
+ALTER TABLE table_name
+ADD column_name datatype;

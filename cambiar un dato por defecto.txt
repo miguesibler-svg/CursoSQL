@@ -1,0 +1,4 @@
+cambiar un dato por defecto
+
+alter table tb_categorias
+modify codigo_ca number(4,0) default 0;

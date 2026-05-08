@@ -1,0 +1,68 @@
+Ejercicios de alter table drop column
+
+/* Ejercicio 1
+Elimina la columna edad de la tabla alumnos.
+*/
+
+alter table alumnos
+drop column edad;
+
+/* Ejercicio 2
+Elimina la columna raza de la tabla mascotas.
+*/
+
+alter table mascotas 
+drop column raza;
+
+/* Ejercicio 3
+Elimina la columna paginas de la tabla libros.
+*/
+alter table libros
+drop column pagianas;
+
+/* Ejercicio 4
+Elimina la columna puesto de la tabla empleados.
+*/
+
+alter table empleados
+drop column puesto;
+
+/* Ejercicio 5
+Elimina la columna stock de la tabla productos.
+*/
+
+alter table productos
+drop column stock;
+
+/* Ejercicio 6
+Elimina la columna duracion_min de la tabla peliculas.
+*/
+alter table peliculas
+drop column duracion_min;
+/* Ejercicio 7
+Elimina la columna metodo_pago de la tabla ventas.
+*/
+
+alter table ventas
+drop column metodo_pago;
+
+/* Ejercicio 8
+Elimina la columna nivel de la tabla cursos.
+*/
+
+alter table cursos
+drop column nivel;
+
+/* Ejercicio 9
+Elimina la columna correo de la tabla proveedores.
+*/
+
+alter table proveedores
+drop column correo;
+
+/* Ejercicio 10
+Elimina la columna cliente de la tabla facturas.
+*/
+
+alter table facturas
+drop column cliente;

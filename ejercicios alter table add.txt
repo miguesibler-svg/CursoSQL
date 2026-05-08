@@ -1,0 +1,71 @@
+ejercicios alter table add
+
+/* Ejercicio 1
+Agrega la columna telefono VARCHAR2(10) a la tabla alumnos.
+*/
+
+alter table alumnos
+add telefono varchar2(10);
+
+/* Ejercicio 2
+Agrega la columna color VARCHAR2(30) a la tabla mascotas.
+*/
+
+alter table mascotas
+add color varchar2(30);
+
+/* Ejercicio 3
+Agrega la columna editorial VARCHAR2(80) a la tabla libros.
+*/
+
+alter table libros
+add editorial varchar2(80);
+
+/* Ejercicio 4
+Agrega la columna correo VARCHAR2(100) a la tabla empleados.
+*/
+
+alter table empleados
+add correo varchar2(100);
+
+/* Ejercicio 5
+Agrega la columna categoria VARCHAR2(50) a la tabla productos.
+*/
+
+alter table productos
+add categoria varchar2(50);
+
+/* Ejercicio 6
+Agrega la columna director VARCHAR2(80) a la tabla peliculas.
+*/
+
+alter table peliculas
+add director varchar2(80);
+
+/* Ejercicio 7
+Agrega la columna sucursal VARCHAR2(60) a la tabla ventas.
+*/
+
+alter table ventas
+add surcusal varchar2(60);
+
+/* Ejercicio 8
+Agrega la columna descripcion VARCHAR2(200) a la tabla cursos.
+*/
+
+alter table cursos
+add descripcion varchar2(200);
+
+/* Ejercicio 9
+Agrega la columna pais VARCHAR2(50) a la tabla proveedores.
+*/
+
+alter table proveedores
+add pais varchar2(50);
+
+/* Ejercicio 10
+Agrega la columna metodo_envio VARCHAR2(40) a la tabla facturas.
+*/
+
+alter table facturas
+add metodo_envio varchar2(40);

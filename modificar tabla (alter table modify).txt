@@ -1,0 +1,11 @@
+modificar tabla (alter table modify)
+
+Syntax
+
+ALTER TABLE table_name
+MODIFY column_name new_datatype constraint;
+
+EJEMPLO 
+
+ALTER TABLE TB_CATEGORIAS 
+MODIFY CODIGO_CA NULL;
