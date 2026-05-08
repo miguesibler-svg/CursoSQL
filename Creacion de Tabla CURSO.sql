@@ -1,0 +1,22 @@
+create table TB_CATEGORIAS(
+    CODIGO_CA NUMBER(4,0), 
+    DESCRIPCION_CA VARCHAR2(30)
+);
+
+
+create table TB_MEDIDAS(
+    CODIGO_ME number(3,0),
+    ABREVIATURAS_ME varchar2(3),
+    DESCRIPCION_ME varchar2(20)
+);
+
+create table articulos(
+CODIGO_AR number(5,0),
+DESCRIPCION_AR varchar2(50),
+MARCA_AR varchar2(30),
+CODIGO_ME number(3,0),
+CODIGO_CA number(4,0),
+FECHA_ING DATE,
+STOCK_ACT NUMBER(10,2)
+);
+

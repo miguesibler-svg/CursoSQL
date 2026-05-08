@@ -1,0 +1,142 @@
+Ejercicios de Creación de Tablas
+
+/*Ejercicio 1
+Crea una tabla llamada alumnos que contenga:
+nombre que solo permita 50 caracteres y sea obligatorio
+apellido que solo permita 50 caracteres y sea obligatorio
+edad tipo entero
+fecha_nacimiento tipo fecha*/
+
+create table alumnos(
+    nombre varchar2(50) not null,
+    apellido varchar2(50) not null,
+    edad number(2, 0),
+    fecha TIMESTAMP
+);
+
+/*Ejercicio 2
+Crea una tabla llamada mascotas que contenga:
+nombre que solo permita 40 caracteres
+especie que solo permita 30 caracteres
+raza que solo permita 40 caracteres
+peso tipo decimal con 5 dígitos y 2 decimales*/
+
+create table mascotas(
+    nombre_mascota varchar2(40),
+    especie_mascota varchar2(30),
+    raza_mascota varchar2(40),
+    peso decimal(5,0)
+);
+
+/* Ejercicio 3
+Crea una tabla llamada libros que contenga:
+titulo que solo permita 100 caracteres y sea obligatorio
+autor que solo permita 80 caracteres
+paginas tipo entero
+precio tipo decimal con 8 dígitos y 2 decimales */
+
+create table libros (
+    titulo_libro varchar2(100) not null,
+    autor_libro varchar2(80),
+    paginas_libro int,
+    precio_libro decimal(8,2)
+); 
+
+/* Ejercicio 4
+Crea una tabla llamada empleados que contenga:
+nombre que solo permita 60 caracteres y sea obligatorio
+puesto que solo permita 50 caracteres
+salario tipo decimal con 10 dígitos y 2 decimales
+fecha_ingreso tipo fecha */
+
+create table empleados( 
+    nombre_empleado varchar2(60) not null,
+    puesto_empleado varchar2(50),
+    salario_empleado decimal(10,2),
+    fecha_ingreso date
+    );
+
+/*Ejercicio 5
+Crea una tabla llamada productos que contenga:
+nombre que solo permita 80 caracteres y sea obligatorio
+descripcion tipo texto largo
+precio tipo decimal con 10 dígitos y 2 decimales y sea obligatorio
+stock tipo entero con valor por defecto 0 */
+
+create table productos(
+nombre_producto varchar2(80) not null,
+descripcion_producto long,
+precio_producto decimal(10,2) not null,
+stook int default 0
+);
+
+/* Ejercicio 6
+Crea una tabla llamada peliculas que contenga:
+titulo que solo permita 120 caracteres y sea obligatorio
+genero que solo permita 40 caracteres
+duracion_min tipo entero
+fecha_estreno tipo fecha */
+
+create table peliculas(
+titulo varchar2(120) not null,
+genero varchar2(40),
+duracion_min int,
+fecha_estreno date
+);
+
+
+/* Ejercicio 7
+ Crea una tabla llamada ventas que contenga:
+fecha_venta tipo fecha
+cliente que solo permita 80 caracteres
+total tipo decimal con 10 dígitos y 2 decimales
+metodo_pago que solo permita 30 caracteres */
+
+create table ventas(
+fecha_venta date,
+cliente varchar2(80),
+total decimal(10,2),
+metodo_pago varchar2(30)
+);
+
+
+/* Ejercicio 8
+Crea una tabla llamada cursos que contenga:
+nombre que solo permita 80 caracteres y sea obligatorio
+duracion_horas tipo entero
+nivel que solo permita 30 caracteres
+precio tipo decimal con 8 dígitos y 2 decimales */
+
+create table curso(
+nombre varchar2(80) not null,
+duracion_hora int,
+nivel varchar2(30),
+precio decimal(8,2)
+);
+
+/* Ejercicio 9
+Crea una tabla llamada proveedores que contenga:
+nombre que solo permita 100 caracteres y sea obligatorio
+telefono que solo permita 20 caracteres
+correo que solo permita 80 caracteres
+ciudad que solo permita 50 caracteres */
+create table proveedores(
+nombre varchar2(100) not null,
+telefono varchar2(20),
+correo varchar2(80),
+ciudad varchar2(50)
+);
+
+/* Ejercicio 10
+Crea una tabla llamada facturas que contenga:
+numero_factura que solo permita 20 caracteres y sea obligatorio
+fecha tipo fecha
+cliente que solo permita 80 caracteres
+total tipo decimal con 10 dígitos y 2 decimales y sea obligatorio */
+
+create table facturas(
+numero_factura varchar2(20) not null,
+fecha date,
+cliente varchar2(80),
+total decimal(10,2) not null
+);

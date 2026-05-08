@@ -1,0 +1,15 @@
+Creación de tablas 
+
+Sintaxis 
+
+créate table [schema.] table(
+
+	nombre columna [tipo de dato]
+);
+
+Ejemplo
+
+create table categorias (
+    codigo_ca int, 
+    descripcion varchar2(30)
+); 
