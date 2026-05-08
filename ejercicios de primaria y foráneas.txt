@@ -1,0 +1,272 @@
+ejercicios de primaria y foráneas 
+/* Ejercicio 1
+Crea la tabla clientes con:
+id_cliente NUMBER como clave primaria,
+nombre VARCHAR2(80).
+
+Crea la tabla pedidos con:
+id_pedido NUMBER como clave primaria,
+id_cliente NUMBER como clave foránea que referencia a clientes(id_cliente),
+fecha DATE.
+*/
+
+create table clientes(
+    id_cliente number(10) primary key,
+    nombre varchar2(80)
+);
+
+create table pedidos(
+    id_pedido number(10) primary key,
+    id_cliente number(10),
+    
+    constraint fk_id_cliente
+    foreign key (id_cliente)
+    references clientes(id_cliente)
+);
+
+/* Ejercicio 2
+Crea la tabla autores con:
+id_autor NUMBER como clave primaria,
+nombre VARCHAR2(80).
+
+Crea la tabla libros con:
+id_libro NUMBER como clave primaria,
+id_autor NUMBER como clave foránea que referencia a autores(id_autor),
+titulo VARCHAR2(100).
+*/
+
+create table autores(
+id_autor number(4) primary key,
+nombre varchar2(80)
+);
+
+create table libros(
+id_libro number(4) primary KEY,
+id_autor number(4),
+titulo varchar2(100),
+
+constraint fk_id_autor
+foreign key(id_autor)
+references autores(id_autor)
+);
+
+/* Ejercicio 3
+Crea la tabla departamentos con:
+id_departamento NUMBER como clave primaria,
+nombre VARCHAR2(80).
+
+Crea la tabla empleados con:
+id_empleado NUMBER como clave primaria,
+id_departamento NUMBER como clave foránea que referencia a departamentos(id_departamento),
+nombre VARCHAR2(80).
+*/
+
+create table departamentos(
+    id_departamento number(5),
+    nombre varchar2(80)
+);
+
+alter table departamentos
+add primary key (id_departamento);
+
+create table empleados(
+id_empleado number(5),
+id_departamento number(5),
+nombre varchar2(80),
+
+constraint fk_id_departamento
+foreign key (id_departamento)
+references departamentos(id_departamento)
+);
+
+/* Ejercicio 4
+Crea la tabla categorias con:
+id_categoria NUMBER como clave primaria,
+nombre VARCHAR2(80).
+
+Crea la tabla productos con:
+id_producto NUMBER como clave primaria,
+id_categoria NUMBER como clave foránea que referencia a categorias(id_categoria),
+nombre VARCHAR2(80).
+*/
+
+create table categorias(
+id_categorias number(10) primary key,
+nombre varchar(90)
+);
+
+create table productos(
+id_productos number(10) primary key,
+id_categorias number(10),
+nombre varchar2(80),
+
+constraint fk_id_categorias
+foreign key (id_categorias)
+references categorias(id_categorias)
+);
+
+/* Ejercicio 5
+Crea la tabla cursos con:
+id_curso NUMBER como clave primaria,
+nombre VARCHAR2(80).
+
+Crea la tabla inscripciones con:
+id_inscripcion NUMBER como clave primaria,
+id_curso NUMBER como clave foránea que referencia a cursos(id_curso),
+fecha DATE.
+*/
+
+/* Ejercicio 6
+Crea la tabla clientes2 con:
+id_cliente NUMBER,
+nombre VARCHAR2(80).
+
+Luego agrega la clave primaria a id_cliente con ALTER TABLE.
+
+Crea la tabla pedidos2 con:
+id_pedido NUMBER,
+id_cliente NUMBER.
+
+Luego agrega la clave primaria a id_pedido y la clave foránea de id_cliente que referencia clientes2(id_cliente) con ALTER TABLE.
+*/
+
+/* Ejercicio 7
+Crea la tabla autores2 con:
+id_autor NUMBER,
+nombre VARCHAR2(80).
+Luego agrega la clave primaria a id_autor con ALTER TABLE.
+
+Crea la tabla libros2 con:
+id_libro NUMBER,
+id_autor NUMBER.
+Luego agrega la clave primaria a id_libro y la clave foránea de id_autor que referencia autores2(id_autor) con ALTER TABLE.
+*/
+
+create table autores2(
+id_autor number(10),
+nombre varchar2(10)
+);
+
+alter table autores2
+add primary key(id_autor);
+
+create table libros2(
+id_libro number(10),
+id_autor number(10),
+nombre varchar2(22)
+);
+
+alter table libros2
+add primary key(id_libro);
+
+alter table libros2
+add constraint fk_id_autor2
+foreign key(id_autor)
+references autores2(id_autor);
+
+/* Ejercicio 8
+Crea la tabla departamentos2 con:
+id_departamento NUMBER,
+nombre VARCHAR2(80).
+Luego agrega la clave primaria a id_departamento con ALTER TABLE.
+
+Crea la tabla empleados2 con:
+id_empleado NUMBER,
+id_departamento NUMBER.
+Luego agrega la clave primaria a id_empleado y la clave foránea de id_departamento que referencia departamentos2(id_departamento) con ALTER TABLE.
+*/
+
+create table departamentos2(
+id_departamento number(3),
+nombre varchar2(80)
+);
+
+create table empleados2(
+id_empleado number(3),
+id_departamento number(3)
+);
+
+alter table departamentos2
+add primary key(id_departamento);
+
+alter table empleados2
+add primary key(id_empleado);
+
+alter table empleados2
+add constraint fk_id_departamento2
+foreign key (id_departamento)
+references departamentos2(id_departamento);
+
+/* Ejercicio 9
+Crea la tabla categorias2 con:
+id_categoria NUMBER,
+nombre VARCHAR2(80).
+Luego agrega la clave primaria a id_categoria con ALTER TABLE.
+
+Crea la tabla productos2 con:
+id_producto NUMBER,
+id_categoria NUMBER.
+Luego agrega la clave primaria a id_producto y la clave foránea de id_categoria que referencia categorias2(id_categoria) con ALTER TABLE.
+*/
+
+create table categorias2(
+id_categorias number(10),
+nombre varchar2(10)
+);
+
+create table productos2(
+id_productos number(10),
+id_categorias number(10)
+);
+
+alter table categorias2
+add primary key(id_categorias);
+
+alter table productos2
+add primary key(id_productos);
+
+alter table productos2
+add constraint fk_id_categorias2
+foreign key (id_categorias)
+references categorias2(id_categorias);
+
+/* Ejercicio 10
+Crea la tabla cursos2 con:
+id_curso NUMBER,
+nombre VARCHAR2(80).
+
+Luego agrega la clave primaria a id_curso con ALTER TABLE.
+
+Crea la tabla inscripciones2 con:
+id_inscripcion NUMBER,
+id_curso NUMBER.
+
+Luego agrega la clave primaria a id_inscripcion y la clave foránea de id_curso que referencia cursos2(id_curso) con ALTER TABLE.
+*/
+
+create table cursos2(
+id_curso number(8),
+nombre varchar2(9)
+);
+
+create table inscripciones2(
+id_inscripcion number(8),
+id_curso number(8)
+);
+
+alter table cursos2
+add primary key (id_curso);
+
+alter table inscripciones2
+add primary key (id_inscripcion);
+
+alter table inscripciones2
+add constraint fk_id_curso2
+foreign key (id_curso)
+references cursos2(id_curso);
+
+
+
+
+
+

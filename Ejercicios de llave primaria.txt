@@ -1,0 +1,139 @@
+Ejercicios de llave primaria
+
+/* Ejercicio 1
+Crea la tabla alumnos con:
+id_alumno NUMBER como clave primaria,
+nombre VARCHAR2(80),
+edad NUMBER.
+*/
+create table alumnos(
+id_alumno number(10) primary key,
+nombre varchar2(80),
+edad number(2)
+);
+
+/* Ejercicio 2
+Crea la tabla productos con:
+id_producto NUMBER como clave primaria,
+nombre VARCHAR2(80),
+precio NUMBER(10,2).
+*/
+create table productos(
+    id_productos number(10,0) primary key,
+    nombre varchar2(80),
+    precio number(10,2)
+);
+
+/* Ejercicio 3
+Crea la tabla empleados con:
+id_empleado NUMBER como clave primaria,
+nombre VARCHAR2(80),
+salario NUMBER(10,2).
+*/
+create table empleados(
+    id_empleado number(10) primary key,
+    nombre varchar2(50),
+    salario number(10,2)
+);
+
+/* Ejercicio 4
+Crea la tabla cursos con:
+id_curso NUMBER como clave primaria,
+nombre VARCHAR2(80),
+duracion NUMBER.
+*/
+
+create table cursos(
+id_curso number(10) primary key,
+nombre varchar2(80),
+duracion number(29)
+);
+
+/* Ejercicio 5
+Crea la tabla proveedores con:
+id_proveedor NUMBER como clave primaria,
+nombre VARCHAR2(80),
+telefono VARCHAR2(20).
+*/
+
+create table proveedores(
+    id_proveedor number(10) primary key,
+    nombre varchar2(80),
+    telefono varchar2(20)
+);
+
+/* Ejercicio 6
+Crea la tabla clientes con:
+id_cliente NUMBER,
+nombre VARCHAR2(80).
+Luego agrega la clave primaria a id_cliente con ALTER TABLE.
+*/
+
+create table clientes(
+    id_cliente number(10),
+    nombre varchar2(80)
+);
+
+alter table clientes
+add primary key (id_cliente);
+
+/* Ejercicio 7
+Crea la tabla ventas con:
+id_venta NUMBER,
+total NUMBER(10,2).
+Luego agrega la clave primaria a id_venta con ALTER TABLE.
+*/
+
+create table ventas(
+    id_ventas number(10),
+    total number(10,2)
+);
+
+alter table ventas
+add primary key(id_ventas);
+
+/* Ejercicio 8
+Crea la tabla peliculas con:
+id_pelicula NUMBER,
+titulo VARCHAR2(80).
+Luego agrega la clave primaria a id_pelicula con ALTER TABLE.
+*/
+
+create table peliculas(
+    id_pelicula number(10),
+    titulo varchar2(80)
+);
+
+alter table peliculas
+add primary key (id_pelicula);
+
+/* Ejercicio 9
+Crea la tabla facturas con:
+id_factura NUMBER,
+fecha DATE.
+Luego agrega la clave primaria a id_factura con ALTER TABLE.
+*/
+
+create table facturas(
+    id_factura number(19),
+    fecha date
+);
+
+alter table facturas
+add primary key (id_factura);
+
+/* Ejercicio 10
+Crea la tabla departamentos con:
+id_departamento NUMBER,
+nombre VARCHAR2(80).
+Luego agrega la clave primaria a id_departamento con ALTER TABLE.
+*/
+
+create table departamentos(
+    id_departamento number(10),
+    nombre varchar2(80)
+);
+
+alter table departamentos
+add primary key (id_departamento);
+
