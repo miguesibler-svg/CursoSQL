@@ -1,0 +1,225 @@
+/* =========================================================
+EJERCICIOS CREANDO PK Y FK DESDE LA CREACIÓN
+========================================================= */
+
+/* Ejercicio 1
+En una biblioteca, crea las tablas autores y libros.
+
+Tabla autores:
+id_autor numérico hasta 10 dígitos y llave primaria auto incremento,
+nombre texto longitud media,
+pais texto corto.
+
+Tabla libros:
+id_libro numérico hasta 10 dígitos y llave primaria auto incremento,
+titulo texto largo,
+anio número entero pequeño,
+id_autor llave foránea hacia autores.
+
+Después:
+Agregar columna precio en libros
+Modificar titulo para mayor longitud
+Eliminar columna anio
+Eliminar llave foránea
+Eliminar ambas tablas.
+*/
+
+/* Ejercicio 2
+En una tienda, crea las tablas categorias y productos.
+
+Tabla categorias:
+id_categoria PK auto incremento,
+nombre texto medio.
+
+Tabla productos:
+id_producto PK auto incremento,
+nombre texto medio,
+precio decimal,
+id_categoria FK hacia categorias.
+
+Después:
+Agregar columna stock
+Modificar nombre a mayor longitud
+Eliminar columna precio
+Eliminar llave foránea
+Eliminar tablas.
+*/
+
+/* Ejercicio 3
+En un hospital, crea las tablas doctores y pacientes.
+
+Tabla doctores:
+id_doctor PK auto incremento,
+nombre texto medio,
+especialidad texto medio.
+
+Tabla pacientes:
+id_paciente PK auto incremento,
+nombre texto medio,
+edad entero pequeño,
+id_doctor FK hacia doctores.
+
+Después:
+Agregar columna telefono
+Modificar nombre
+Eliminar edad
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 4
+En una empresa, crea departamentos y empleados.
+
+Departamentos:
+id_departamento PK auto incremento,
+nombre texto medio.
+
+Empleados:
+id_empleado PK auto incremento,
+nombre texto medio,
+salario decimal,
+id_departamento FK.
+
+Después:
+Agregar columna fecha_ingreso
+Modificar nombre
+Eliminar salario
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 5
+En un cine, crea salas y funciones.
+
+Salas:
+id_sala PK auto incremento,
+nombre texto medio,
+capacidad entero.
+
+Funciones:
+id_funcion PK auto incremento,
+hora texto corto,
+id_sala FK.
+
+Después:
+Agregar columna precio
+Modificar hora
+Eliminar capacidad
+Eliminar FK
+Eliminar tablas.
+*/
+
+
+/* =========================================================
+EJERCICIOS CREANDO PK Y FK CON ALTER
+========================================================= */
+
+/* Ejercicio 6
+En una universidad crea carreras y estudiantes SIN LLAVES.
+
+Carreras:
+id_carrera número,
+nombre texto medio.
+
+Estudiantes:
+id_estudiante número,
+nombre texto medio,
+id_carrera número.
+
+Después:
+Agregar PK a ambas tablas
+Convertir id_estudiante en auto incremento
+Crear FK hacia carreras
+Agregar columna correo
+Eliminar columna nombre de carreras
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 7
+En un gimnasio crea entrenadores y clientes sin llaves.
+
+Entrenadores:
+id_entrenador número,
+nombre texto medio.
+
+Clientes:
+id_cliente número,
+nombre texto medio,
+id_entrenador número.
+
+Después:
+Agregar PK
+Agregar auto incremento
+Crear FK
+Agregar columna peso
+Modificar longitud nombre
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 8
+En un hotel crea habitaciones y reservas sin llaves.
+
+Habitaciones:
+id_habitacion número,
+tipo texto medio.
+
+Reservas:
+id_reserva número,
+fecha texto corto,
+id_habitacion número.
+
+Después:
+Agregar PK
+Auto incremento a reservas
+Crear FK
+Agregar columna precio
+Eliminar columna tipo
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 9
+En una escuela crea maestros y materias sin llaves.
+
+Maestros:
+id_maestro número,
+nombre texto medio.
+
+Materias:
+id_materia número,
+nombre texto medio,
+id_maestro número.
+
+Después:
+Agregar PK
+Auto incremento
+Crear FK
+Agregar columna horas
+Modificar nombre
+Eliminar FK
+Eliminar tablas.
+*/
+
+/* Ejercicio 10
+En una veterinaria crea mascotas y citas sin llaves.
+
+Mascotas:
+id_mascota número,
+nombre texto medio.
+
+Citas:
+id_cita número,
+fecha texto corto,
+id_mascota número.
+
+Después:
+Agregar PK
+Auto incremento
+Crear FK
+Agregar columna motivo
+Eliminar columna fecha
+Eliminar FK
+Eliminar tablas.
+*/

@@ -1,0 +1,591 @@
+/* Ejercicio 1
+En una escuela, crea las tablas cursos y alumnos.
+Tabla cursos debe contener:
+id_curso como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+duracion como número entero pequeño.
+
+Tabla alumnos debe contener:
+id_alumno como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+edad como número entero pequeño,
+id_curso como número que será llave foránea hacia cursos.
+Después:
+Agregar una columna para correo electrónico en alumnos
+Modificar la longitud del nombre en alumnos para que sea más grande
+Eliminar la columna edad de alumnos
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table cursos(
+id_curso number(10) primary key,
+nombre varchar2(50),
+duracion number(3)
+);
+
+create table alumnos(
+id_alumnos number(10) primary key,
+nombre varchar(30),
+edad number(2),
+id_curso number(10),
+
+constraint fk_id_curso
+foreign key (id_curso)
+references cursos(id_curso)
+);
+
+alter table alumnos
+add correo_electronico varchar2(80);
+
+alter table alumnos
+modify nombre varchar2(100);
+
+alter table alumnos
+drop column edad;
+
+alter table alumnos
+drop constraint fk_id_curso;
+
+drop table cursos;
+drop table alumnos;
+
+
+/* Ejercicio 2
+En un hospital, crea las tablas doctores y pacientes.
+
+Tabla doctores debe contener:
+id_doctor como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+especialidad como texto de longitud media.
+
+Tabla pacientes debe contener:
+id_paciente como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+edad como número entero pequeño,
+id_doctor como número que será llave foránea hacia doctores.
+
+Después:
+Agregar una columna de teléfono en pacientes
+Modificar la longitud del nombre en pacientes
+Eliminar la columna edad de pacientes
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table doctores (
+id_doctor number(10) primary key,
+nombre varchar(30),
+especialidad varchar(30)
+);
+
+create table pacientes (
+id_paciente number(10) primary key,
+nombre varchar2(30),
+edad varchar2(30),
+id_doctor number(10),
+
+constraint fk_id_doctor
+foreign key (id_doctor)
+references doctores(id_doctor)
+);
+
+alter table pacientes
+add telefono number(10);
+
+alter table pacientes
+modify nombre varchar2(100) not null;
+
+alter table pacientes
+drop column edad;
+
+alter table pacientes
+drop constraint fk_id_doctor;
+
+drop table doctores;
+drop table pacientes;
+
+/* Ejercicio 3
+En un banco, crea las tablas cuentas y movimientos.
+
+Tabla cuentas debe contener:
+id_cuenta como identificador numérico de hasta 10 dígitos y llave primaria,
+tipo como texto corto,
+saldo como número decimal con dos decimales.
+
+Tabla movimientos debe contener:
+id_movimiento como identificador numérico de hasta 10 dígitos y llave primaria,
+fecha como tipo fecha,
+monto como número decimal,
+id_cuenta como número que será llave foránea hacia cuentas.
+
+Después:
+Agregar una columna de descripción en movimientos
+Modificar la precisión del monto
+Eliminar la columna fecha de movimientos
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table cuentas(
+    id_cuenta number(10) primary key,
+    tipo varchar2(30),
+    saldo number(10,2)
+); 
+
+create table movimientos (
+    id_movimiento number(10) primary key,
+    fecha date,
+    monto number(10,2),
+    id_cuenta number(10),
+    
+    constraint fk_id_cuenta
+    foreign key (id_cuenta)
+    references cuentas(id_cuenta)
+);
+
+alter table movimientos
+add descripcion varchar2(100) not null;
+
+alter table movimientos
+modify monto number(10,3);
+
+alter table movimientos
+drop column fecha;
+
+alter table movimientos
+drop constraint fk_id_cuenta;
+
+drop table movimientos;
+drop table cuentas;
+
+/* Ejercicio 4
+En una tienda, crea las tablas categorias y productos.
+
+Tabla categorias debe contener:
+id_categoria como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+descripcion como texto largo.
+
+Tabla productos debe contener:
+id_producto como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+precio como número decimal,
+id_categoria como número que será llave foránea hacia categorias.
+
+Después:
+Agregar una columna de cantidad en inventario para productos
+Modificar la longitud del nombre del producto
+Eliminar la columna precio de productos
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table categorias(
+    id_categoria number(10) primary key,
+    nombre varchar2(30),
+    descripcion varchar2(60)
+);
+
+create table productos(
+    id_producto number(10) primary key,
+    nombre varchar2(30),
+    precio number(10,2),
+    id_categoria number(10),
+    
+    constraint fk_id_categoria
+    foreign key (id_categoria)
+    references categorias(id_categoria)
+);
+
+alter table productos
+add cantiad_inve number(10) not null;
+
+alter table productos
+modify nombre varchar2(120);
+
+alter table productos
+drop column precio;
+
+alter table productos
+drop constraint fk_id_categoria;
+
+drop table categorias;
+drop table productos;
+
+
+
+/* Ejercicio 5
+En una universidad, crea las tablas carreras y estudiantes.
+
+Tabla carreras debe contener:
+id_carrera como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+duracion como número entero pequeño.
+
+Tabla estudiantes debe contener:
+id_estudiante como identificador numérico de hasta 10 dígitos y llave primaria,
+nombre como texto de longitud media,
+promedio como número decimal,
+id_carrera como número que será llave foránea hacia carreras.
+
+Después:
+Agregar una columna de teléfono en estudiantes
+Modificar la longitud del nombre del estudiante
+Eliminar la columna promedio de estudiantes
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table carreras (
+id_carrera number(10) primary key,
+nombre varchar2(30),
+duracion number(10)
+);
+
+create table estudiantes (
+id_estudiante number(10),
+nombre varchar2(20),
+promedio number(10,2),
+id_carrera number(10),
+
+constraint fk_id_carrera
+foreign key (id_carrera)
+references carreras(id_carrera)
+);
+
+alter table estudiantes
+add telefono number(10);
+
+alter table estudiantes
+modify nombre varchar(120) not null;
+
+alter table estudiantes
+drop column promedio;
+
+alter table estudiantes
+drop constraint fk_id_carrera;
+
+drop table estudiantes;
+drop table carreras;
+
+
+/* Ejercicio 6
+En una biblioteca, crea las tablas autores y libros SIN llaves primarias ni foráneas.
+
+Tabla autores:
+id_autor como identificador numérico,
+nombre como texto de longitud media,
+pais como texto de longitud media.
+
+Tabla libros:
+id_libro como identificador numérico,
+titulo como texto largo,
+anio como número entero de 4 dígitos,
+id_autor como número.
+
+Después:
+Agregar llave primaria a ambas tablas
+Agregar llave foránea en libros hacia autores
+Agregar una columna de editorial en libros
+Modificar la longitud del título
+Eliminar la columna año de libros
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table autores (
+id_autor number(10),
+nombre varchar2(20),
+pais varchar2(20)
+);
+
+
+create table libros(
+id_libro number(10),
+titulo varchar2(29),
+ano number(4),
+id_autor number(10)
+);
+
+alter table autores
+add primary key (id_autor);
+
+alter table libros
+add primary key(id_libro);
+
+alter table libros
+add constraint fk_id_autor
+foreign key (id_autor)
+references autores(id_autor);
+
+alter table libros 
+add libros varchar2(120);
+
+alter table libros
+modify titulo varchar2(120);
+
+alter table libros
+drop column ano;
+
+alter table libros
+drop constraint fk_id_autor;
+
+drop table autores;
+drop table libros;
+
+
+/* Ejercicio 7
+En un gimnasio, crea las tablas entrenadores y clientes SIN llaves primarias ni foráneas.
+
+Tabla entrenadores:
+id_entrenador como identificador numérico,
+nombre como texto de longitud media,
+especialidad como texto de longitud media.
+
+Tabla clientes:
+id_cliente como identificador numérico,
+nombre como texto de longitud media,
+peso como número decimal,
+id_entrenador como número.
+
+Después:
+Agregar llave primaria a ambas tablas
+Agregar llave foránea en clientes hacia entrenadores
+Agregar una columna de teléfono en clientes
+Modificar la longitud del nombre del cliente
+Eliminar la columna peso de clientes
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table entrenadores(
+id_entrenador number(10),
+nombre varchar2(30),
+especialidad varchar2(120)
+);
+
+create table clientes(
+id_cliente number(10),
+nombre varchar2(30),
+peso number(10,2),
+id_entrenador number(10)
+);
+
+alter table entrenadores
+add primary key (id_entrenador);
+
+alter table clientes
+add primary key (id_cliente);
+
+alter table clientes
+add constraint fk_id_entrenador
+foreign key (id_entrenador)
+references entrenadores(id_entrenador);
+
+alter table clientes
+add telefono varchar2(10) not null;
+
+alter table clientes
+modify nombre varchar2(120) not null;
+
+alter table clientes
+drop column peso;
+
+alter table clientes
+drop constraint fk_id_entrenador;
+
+drop table clientes;
+drop table entrenadores;
+
+
+/* Ejercicio 8
+En una empresa, crea las tablas departamentos y empleados SIN llaves primarias ni foráneas.
+
+Tabla departamentos:
+id_departamento como identificador numérico,
+nombre como texto de longitud media,
+ubicacion como texto de longitud media.
+
+Tabla empleados:
+id_empleado como identificador numérico,
+nombre como texto de longitud media,
+salario como número decimal,
+id_departamento como número.
+
+Después:
+Agregar llave primaria a ambas tablas
+Agregar llave foránea en empleados hacia departamentos
+Agregar una columna de teléfono en empleados
+Modificar la longitud del nombre del empleado
+Eliminar la columna salario de empleados
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table departamentos (
+id_departamento number(10),
+nombre varchar2(30),
+ubicacion varchar2(50)
+);
+
+create table empleados(
+id_empleado number(10),
+nombre varchar2(50),
+salario number(10,2),
+id_departamento number(10)
+);
+
+alter table departamentos
+add primary key (id_departamento);
+
+alter table empleados
+add primary key (id_empleado);
+
+alter table empleados
+add constraint fk_id_departamento
+foreign key (id_departamento)
+references departamentos(id_departamento);
+
+alter table empleados
+add telefonos number(10) not null;
+
+alter table empleados
+modify nombre varchar2(120) not null;
+
+alter table empleados
+drop column salario;
+
+alter table empleados
+drop constraint fk_id_departamento;
+
+drop table empleados;
+drop table departamentos;
+
+/* Ejercicio 9
+En un hotel, crea las tablas habitaciones y reservas SIN llaves primarias ni foráneas.
+
+Tabla habitaciones:
+id_habitacion como identificador numérico,
+tipo como texto corto,
+precio como número decimal.
+
+Tabla reservas:
+id_reserva como identificador numérico,
+fecha como tipo fecha,
+dias como número entero,
+id_habitacion como número.
+
+Después:
+Agregar llave primaria a ambas tablas
+Agregar llave foránea en reservas hacia habitaciones
+Agregar una columna de nombre del cliente en reservas
+Modificar la cantidad de días permitida
+Eliminar la columna fecha de reservas
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table habitaciones (
+id_habitacion number(10),
+tipo varchar2(50),
+precio number(10,2)
+);
+
+create table reservas(
+id_reserva number(10),
+fecha date,
+dias number(10),
+id_habitacion number(10)
+);
+
+alter table habitaciones
+add primary key (id_habitacion);
+
+alter table reservas
+add primary key (id_reserva);
+
+alter table reservas
+add constraint fk_id_habitacion
+foreign key (id_habitacion)
+references habitaciones(id_habitacion);
+
+alter table reservas
+add nombre_clien varchar2(120) not null;
+
+alter table resrvas
+modify cantidad_dia varchar2(50);
+
+alter table reservas
+drop column fecha;
+
+alter table reservas
+drop constraint fk_id_habitacion;
+
+drop table habitaciones;
+drop table reservas;
+
+
+/* Ejercicio 10
+En una empresa de envíos, crea las tablas sucursales y paquetes SIN llaves primarias ni foráneas.
+
+Tabla sucursales:
+id_sucursal como identificador numérico,
+ciudad como texto de longitud media,
+telefono como texto corto.
+
+Tabla paquetes:
+id_paquete como identificador numérico,
+peso como número decimal,
+destino como texto largo,
+id_sucursal como número.
+
+Después:
+Agregar llave primaria a ambas tablas
+Agregar llave foránea en paquetes hacia sucursales
+Agregar una columna de fecha de envío en paquetes
+Modificar la longitud del destino
+Eliminar la columna peso de paquetes
+Eliminar la llave foránea
+Eliminar ambas tablas al final.
+*/
+
+create table sucursales (
+id_sucursal number(10),
+ciudad varchar2(30),
+telefono number(10)
+);
+
+create table paquetes (
+id_paquete number(10),
+peso number(10,2),
+destino varchar2(50),
+id_sucursal number(10)
+);
+
+alter table sucursales
+add primary key (id_sucursal);
+
+alter table paquetes
+add primary key (id_sucursal);
+
+alter table paquetes
+add constraint fk_id_sucursal
+foreign key (id_sucursal)
+references sucursales(id_sucursal);
+
+alter table paquetes
+add fecha date;
+
+alter table paquetes
+modify destino varchar2(120);
+
+alter table paquetes
+drop column peso;
+
+alter table paquetes
+drop constraint fk_id_sucursal;
+
+drop table paquetes;
+
+drop table sucursales;
