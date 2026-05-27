@@ -1,0 +1,219 @@
+-- ============================================
+-- TABLA: CLIENTES
+-- ============================================
+
+CREATE TABLE clientes (
+    id_cliente NUMBER PRIMARY KEY,
+    nombre VARCHAR2(50) NOT NULL,
+    apellido VARCHAR2(50) NOT NULL,
+    email VARCHAR2(100) UNIQUE NOT NULL,
+    telefono VARCHAR2(15),
+    ciudad VARCHAR2(50),
+    fecha_registro DATE DEFAULT SYSDATE,
+    estado VARCHAR2(10) DEFAULT 'ACTIVO'
+        CHECK (estado IN ('ACTIVO', 'INACTIVO'))
+);
+
+-- ============================================
+-- TABLA: PRODUCTOS
+-- ============================================
+
+CREATE TABLE productos (
+    id_producto NUMBER PRIMARY KEY,
+    nombre_producto VARCHAR2(100) NOT NULL,
+    categoria VARCHAR2(50) NOT NULL,
+    precio NUMBER(10,2) NOT NULL
+        CHECK (precio > 0),
+    stock NUMBER NOT NULL
+        CHECK (stock >= 0),
+    marca VARCHAR2(50),
+    estado VARCHAR2(15) DEFAULT 'DISPONIBLE'
+        CHECK (estado IN ('DISPONIBLE', 'AGOTADO'))
+);
+
+-- ============================================
+-- TABLA: EMPLEADOS
+-- ============================================
+
+CREATE TABLE empleados (
+    id_empleado NUMBER PRIMARY KEY,
+    nombre VARCHAR2(50) NOT NULL,
+    apellido VARCHAR2(50) NOT NULL,
+    cargo VARCHAR2(50) NOT NULL,
+    salario NUMBER(10,2)
+        CHECK (salario > 0),
+    fecha_contratacion DATE,
+    telefono VARCHAR2(15) UNIQUE,
+    sucursal VARCHAR2(50)
+);
+
+-- ============================================
+-- TABLA: PEDIDOS
+-- RELACIONADA CON CLIENTES
+-- ============================================
+
+CREATE TABLE pedidos (
+    id_pedido NUMBER PRIMARY KEY,
+    id_cliente NUMBER NOT NULL,
+    fecha_pedido DATE DEFAULT SYSDATE,
+    total NUMBER(10,2)
+        CHECK (total >= 0),
+    metodo_pago VARCHAR2(20)
+        CHECK (metodo_pago IN ('EFECTIVO', 'TARJETA', 'TRANSFERENCIA')),
+    estado VARCHAR2(20)
+        CHECK (estado IN ('PENDIENTE', 'PAGADO', 'ENVIADO')),
+    
+    CONSTRAINT fk_pedido_cliente
+        FOREIGN KEY (id_cliente)
+        REFERENCES clientes(id_cliente)
+);
+
+-- ============================================
+-- TABLA: DETALLE_PEDIDOS
+-- RELACIONADA CON PEDIDOS Y PRODUCTOS
+-- ============================================
+
+CREATE TABLE detalle_pedidos (
+    id_detalle NUMBER PRIMARY KEY,
+    id_pedido NUMBER NOT NULL,
+    id_producto NUMBER NOT NULL,
+    cantidad NUMBER NOT NULL
+        CHECK (cantidad > 0),
+    precio_unitario NUMBER(10,2)
+        CHECK (precio_unitario > 0),
+    subtotal NUMBER(10,2)
+        CHECK (subtotal > 0),
+
+    CONSTRAINT fk_detalle_pedido
+        FOREIGN KEY (id_pedido)
+        REFERENCES pedidos(id_pedido),
+
+    CONSTRAINT fk_detalle_producto
+        FOREIGN KEY (id_producto)
+        REFERENCES productos(id_producto)
+);
+
+-- =====================================================
+-- INSERTS TABLA CLIENTES (20 REGISTROS)
+-- =====================================================
+
+INSERT INTO clientes VALUES (1, 'Juan', 'Perez', 'juan.perez@email.com', '5511111111', 'CDMX', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (2, 'Maria', 'Lopez', 'maria.lopez@email.com', '5522222222', 'Guadalajara', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (3, 'Carlos', 'Ramirez', 'carlos.ramirez@email.com', '5533333333', 'Monterrey', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (4, 'Ana', 'Martinez', 'ana.martinez@email.com', '5544444444', 'Puebla', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (5, 'Luis', 'Gomez', 'luis.gomez@email.com', '5555555555', 'Toluca', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (6, 'Sofia', 'Hernandez', 'sofia.h@email.com', '5566666666', 'Merida', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (7, 'Pedro', 'Diaz', 'pedro.d@email.com', '5577777777', 'Cancun', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (8, 'Laura', 'Torres', 'laura.t@email.com', '5588888888', 'Leon', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (9, 'Miguel', 'Castro', 'miguel.c@email.com', '5599999999', 'Queretaro', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (10, 'Elena', 'Ruiz', 'elena.r@email.com', '5510101010', 'Veracruz', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (11, 'Ricardo', 'Flores', 'ricardo.f@email.com', '5511112222', 'CDMX', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (12, 'Patricia', 'Morales', 'patricia.m@email.com', '5522223333', 'Puebla', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (13, 'Jorge', 'Vega', 'jorge.v@email.com', '5533334444', 'Toluca', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (14, 'Fernanda', 'Rios', 'fernanda.r@email.com', '5544445555', 'Monterrey', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (15, 'Diego', 'Mendoza', 'diego.m@email.com', '5555556666', 'Guadalajara', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (16, 'Gabriela', 'Silva', 'gabriela.s@email.com', '5566667777', 'CDMX', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (17, 'Andres', 'Navarro', 'andres.n@email.com', '5577778888', 'Merida', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (18, 'Valeria', 'Ortega', 'valeria.o@email.com', '5588889999', 'Leon', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (19, 'Roberto', 'Jimenez', 'roberto.j@email.com', '5599990000', 'Cancun', SYSDATE, 'ACTIVO');
+INSERT INTO clientes VALUES (20, 'Daniela', 'Santos', 'daniela.s@email.com', '5500001111', 'Queretaro', SYSDATE, 'ACTIVO');
+
+-- =====================================================
+-- INSERTS TABLA PRODUCTOS (20 REGISTROS)
+-- =====================================================
+
+INSERT INTO productos VALUES (1, 'Laptop HP', 'Tecnologia', 15000, 10, 'HP', 'DISPONIBLE');
+INSERT INTO productos VALUES (2, 'Mouse Logitech', 'Accesorios', 350, 50, 'Logitech', 'DISPONIBLE');
+INSERT INTO productos VALUES (3, 'Teclado Redragon', 'Accesorios', 850, 30, 'Redragon', 'DISPONIBLE');
+INSERT INTO productos VALUES (4, 'Monitor Samsung', 'Tecnologia', 4200, 15, 'Samsung', 'DISPONIBLE');
+INSERT INTO productos VALUES (5, 'Impresora Epson', 'Oficina', 3200, 12, 'Epson', 'DISPONIBLE');
+INSERT INTO productos VALUES (6, 'USB Kingston', 'Accesorios', 250, 100, 'Kingston', 'DISPONIBLE');
+INSERT INTO productos VALUES (7, 'Disco SSD', 'Tecnologia', 1800, 25, 'ADATA', 'DISPONIBLE');
+INSERT INTO productos VALUES (8, 'Webcam Logitech', 'Tecnologia', 1200, 18, 'Logitech', 'DISPONIBLE');
+INSERT INTO productos VALUES (9, 'Tablet Lenovo', 'Tecnologia', 5500, 8, 'Lenovo', 'DISPONIBLE');
+INSERT INTO productos VALUES (10, 'Audifonos Sony', 'Audio', 1400, 22, 'Sony', 'DISPONIBLE');
+INSERT INTO productos VALUES (11, 'Bocina JBL', 'Audio', 2300, 14, 'JBL', 'DISPONIBLE');
+INSERT INTO productos VALUES (12, 'Silla Gamer', 'Muebles', 4800, 5, 'Razer', 'DISPONIBLE');
+INSERT INTO productos VALUES (13, 'Escritorio', 'Muebles', 3500, 7, 'OfficeMax', 'DISPONIBLE');
+INSERT INTO productos VALUES (14, 'Router TP-Link', 'Redes', 950, 20, 'TP-Link', 'DISPONIBLE');
+INSERT INTO productos VALUES (15, 'Camara Canon', 'Fotografia', 12500, 6, 'Canon', 'DISPONIBLE');
+INSERT INTO productos VALUES (16, 'Smartphone Xiaomi', 'Telefonia', 7800, 11, 'Xiaomi', 'DISPONIBLE');
+INSERT INTO productos VALUES (17, 'Smartwatch Huawei', 'Tecnologia', 3200, 13, 'Huawei', 'DISPONIBLE');
+INSERT INTO productos VALUES (18, 'Microfono HyperX', 'Audio', 2100, 9, 'HyperX', 'DISPONIBLE');
+INSERT INTO productos VALUES (19, 'Proyector Epson', 'Oficina', 8900, 4, 'Epson', 'DISPONIBLE');
+INSERT INTO productos VALUES (20, 'Cargador USB-C', 'Accesorios', 450, 60, 'Anker', 'DISPONIBLE');
+
+-- =====================================================
+-- INSERTS TABLA EMPLEADOS (20 REGISTROS)
+-- =====================================================
+
+INSERT INTO empleados VALUES (1, 'Mario', 'Garcia', 'Gerente', 25000, SYSDATE, '5512000001', 'CDMX');
+INSERT INTO empleados VALUES (2, 'Lucia', 'Fernandez', 'Vendedor', 12000, SYSDATE, '5512000002', 'CDMX');
+INSERT INTO empleados VALUES (3, 'Raul', 'Mendez', 'Cajero', 9000, SYSDATE, '5512000003', 'Puebla');
+INSERT INTO empleados VALUES (4, 'Carmen', 'Salas', 'Supervisor', 18000, SYSDATE, '5512000004', 'Monterrey');
+INSERT INTO empleados VALUES (5, 'Oscar', 'Luna', 'Vendedor', 11000, SYSDATE, '5512000005', 'Guadalajara');
+INSERT INTO empleados VALUES (6, 'Paola', 'Cruz', 'Cajero', 9500, SYSDATE, '5512000006', 'CDMX');
+INSERT INTO empleados VALUES (7, 'Eduardo', 'Reyes', 'Almacenista', 10000, SYSDATE, '5512000007', 'Toluca');
+INSERT INTO empleados VALUES (8, 'Monica', 'Campos', 'Vendedor', 12500, SYSDATE, '5512000008', 'Leon');
+INSERT INTO empleados VALUES (9, 'Hector', 'Pineda', 'Tecnico', 15000, SYSDATE, '5512000009', 'Merida');
+INSERT INTO empleados VALUES (10, 'Sandra', 'Delgado', 'Supervisor', 18500, SYSDATE, '5512000010', 'Cancun');
+INSERT INTO empleados VALUES (11, 'Ivan', 'Soto', 'Cajero', 9200, SYSDATE, '5512000011', 'CDMX');
+INSERT INTO empleados VALUES (12, 'Karla', 'Nuñez', 'Vendedor', 11800, SYSDATE, '5512000012', 'Queretaro');
+INSERT INTO empleados VALUES (13, 'Adrian', 'Peña', 'Tecnico', 14800, SYSDATE, '5512000013', 'Veracruz');
+INSERT INTO empleados VALUES (14, 'Liliana', 'Mejia', 'Gerente', 27000, SYSDATE, '5512000014', 'Monterrey');
+INSERT INTO empleados VALUES (15, 'Sergio', 'Valdez', 'Almacenista', 10200, SYSDATE, '5512000015', 'Guadalajara');
+INSERT INTO empleados VALUES (16, 'Rosa', 'Acosta', 'Vendedor', 11900, SYSDATE, '5512000016', 'Puebla');
+INSERT INTO empleados VALUES (17, 'Victor', 'Fuentes', 'Supervisor', 19000, SYSDATE, '5512000017', 'Toluca');
+INSERT INTO empleados VALUES (18, 'Claudia', 'Ibarra', 'Cajero', 9400, SYSDATE, '5512000018', 'Leon');
+INSERT INTO empleados VALUES (19, 'Alberto', 'Carrillo', 'Tecnico', 15200, SYSDATE, '5512000019', 'Merida');
+INSERT INTO empleados VALUES (20, 'Natalia', 'Roman', 'Vendedor', 12100, SYSDATE, '5512000020', 'Cancun');
+
+-- =====================================================
+-- INSERTS TABLA PEDIDOS (20 REGISTROS)
+-- =====================================================
+
+INSERT INTO pedidos VALUES (1, 1, SYSDATE, 15350, 'TARJETA', 'PAGADO');
+INSERT INTO pedidos VALUES (2, 2, SYSDATE, 4200, 'EFECTIVO', 'PAGADO');
+INSERT INTO pedidos VALUES (3, 3, SYSDATE, 1800, 'TRANSFERENCIA', 'ENVIADO');
+INSERT INTO pedidos VALUES (4, 4, SYSDATE, 5500, 'TARJETA', 'PAGADO');
+INSERT INTO pedidos VALUES (5, 5, SYSDATE, 3200, 'EFECTIVO', 'PENDIENTE');
+INSERT INTO pedidos VALUES (6, 6, SYSDATE, 1200, 'TRANSFERENCIA', 'PAGADO');
+INSERT INTO pedidos VALUES (7, 7, SYSDATE, 1400, 'TARJETA', 'ENVIADO');
+INSERT INTO pedidos VALUES (8, 8, SYSDATE, 4800, 'EFECTIVO', 'PAGADO');
+INSERT INTO pedidos VALUES (9, 9, SYSDATE, 3500, 'TRANSFERENCIA', 'PAGADO');
+INSERT INTO pedidos VALUES (10, 10, SYSDATE, 950, 'TARJETA', 'PENDIENTE');
+INSERT INTO pedidos VALUES (11, 11, SYSDATE, 12500, 'EFECTIVO', 'PAGADO');
+INSERT INTO pedidos VALUES (12, 12, SYSDATE, 7800, 'TRANSFERENCIA', 'ENVIADO');
+INSERT INTO pedidos VALUES (13, 13, SYSDATE, 3200, 'TARJETA', 'PAGADO');
+INSERT INTO pedidos VALUES (14, 14, SYSDATE, 2100, 'EFECTIVO', 'PAGADO');
+INSERT INTO pedidos VALUES (15, 15, SYSDATE, 8900, 'TRANSFERENCIA', 'PENDIENTE');
+INSERT INTO pedidos VALUES (16, 16, SYSDATE, 450, 'TARJETA', 'PAGADO');
+INSERT INTO pedidos VALUES (17, 17, SYSDATE, 15000, 'EFECTIVO', 'ENVIADO');
+INSERT INTO pedidos VALUES (18, 18, SYSDATE, 2300, 'TRANSFERENCIA', 'PAGADO');
+INSERT INTO pedidos VALUES (19, 19, SYSDATE, 850, 'TARJETA', 'PAGADO');
+INSERT INTO pedidos VALUES (20, 20, SYSDATE, 4200, 'EFECTIVO', 'PENDIENTE');
+
+-- =====================================================
+-- INSERTS TABLA DETALLE_PEDIDOS (20 REGISTROS)
+-- =====================================================
+
+INSERT INTO detalle_pedidos VALUES (1, 1, 1, 1, 15000, 15000);
+INSERT INTO detalle_pedidos VALUES (2, 1, 2, 1, 350, 350);
+INSERT INTO detalle_pedidos VALUES (3, 2, 4, 1, 4200, 4200);
+INSERT INTO detalle_pedidos VALUES (4, 3, 7, 1, 1800, 1800);
+INSERT INTO detalle_pedidos VALUES (5, 4, 9, 1, 5500, 5500);
+INSERT INTO detalle_pedidos VALUES (6, 5, 5, 1, 3200, 3200);
+INSERT INTO detalle_pedidos VALUES (7, 6, 8, 1, 1200, 1200);
+INSERT INTO detalle_pedidos VALUES (8, 7, 10, 1, 1400, 1400);
+INSERT INTO detalle_pedidos VALUES (9, 8, 12, 1, 4800, 4800);
+INSERT INTO detalle_pedidos VALUES (10, 9, 13, 1, 3500, 3500);
+INSERT INTO detalle_pedidos VALUES (11, 10, 14, 1, 950, 950);
+INSERT INTO detalle_pedidos VALUES (12, 11, 15, 1, 12500, 12500);
+INSERT INTO detalle_pedidos VALUES (13, 12, 16, 1, 7800, 7800);
+INSERT INTO detalle_pedidos VALUES (14, 13, 17, 1, 3200, 3200);
+INSERT INTO detalle_pedidos VALUES (15, 14, 18, 1, 2100, 2100);
+INSERT INTO detalle_pedidos VALUES (16, 15, 19, 1, 8900, 8900);
+INSERT INTO detalle_pedidos VALUES (17, 16, 20, 1, 450, 450);
+INSERT INTO detalle_pedidos VALUES (18, 17, 1, 1, 15000, 15000);
+INSERT INTO detalle_pedidos VALUES (19, 18, 11, 1, 2300, 2300);
+INSERT INTO detalle_pedidos VALUES (20, 19, 3, 1, 850, 850);

@@ -1,0 +1,1266 @@
+--Ejercicio 1
+-- Crear una base de datos para una biblioteca.
+-- Crear las tablas:
+-- 1. autores(id_autor, nombre, nacionalidad)
+create table autores(
+id_autor number(10) generated always as identity primary key,
+nombre varchar2(10) not null, 
+nacionalidad varchar2(10) not null
+);
+-- 2. libros(id_libro, titulo, genero, id_autor)
+create table libros(
+id_libro number(10) generated always as identity primary key,
+titulo varchar2(10) not null,
+genero varchar2(10) not null,
+id_autor number(10) not null,
+constraint fk_id_autor
+foreign key(id_autor)
+references autores(id_autor)
+);
+-- 3. prestamos(id_prestamo, id_libro, nombre_cliente, fecha_prestamo)
+create table prestamos(
+id_prestamo number(10) generated always as identity primary key,
+nombre_cliente varchar2(10) not null,
+fecha_prestamo date not null,
+id_libro number(10) not null,
+constraint fk_id_libro
+foreign key(id_libro)
+references libros(id_libro)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 5 autores
+insert into autores(nombre, nacionalidad)
+values('miguel','mexico');
+insert into autores(nombre, nacionalidad)
+values('luis','mexico');
+insert into autores(nombre, nacionalidad)
+values('jose','mexico');
+insert into autores(nombre, nacionalidad)
+values('pepe','mexico');
+insert into autores(nombre, nacionalidad)
+values('lina','mexico');
+
+-- 10 libros
+insert into libros(titulo, genero, id_autor)
+values('dragon','accion',1);
+insert into libros(titulo, genero, id_autor)
+values('keke','fantasia',2);
+insert into libros(titulo, genero, id_autor)
+values('joojo','accion',3);
+insert into libros(titulo, genero, id_autor)
+values('gugu','fantasia',4);
+insert into libros(titulo, genero, id_autor)
+values('huhu','tuty',5);
+insert into libros(titulo, genero, id_autor)
+values('juju','guyu',1);
+-- 5 préstamos
+insert into prestamos(nombre_cliente, fecha_prestamo, id_libro)
+values('miguel',to_date('1999/05/09','YYYY/MM/DD'),1);
+insert into prestamos(nombre_cliente, fecha_prestamo, id_libro)
+values('goku',to_date('09/05/2025','DD/MM/YYYY'),2);
+insert into prestamos(nombre_cliente, fecha_prestamo, id_libro)
+values('vegeta',to_date('09/05/2020','dd/mm/yyyy'),3);
+insert into prestamos(nombre_cliente, fecha_prestamo, id_libro)
+values('gohan',to_date('09/05/2015','dd/mm/yyyy'),4);
+-- Actualizar:
+-- Cambiar el género de un libro.
+update libros
+set genero='accion'
+where id_libro=2;
+update libros
+set genero='fantasia'
+where id_libro=1;
+update libros
+set genero='lui'
+where id_libro=3;
+-- Modificar el nombre de un autor.
+update autores
+set nombre='jojo'
+where id_autor=1;
+update autores
+set nombre='jjkj'
+where id_autor=2;
+-- Eliminar:
+-- Eliminar un préstamo.
+delete from prestamos where id_prestamo=4;
+-- Eliminar un libro específico.
+delete from libros where titulo='keke';
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar columna anio_publicacion en libros.
+alter table libros
+add anio_publicacion date ;
+-- DROP COLUMN: eliminar columna nacionalidad en autores.
+alter table autores
+drop column nacionalidad;
+-- RENAME COLUMN: cambiar nombre_cliente por cliente.
+alter table prestamos
+rename column nombre_cliente to cliente;
+-- MODIFY COLUMN: cambiar tamaño de titulo a VARCHAR(150).
+alter table libros 
+modify titulo varchar2(150);
+-- ADD CONSTRAINT: agregar UNIQUE al título del libro.
+alter table libros
+add constraint unq_libro
+unique (titulo);
+-- RENAME TABLE: cambiar prestamos por historial_prestamos.
+alter table prestamos
+rename to historial_prestamo;
+-- Finalmente usar DROP TABLE para eliminar historial_prestamos.
+drop table historial_prestamo;
+drop table libros;
+drop table autores;
+
+--Ejercicio 2
+-- Crear una base de datos para una escuela.
+-- Crear las tablas:
+-- 1. alumnos(id_alumno, nombre, edad, correo)
+create table alumnos(
+id_alumno number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+edad number(2) not null,
+correo varchar2(50) not null
+);
+-- 2. materias(id_materia, nombre_materia, creditos)
+create table materias(
+id_materia number(10) generated always as identity primary key,
+nombre_materia varchar2(10) not null,
+creditos number(10) not null
+);
+-- 3. inscripciones(id_inscripcion, id_alumno, id_materia, fecha)
+create table inscripciones(
+id_inscripcion number(10) generated always as identity primary key,
+fecha date not null,
+id_alumno number(10) not null,
+id_materia number(10) not null,
+constraint fk_id_alumno
+foreign key (id_alumno)
+references alumnos(id_alumno),
+constraint fk_id_materia
+foreign key(id_materia)
+references materias(id_materia)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 8 alumnos
+insert into alumnos(nombre, edad, correo)
+values('miguel',27,'jdj@ss.com');
+insert into alumnos(nombre, edad, correo)
+values('luis',27,'ku@jdj.com');
+insert into alumnos(nombre, edad, correo)
+values('pep',23,'ui@id.com');
+insert into alumnos(nombre, edad, correo)
+values('yry',23,'jud@kdk.com');
+-- 5 materias
+insert into materias(nombre_materia, creditos)
+values('mate',10);
+insert into materias(nombre_materia, creditos)
+values('esp',23);
+insert into materias(nombre_materia, creditos)
+values('ing',23);
+insert into materias(nombre_materia, creditos)
+values('pup',34);
+-- 10 inscripciones
+insert into inscripciones(fecha, id_alumno, id_materia)
+values(to_date('09/03/1999','dd/mm/yyyy'),2,3);
+insert into inscripciones(fecha, id_alumno, id_materia)
+values(to_date('09/02/2020','dd/mm/yyyy'),2,1);
+insert into inscripciones(fecha, id_alumno, id_materia)
+values(to_date('2026/04/09','yyyy/mm/dd'),2,2);
+-- Actualizar:
+-- Cambiar el correo de un alumno.
+update alumnos
+set correo='jdjd@djd.com'
+where id_alumno=1;
+update alumnos
+set correo='dd@ll.com'
+where id_alumno=2;
+-- Cambiar créditos de una materia.
+update materias
+set creditos=21
+where id_materia=2;
+update materias
+set creditos=12
+where id_materia=3;
+-- Eliminar:
+-- Eliminar una inscripción.
+delete from inscripciones where id_inscripcion=1;
+-- Eliminar un alumno.
+delete from alumnos where id_alumno=3;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar promedio en alumnos.
+alter table alumnos
+add promedio number(10,2);
+-- DROP COLUMN: eliminar edad en alumnos.
+alter table alumnos
+drop column edad;
+-- RENAME COLUMN: cambiar nombre_materia por materia.
+alter table materias
+rename column nombre_materia to materia;
+-- MODIFY COLUMN: cambiar correo a VARCHAR(120).
+alter table alumnos
+modify correo varchar2(120);
+-- ADD CONSTRAINT: agregar CHECK para que créditos sean mayores a 0.
+alter table materias
+add constraint ch_credito
+check (creditos>0);
+-- RENAME TABLE: cambiar inscripciones por registro_inscripciones.
+alter table inscripciones
+rename to registro_inscripciones;
+-- Finalmente usar DROP TABLE para eliminar materias.
+drop table registro_inscripciones;
+drop table alumnos;
+drop table materias;
+
+--Ejercicio 3
+-- Crear una base de datos para una tienda de electrónicos.
+-- Crear las tablas:
+-- 1. categorias(id_categoria, nombre_categoria)
+create table categorias(
+id_categoria number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+nombre_categoria varchar2(10) not null
+);
+-- 2. productos(id_producto, nombre, precio, stock, id_categoria)
+create table productos(
+id_producto number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+precio number(10,2) not null,
+stock number(10) not null,
+id_categoria number(10) not null,
+constraint fk_id_categoria
+foreign key (id_categoria)
+references categorias(id_categoria)
+);
+-- 3. ventas(id_venta, id_producto, cantidad, fecha_venta)
+create table ventas(
+id_venta number(10) generated always as identity primary key,
+cantidad number(10) not null,
+fecha_venta date not null,
+id_producto number(10) not null,
+constraint fk_id_producto
+foreign key(id_producto)
+references productos(id_producto)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 4 categorías
+insert into categorias(nombre, nombre_categoria)
+values('futbol','jose');
+insert into categorias(nombre, nombre_categoria)
+values('jose','oood');
+insert into categorias(nombre, nombre_categoria)
+values('ueys','ieos');
+insert into categorias(nombre, nombre_categoria)
+values('sed','sed');
+-- 12 productos
+insert into productos(nombre, precio, stock, id_categoria)
+values('miguel',100.00, 120, 2);
+insert into productos(nombre, precio, stock, id_categoria)
+values('pepe',20.20, 400, 1);
+insert into productos(nombre, precio, stock, id_categoria)
+values('tuy',200,288,3);
+insert into productos(nombre, precio, stock, id_categoria)
+values('luis',400,23,4);
+insert into productos(nombre, precio, stock, id_categoria)
+values('lili',29,3,2);
+-- 8 ventas
+insert into ventas(cantidad, fecha_venta, id_producto)
+values(23,to_date('09/05/1999','dd/mm/yyyy'),2);
+insert into ventas(cantidad, fecha_venta, id_producto)
+values(400,to_date('09/05/2023','dd/mm/yyyy'),1);
+insert into ventas(cantidad, fecha_venta, id_producto)
+values(122,to_date('09/05/1222','dd/mm/yyyy'),4);
+-- Actualizar:
+-- Cambiar el precio de un producto.
+update productos
+set precio=122
+where id_producto=1;
+update productos
+set precio=1000
+where id_producto=2;
+update productos
+set precio=2000
+where id_producto=3;
+update productos
+set precio=2323
+where id_producto=4;
+-- Modificar el stock de un producto.
+update productos
+set stock=12
+where id_producto=1;
+-- Eliminar:
+-- Eliminar una venta.
+delete from ventas where id_venta=3;
+-- Eliminar un producto sin ventas.
+delete from ventas where id_venta=1;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar marca en productos.
+alter table productos
+add marca varchar2(10);
+-- DROP COLUMN: eliminar stock en productos.
+alter table productos
+drop column stock;
+-- RENAME COLUMN: cambiar fecha_venta por fecha.
+alter table ventas
+rename column fecha_venta to fecha;
+-- MODIFY COLUMN: cambiar precio a DECIMAL(10,2).
+alter table productos
+modify precio number(11,2);
+-- ADD CONSTRAINT: agregar UNIQUE al nombre del producto.
+alter table productos
+add constraint unq_nombre
+unique (nombre);
+-- RENAME TABLE: cambiar ventas por historial_ventas.
+alter table ventas
+rename to historial_ventas;
+-- Finalmente usar DROP TABLE para eliminar categorias.
+drop table historial_ventas;
+drop table productos;
+drop table categorias;
+
+-- ejercicio 4 
+-- Crear una base de datos para un hospital.
+-- Crear las tablas:
+-- 1. doctores(id_doctor, nombre, especialidad)
+create table doctores (
+id_doctor number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+especialidad varchar2(10) not null
+);
+-- 2. pacientes(id_paciente, nombre, edad, telefono)
+create table pacientes(
+id_paciente number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+edad number(2) not null,
+telefono number(10) not null
+);
+-- 3. consultas(id_consulta, id_doctor, id_paciente, fecha_consulta)
+create table consultas(
+id_consulta number(10) generated always as identity primary key,
+fecha_consulta date not null,
+id_doctor number(10) not null,
+id_paciente number(10) not null,
+constraint fk_id_paciente
+foreign key (id_paciente)
+references pacientes(id_paciente),
+constraint fk_id_doctor
+foreign key(id_doctor)
+references doctores(id_doctor)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 5 doctores
+insert into doctores(nombre, especialidad)
+values('migule','ginecologo');
+insert into doctores(nombre, especialidad)
+values('migue','gddd');
+insert into doctores(nombre, especialidad)
+values('luis','colo');
+insert into doctores(nombre, especialidad)
+values('peor','erre');
+insert into doctores(nombre, especialidad)
+values('perra','efsf');
+-- 10 pacientes
+insert into pacientes(nombre,edad,telefono)
+values('miguel',23,123455);
+insert into pacientes(nombre,edad,telefono)
+values('ml',24,125);
+insert into pacientes(nombre,edad,telefono)
+values('ml',23,1235);
+insert into pacientes(nombre,edad,telefono)
+values('ppp',22,1255);
+insert into pacientes(nombre,edad,telefono)
+values('lii',23,122355);
+insert into pacientes(nombre,edad,telefono)
+values('miguel',23,123455);
+-- 8 consultas
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1999','dd/mm/yyyy'),1,3);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1939','dd/mm/yyyy'),2,2);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1919','dd/mm/yyyy'),2,1);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1959','dd/mm/yyyy'),4,2);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1969','dd/mm/yyyy'),4,2);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1979','dd/mm/yyyy'),1,1);
+insert into consultas (fecha_consulta, id_doctor, id_paciente)
+values(to_date('09/05/1999','dd/mm/yyyy'),3,3);
+-- Actualizar:
+-- Cambiar especialidad de un doctor.
+update doctores
+set especialidad='oeoeo'
+where id_doctor=2;
+update doctores
+set especialidad='sfsf'
+where id_doctor=3;
+-- Cambiar teléfono de un paciente.
+update pacientes
+set telefono=232332
+where id_paciente=1;
+update pacientes
+set telefono=2323232
+where id_paciente=2;
+update pacientes
+set telefono=2323
+where id_paciente=2;
+-- Eliminar:
+-- Eliminar una consulta.
+delete from consultas where id_consulta=2;
+-- Eliminar un paciente dado de alta.
+delete from pacientes where id_paciente=6;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar correo en pacientes.
+alter table pacientes
+add correo varchar2(10);
+-- DROP COLUMN: eliminar edad en pacientes.
+alter table pacientes
+drop column edad;
+-- RENAME COLUMN: cambiar fecha_consulta por fecha.
+alter table consultas
+rename column fecha_consulta to fecha;
+-- MODIFY COLUMN: cambiar telefono a VARCHAR(20).
+alter table pacientes
+modify telefono number(20);
+-- ADD CONSTRAINT: agregar UNIQUE al correo.
+alter table pacientes
+add constraint unq_correo
+unique (correo);
+-- RENAME TABLE: cambiar consultas por historial_consultas.
+alter table consultas
+rename to historial_consultas;
+-- Finalmente usar DROP TABLE para eliminar doctores.
+drop table historial_consultas;
+drop table doctores;
+drop table pacientes;
+
+-- Crear una base de datos para una agencia de viajes.
+-- Crear las tablas:
+-- 1. destinos(id_destino, ciudad, pais)
+create table destinos(
+id_destino number(10) generated always as identity primary key,
+ciudad varchar2(10) not null,
+pais varchar2(10) not null
+);
+-- 2. clientes(id_cliente, nombre, telefono)
+create table clientes(
+id_cliente number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+telefono number(10) not null
+);
+-- 3. reservaciones(id_reservacion, id_cliente, id_destino, fecha_reserva)
+create table reservaciones(
+id_reservacion number(10) generated always as identity primary key,
+fecha_reserva date not null,
+id_cliente number(10) not null,
+id_destino number(10) not null,
+constraint fK_id_cliente
+foreign key(id_cliente)
+references clientes(id_cliente),
+constraint fk_id_destino
+foreign key(id_destino)
+references destinos(id_destino)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 6 destinos
+insert into destinos(ciudad, pais)
+values('ciudad', 'mexico');
+insert into destinos(ciudad, pais)
+values('paris', 'francia');
+insert into destinos(ciudad, pais)
+values('buenavis', 'argenti');
+insert into destinos(ciudad, pais)
+values('sanlu', 'pepe');
+insert into destinos(ciudad, pais)
+values('ieuu', 'gugu');
+insert into destinos(ciudad, pais)
+values('crrr', 'mexico');
+-- 7 clientes
+insert into clientes(nombre, telefono)
+values('miguel',232323);
+insert into clientes(nombre, telefono)
+values('moeo',232323);
+insert into clientes(nombre, telefono)
+values('sdsd',232);
+insert into clientes(nombre, telefono)
+values('mieee',232333);
+insert into clientes(nombre, telefono)
+values('migue',323);
+insert into clientes(nombre, telefono)
+values('mi32l',234342323);
+insert into clientes(nombre, telefono)
+values('migl',23232323);
+insert into clientes(nombre, telefono)
+values('msds',2321212);
+-- 10 reservaciones
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/1999','dd/mm/yyyy'),1,1);
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/2020','dd/mm/yyyy'),2,2);
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/1998','dd/mm/yyyy'),1,4);
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/2021','dd/mm/yyyy'),3,1);
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/2015','dd/mm/yyyy'),4,4);
+insert into reservaciones(fecha_reserva, id_cliente, id_destino)
+values(to_date('09/05/2323','dd/mm/yyyy'),2,2);
+-- Actualizar:
+-- Cambiar teléfono de un cliente.
+update clientes
+set telefono=32323
+where id_cliente=1;
+update clientes
+set telefono=232344
+where id_cliente=2;
+-- Modificar el país de un destino.
+update destinos
+set pais='dkdk'
+where id_destino=2;
+update destinos
+set pais='wewe'
+where id_destino=3;
+-- Eliminar:
+-- Eliminar una reservación.
+delete from reservaciones where id_reservacion=6;
+-- Eliminar un destino no reservado.
+delete from reservaciones where id_reservacion=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar precio en destinos.
+alter table destinos
+add precio number(10,2);
+-- DROP COLUMN: eliminar telefono en clientes.
+alter table clientes
+drop column telefono;
+-- RENAME COLUMN: cambiar fecha_reserva por fecha.
+alter table reservaciones
+rename column fecha_reserva to fecha;
+-- MODIFY COLUMN: cambiar nombre a VARCHAR(100).
+alter table clientes
+modify nombre varchar(100);
+-- ADD CONSTRAINT: agregar CHECK para precio > 0.
+alter table destinos
+add constraint ch_precio
+check (precio>0);
+-- RENAME TABLE: cambiar reservaciones por historial_reservas.
+alter table reservaciones
+rename to historial_reservas;
+-- Finalmente usar DROP TABLE para eliminar clientes.
+drop table historial_reservas;
+drop table destinos;
+drop table clientes;
+
+-- ejercicio 6
+-- Crear una base de datos para un restaurante.
+-- Crear las tablas:
+-- 1. empleados(id_empleado, nombre, puesto)
+create table empleados(
+id_empleado number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+puesto varchar2(10) not null
+);
+-- 2. menus(id_menu, platillo, precio)
+create table menus(
+id_menu number(10) generated always as identity primary key,
+platillo varchar2(10) not null,
+precio number(10) not null
+);
+-- 3. pedidos(id_pedido, id_menu, id_empleado, fecha_pedido)
+create table pedidos(
+id_pedido number(10) generated always as identity primary key,
+fecha_pedido date not null,
+id_menu number(10) not null,
+id_empleado number(10) not null,
+constraint fk_id_menu
+foreign key(id_menu)
+references menus(id_menu),
+constraint fk_id_empleado
+foreign key(id_empleado)
+references empleados(id_empleado)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 5 empleados
+insert into empleados(nombre, puesto)
+values('miguel','gerente');
+insert into empleados(nombre, puesto)
+values('luis','puta');
+insert into empleados(nombre, puesto)
+values('ernesto','pepe');
+insert into empleados(nombre, puesto)
+values('jusu','gerenta');
+insert into empleados(nombre, puesto)
+values('victoria','puta');
+-- 8 platillos
+insert into menus(platillo, precio)
+values('caca',140);
+insert into menus(platillo, precio)
+values('cace',140);
+insert into menus(platillo, precio)
+values('cac2',140);
+insert into menus(platillo, precio)
+values('cac2',140);
+insert into menus(platillo, precio)
+values('cacrr',140);
+insert into menus(platillo, precio)
+values('cacass',140);
+insert into menus(platillo, precio)
+values('cacaw',140);
+insert into menus(platillo, precio)
+values('caca',140);
+-- 12 pedidos
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/1999','dd/mm/yyyy'),1,2);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/1998','dd/mm/yyyy'),2,3);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/1997','dd/mm/yyyy'),3,4);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/2020','dd/mm/yyyy'),1,1);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/2021','dd/mm/yyyy'),3,3);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/2024','dd/mm/yyyy'),4,4);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/2013','dd/mm/yyyy'),2,2);
+insert into pedidos(fecha_pedido, id_menu, id_empleado)
+values(to_date('09/05/2009','dd/mm/yyyy'),1,2);
+-- Actualizar:
+-- Cambiar el puesto de un empleado.
+update empleados
+set puesto='jeje'
+where id_empleado=1;
+update empleados
+set puesto='ieie'
+where id_empleado=3;
+update empleados
+set puesto='ewe'
+where id_empleado=4;
+-- Modificar el precio de un platillo.
+update menus
+set precio=1222
+where id_menu=1;
+update menus
+set precio=1233
+where id_menu=2;
+update menus
+set precio=2333
+where id_menu=4;
+-- Eliminar:
+-- Eliminar un pedido.
+delete from pedidos where id_pedido=6;
+delete from pedidos where id_pedido=5;
+-- Eliminar un platillo que no se venda.
+delete from menus where id_menu=6;
+delete from menus where id_menu=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar descripcion en menus.
+alter table menus
+add descripcion varchar2(10);
+-- DROP COLUMN: eliminar puesto en empleados.
+alter table empleados
+drop column puesto;
+-- RENAME COLUMN: cambiar platillo por nombre_platillo.
+alter table menus
+rename column platillo to nombre_platillo;
+-- MODIFY COLUMN: cambiar precio a DECIMAL(8,2).
+alter table menus
+modify precio number(10,2);
+-- ADD CONSTRAINT: agregar UNIQUE a nombre_platillo.
+alter table menus
+add constraint unq_nombre_platillo
+unique (nombre_platillo);
+-- RENAME TABLE: cambiar pedidos por historial_pedidos.
+alter table pedidos
+rename to historial_pedidos;
+-- Finalmente usar DROP TABLE para eliminar menus.
+drop table historial_pedidos;
+drop table menus;
+drop table empleados;
+
+--ejercicio 7
+-- Crear una base de datos para un gimnasio.-- Crear una base de datos para un gimnasio.
+-- Crear las tablas:
+-- 1. entrenadores(id_entrenador, nombre, especialidad)
+create table entrenamdores(
+id_entrenador number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+especialidad varchar2(10) not null
+);
+
+-- 2. socios(id_socio, nombre, edad, correo)
+create table socios(
+id_socio number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+edad number(10) not null,
+correo varchar2(10) not null
+);
+-- 3. rutinas(id_rutina, id_entrenador, id_socio, descripcion)
+create table rutinas(
+id_rutina number(10) generated always as identity primary key,
+descripcion varchar2(10) not null,
+id_entrenador number(10) not null,
+id_socio number(10) not null,
+constraint fk_id_entrenador
+foreign key(id_entrenador)
+references entrenadores(id_entrenador),
+constraint fk_id_socio
+foreign key(id_socio)
+references socios(id_socio)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 4 entrenadores
+insert into entrenadores(nombre, especialidad)
+values('judj','sdsd');
+insert into entrenadores(nombre, especialidad)
+values('juwwj','sdseed');
+insert into entrenadores(nombre, especialidad)
+values('jueedj','sdeesd');
+insert into entrenadores(nombre, especialidad)
+values('judrrrj','sddsdsd');
+-- 10 socios
+insert into socios(nombre,edad,correo)
+values('ersd',23,'sf@s.com');
+insert into socios(nombre,edad,correo)
+values('eeesd',43,'ss@s.com');
+insert into socios(nombre,edad,correo)
+values('rrrsd',23,'rr@s.com');
+insert into socios(nombre,edad,correo)
+values('eddd',23,'dd@s.com');
+insert into socios(nombre,edad,correo)
+values('ess',23,'sss@s.com');
+insert into socios(nombre,edad,correo)
+values('ssss',23,'asa@s.com');
+insert into socios(nombre,edad,correo)
+values('tttd',23,'ttt@s.com');
+insert into socios(nombre,edad,correo)
+values('cccd',23,'ccc@s.com');
+insert into socios(nombre,edad,correo)
+values('yyyy',23,'yy@s.com');
+insert into socios(nombre,edad,correo)
+values('hhhh',23,'hh@s.com');
+-- 10 rutinas
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('sdsdsw',1,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('ssdsd',2,3);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrrr',2,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrr',2,4);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('rrrr',4,4);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('rtrtr',3,3);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrrr',4,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('swwww',4,3);
+-- Actualizar:
+-- Cambiar especialidad de un entrenador.
+update entrenadores
+set especialidad='kdjdkk'
+where id_entrenador=2;
+update entrenadores
+set especialidad='llll'
+where id_entrenador=3;
+-- Cambiar correo de un socio.
+-- Eliminar:
+-- Eliminar una rutina.
+delete from rutinas where id_rutina=5;
+delete from rutinas where id_rutina=6;
+-- Eliminar un socio inactivo.
+delete from socios where id_socio=4;
+delete from socios where id_socio=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar telefono en socios.
+alter table socios
+add telefono number(10) ;
+-- DROP COLUMN: eliminar edad en socios.
+alter table socios
+drop column edad;
+-- RENAME COLUMN: cambiar descripcion por detalle_rutina.
+alter table rutinas
+rename column descripcion to detalle_rutina;
+-- MODIFY COLUMN: cambiar correo a VARCHAR(150).
+alter table socios
+modify correo varchar2(159);
+-- ADD CONSTRAINT: agregar UNIQUE al correo.
+alter table socios
+add constraint unq_correos
+unique (correo);
+-- RENAME TABLE: cambiar rutinas por historial_rutinas.
+alter table rutinas
+rename to historial_rutinas;
+-- Finalmente usar DROP TABLE para eliminar entrenadores.
+drop table historial_rutinas;
+drop table entrenadores;
+drop table socios
+
+-- Crear las tablas:
+-- 1. entrenadores(id_entrenador, nombre, especialidad)
+create table entrenamdores(
+id_entrenador number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+especialidad varchar2(10) not null
+);
+
+-- 2. socios(id_socio, nombre, edad, correo)
+create table socios(
+id_socio number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+edad number(10) not null,
+correo varchar2(10) not null
+);
+-- 3. rutinas(id_rutina, id_entrenador, id_socio, descripcion)
+create table rutinas(
+id_rutina number(10) generated always as identity primary key,
+descripcion varchar2(10) not null,
+id_entrenador number(10) not null,
+id_socio number(10) not null,
+constraint fk_id_entrenador
+foreign key(id_entrenador)
+references entrenadores(id_entrenador),
+constraint fk_id_socio
+foreign key(id_socio)
+references socios(id_socio)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 4 entrenadores
+insert into entrenadores(nombre, especialidad)
+values('judj','sdsd');
+insert into entrenadores(nombre, especialidad)
+values('juwwj','sdseed');
+insert into entrenadores(nombre, especialidad)
+values('jueedj','sdeesd');
+insert into entrenadores(nombre, especialidad)
+values('judrrrj','sddsdsd');
+-- 10 socios
+insert into socios(nombre,edad,correo)
+values('ersd',23,'sf@s.com');
+insert into socios(nombre,edad,correo)
+values('eeesd',43,'ss@s.com');
+insert into socios(nombre,edad,correo)
+values('rrrsd',23,'rr@s.com');
+insert into socios(nombre,edad,correo)
+values('eddd',23,'dd@s.com');
+insert into socios(nombre,edad,correo)
+values('ess',23,'sss@s.com');
+insert into socios(nombre,edad,correo)
+values('ssss',23,'asa@s.com');
+insert into socios(nombre,edad,correo)
+values('tttd',23,'ttt@s.com');
+insert into socios(nombre,edad,correo)
+values('cccd',23,'ccc@s.com');
+insert into socios(nombre,edad,correo)
+values('yyyy',23,'yy@s.com');
+insert into socios(nombre,edad,correo)
+values('hhhh',23,'hh@s.com');
+-- 10 rutinas
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('sdsdsw',1,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('ssdsd',2,3);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrrr',2,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrr',2,4);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('rrrr',4,4);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('rtrtr',3,3);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('srrrr',4,2);
+insert into rutinas(descripcion, id_entrenador, id_socio)
+values('swwww',4,3);
+-- Actualizar:
+-- Cambiar especialidad de un entrenador.
+update entrenadores
+set especialidad='kdjdkk'
+where id_entrenador=2;
+update entrenadores
+set especialidad='llll'
+where id_entrenador=3;
+-- Cambiar correo de un socio.
+-- Eliminar:
+-- Eliminar una rutina.
+delete from rutinas where id_rutina=5;
+delete from rutinas where id_rutina=6;
+-- Eliminar un socio inactivo.
+delete from socios where id_socio=4;
+delete from socios where id_socio=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar telefono en socios.
+alter table socios
+add telefono number(10) ;
+-- DROP COLUMN: eliminar edad en socios.
+alter table socios
+drop column edad;
+-- RENAME COLUMN: cambiar descripcion por detalle_rutina.
+alter table rutinas
+rename column descripcion to detalle_rutina;
+-- MODIFY COLUMN: cambiar correo a VARCHAR(150).
+alter table socios
+modify correo varchar2(159);
+-- ADD CONSTRAINT: agregar UNIQUE al correo.
+alter table socios
+add constraint unq_correos
+unique (correo);
+-- RENAME TABLE: cambiar rutinas por historial_rutinas.
+alter table rutinas
+rename to historial_rutinas;
+-- Finalmente usar DROP TABLE para eliminar entrenadores.
+drop table historial_rutinas;
+drop table entrenadores;
+drop table socios
+
+--ejercico 8
+-- Crear una base de datos para una plataforma de cursos.
+-- Crear las tablas:
+-- 1. instructores(id_instructor, nombre, experiencia)
+create table instructores(
+id_instructor number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+experiencia varchar2(10) not null
+);
+-- 2. cursos(id_curso, titulo, duracion, id_instructor)
+create table cursos (
+id_curso number(10) generated always as identity primary key,
+titulo varchar2(10) not null,
+duracion number(3) not null,
+id_instructor number(10) not null,
+constraint fk_id_instructor
+foreign key(id_instructor)
+references instructores(id_instructor)
+);
+-- 3. estudiantes(id_estudiante, nombre, correo)
+create table estudiantes(
+id_estudiante number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+correo varchar2(10) not null
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 5 instructores
+insert into instructores(nombre, experiencia)
+values('migue','sdsd');
+insert into instructores(nombre, experiencia)
+values('misd','ssdsd');
+insert into instructores(nombre, experiencia)
+values('msde','swewe');
+insert into instructores(nombre, experiencia)
+values('miwe','sdsd');
+insert into instructores(nombre, experiencia)
+values('mixcxe','sbbb');
+-- 8 cursos
+insert into cursos(titulo,duracion, id_instructor)
+values('mate',23,1);
+insert into cursos(titulo,duracion, id_instructor)
+values('gg',3,2);
+insert into cursos(titulo,duracion, id_instructor)
+values('fdf',22,2);
+insert into cursos(titulo,duracion, id_instructor)
+values('mjij',54,1);
+insert into cursos(titulo,duracion, id_instructor)
+values('mavx',3,2);
+-- 10 estudiantes
+insert into estudiantes(nombre, correo)
+values('miguel','mig@j.com');
+insert into estudiantes(nombre, correo)
+values('mll','rr@j.com');
+insert into estudiantes(nombre, correo)
+values('mvv','vv@j.com');
+insert into estudiantes(nombre, correo)
+values('meee','ff@j.com');
+insert into estudiantes(nombre, correo)
+values('mig','yyy@j.com');
+insert into estudiantes(nombre, correo)
+values('mgggw','ww@j.com');
+insert into estudiantes(nombre, correo)
+values('mcc','mrr@j.com');
+-- Actualizar:
+-- Cambiar experiencia de un instructor.
+update instructores
+set experiencia='kekke'
+where id_instructor=2;
+update instructores
+set experiencia='leoo'
+where id_instructor=3;
+-- Modificar duración de un curso.
+update cursos
+set duracion=23
+where id_curso=1;
+update cursos
+set duracion=32
+where id_curso=3;
+-- Eliminar:
+-- Eliminar un estudiante.
+delete from estudiantes where id_estudiante=4;
+-- Eliminar un curso cancelado.
+delete from estudiantes where id_estudiante=4;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar precio en cursos.
+alter table cursos
+add precio number(10) ;
+-- DROP COLUMN: eliminar experiencia en instructores.
+alter table instructores
+drop column experiencia;
+-- RENAME COLUMN: cambiar titulo por nombre_curso.
+alter table cursos
+rename column titulo to nombre_curso;
+-- MODIFY COLUMN: cambiar correo a VARCHAR(120).
+alter table estudiantes
+modify correo varchar2(120);
+-- ADD CONSTRAINT: agregar CHECK para precio > 0.
+alter table cursos
+add constraint chk_precio
+check (precio>0);
+-- RENAME TABLE: cambiar estudiantes por alumnos.
+alter table estudiantes
+rename to alumnos;
+-- Finalmente usar DROP TABLE para eliminar cursos.
+drop table alumnos;
+drop table cursos;
+drop table instructores;
+
+-- ejercicio 9
+-- Crear una base de datos para una empresa de transporte.
+-- Crear las tablas:
+-- 1. conductores(id_conductor, nombre, licencia)
+create table conductores(
+id_conductor number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+licencia varchar2(10) not null
+);
+-- 2. vehiculos(id_vehiculo, modelo, placas)
+create table vehiculos(
+id_vehiculo number(10) generated always as identity primary key,
+modelo number(10) not null,
+placas number(10) not null
+);
+-- 3. rutas(id_ruta, id_conductor, id_vehiculo, destino)
+create table rutas(
+id_ruta number(10) generated always as identity primary key,
+destino varchar2(10) not null,
+id_conductor number(10) not null,
+id_vehiculo number(10) not null,
+constraint fk_id_conductor
+foreign key(id_conductor)
+references conductores(id_conductor),
+constraint fk_id_vehiculo
+foreign key(id_vehiculo)
+references vehiculos(id_vehiculo)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 5 conductores
+insert into conductores(nombre,licencia)
+values('miguel',232323);
+insert into conductores(nombre,licencia)
+values('miel',235553);
+insert into conductores(nombre,licencia)
+values('mitel',23453);
+insert into conductores(nombre,licencia)
+values('midl',232113);
+insert into conductores(nombre,licencia)
+values('mvvv',23666);
+-- 6 vehículos
+insert into vehiculos(modelo, placas)
+values(2323,2323);
+insert into vehiculos(modelo, placas)
+values(2323,434);
+insert into vehiculos(modelo, placas)
+values(4545,2312);
+insert into vehiculos(modelo, placas)
+values(2121,989);
+insert into vehiculos(modelo, placas)
+values(4747,2929);
+-- 10 rutas
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('mexico',1,1);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('jeje',2,3);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('peoe',3,1);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('ytyt',2,1);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('tutu',2,2);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('tutu',3,3);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('uur',2,1);
+insert into rutas(destino,id_conductor,id_vehiculo)
+values('oeoe',3,2);
+-- Actualizar:
+-- Cambiar placas de un vehículo.
+update vehiculos
+set placas=2323
+where id_vehiculo=1;
+update vehiculos
+set placas=2434
+where id_vehiculo=2;
+-- Modificar licencia de un conductor.
+update conductores
+set licencia=32355
+where id_conductor=1;
+update conductores
+set licencia=55454
+where id_conductor=2;
+-- Eliminar:
+-- Eliminar una ruta.
+delete from rutas where id_ruta=4;
+-- Eliminar un vehículo descompuesto.
+delete from vehiculos where id_vehiculo=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar capacidad en vehiculos.
+alter table vehiculos
+add capacidad number(10);
+-- DROP COLUMN: eliminar licencia en conductores.
+alter table conductores
+drop column licencia;
+-- RENAME COLUMN: cambiar destino por ciudad_destino.
+alter table rutas
+rename column destino to ciudad_destino;
+-- MODIFY COLUMN: cambiar modelo a VARCHAR(100).
+alter table vehiculos
+modify modelo number(10);
+-- ADD CONSTRAINT: agregar UNIQUE a placas.
+alter table vehiculos
+add constraint unq_placas
+unique (placas);
+-- RENAME TABLE: cambiar rutas por historial_rutas.
+alter table rutas
+rename to historial_rutas;
+-- Finalmente usar DROP TABLE para eliminar conductores.
+drop table historial_rutas;
+drop table conductores;
+drop table vehiculos;
+
+-- Crear una base de datos para un banco.
+-- Crear las tablas:
+-- 1. clientes(id_cliente, nombre, direccion)
+create table clientes(
+id_cliente number(10) generated always as identity primary key,
+nombre varchar2(10) not null,
+direccion varchar2(10) not null
+);
+-- 2. cuentas(id_cuenta, saldo, tipo_cuenta, id_cliente)
+create table cuentas(
+id_cuenta number(10) generated always as identity primary key,
+saldo number(10) not null,
+tipo_cuenta varchar2(10) not null,
+id_cliente number(10) not null,
+constraint fk_id_cliente
+foreign key(id_cliente)
+references clientes(id_cliente)
+);
+-- 3. movimientos(id_movimiento, id_cuenta, tipo_movimiento, monto)
+create table movimientos(
+id_movimiento number(10) generated always as identity primary key,
+monto number(10) not null,
+tipo_movimiento varchar2(10) not null,
+id_cuenta number(10) not null,
+constraint fk_id_cuenta
+foreign key (id_cuenta)
+references cuentas(id_cuenta)
+);
+-- Definir llaves primarias y foráneas.
+-- Insertar mínimo:
+-- 6 clientes
+insert into clientes(nombre, direccion)
+values('migue','jose');
+insert into clientes(nombre, direccion)
+values('luis','pepe');
+insert into clientes(nombre, direccion)
+values('ttt','dfs');
+insert into clientes(nombre, direccion)
+values('wewe','ccc');
+insert into clientes(nombre, direccion)
+values('jiji','sdsd');
+-- 8 cuentas
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(2332,'premium',1);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(2343,'psdsd',3);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(5442,'cvcvc',2);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(2645,'sdsd',1);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(2121,'zxzx',2);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(2867,'ghghy',3);
+insert into cuentas(saldo, tipo_cuenta,id_cliente)
+values(5345,'ungvn',1);
+-- 12 movimientos
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(32212,'jose',1);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(32434,'jffe',2);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(3534,'jbxc',3);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(37675,'vdesd',2);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(39865,'vcbr',3);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(12232,'jrtre',1);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(36543,'jjuuy',3);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(38786,'vfvdd',4);
+insert into movimientos(monto,tipo_movimiento,id_cuenta)
+values(36567,'vfssa',3);
+-- Actualizar:
+-- Cambiar dirección de un cliente.
+update clientes
+set direccion='iurj'
+where id_cliente=1;
+update clientes
+set direccion='pipi'
+where id_cliente=2;
+-- Modificar saldo de una cuenta.
+update cuentas
+set saldo=234531
+where id_cuenta=1;
+update cuentas
+set saldo=23858
+where id_cuenta=2;
+-- Eliminar:
+-- Eliminar un movimiento.
+delete from movimientos where id_movimiento=1;
+delete from movimientos where id_movimiento=5;
+-- Eliminar una cuenta inactiva.
+delete from cuentas where id_cuenta=5;
+-- Usar ALTER TABLE:
+-- ADD COLUMN: agregar fecha_apertura en cuentas.
+alter table cuentas
+add fecha_apertura date;
+-- DROP COLUMN: eliminar direccion en clientes.
+alter table clientes
+drop column direccion;
+-- RENAME COLUMN: cambiar tipo_movimiento por movimiento.
+alter table movimientos
+rename column tipo_movimiento to movimiento;
+-- MODIFY COLUMN: cambiar saldo a DECIMAL(12,2).
+alter table cuentas
+modify saldo number(12);
+-- ADD CONSTRAINT: agregar CHECK para saldo >= 0.
+alter table cuentas
+add constraint chk_saldo
+check (saldo>0);
+-- RENAME TABLE: cambiar movimientos por historial_movimientos.
+alter table movimientos
+rename to historial_movimientos;
+-- Finalmente usar DROP TABLE para eliminar cuentas.
+drop table historial_movimientos;
+drop table cuentas;
+drop table clientes;
+
