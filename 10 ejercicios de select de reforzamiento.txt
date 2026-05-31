@@ -1,0 +1,106 @@
+/* 1. Mostrar los nombres concatenados con el correo de los clientes donde la ciudad 
+sea Cancun o Merida y el nombre empiece con 'L', agrupando por ciudad, mostrando 
+el id máximo, mínimo y el conteo de clientes, ordenando por nombre ascendente. */
+
+select ciudad, nombre||' '||correo, max(id_cliente), min(id_cliente), count(*)
+from clientes
+where ciudad in ('Cancun','Merida') and nombre like 'L%'
+group by ciudad, nombre, correo
+order by nombre asc;
+
+/* 2. Mostrar los productos concatenando nombre_producto y stock donde el precio 
+sea mayor a 2000 y menor a 10000, o el nombre contenga la letra 't', agrupando 
+por precio, mostrando el stock máximo, mínimo y la cantidad de productos, ordenando 
+por precio descendente. */
+
+select precio, nombre_producto||' '||stock, max(stock), min(stock)
+from productos
+where (precio > 2000 and precio<10000) or nombre_producto like '%t%'
+group by precio, nombre_producto, stock
+order by precio desc;
+
+/* 3. Mostrar los teléfonos concatenados con las ciudades de los clientes donde el 
+correo contenga 'email' y el id_cliente sea mayor a 3, o la ciudad empiece con 'C', 
+agrupando por ciudad, mostrando el id máximo, mínimo y el conteo de clientes, 
+ordenando por ciudad. */
+
+select ciudad, telefono||' '|| ciudad, max(id_cliente), min(id_cliente),count(*)
+from clientes
+where (correo like '%email%' and id_cliente >3) or ciudad like 'C%'
+group by ciudad, telefono
+order by ciudad;
+
+/* 4. Mostrar los nombres de productos concatenados con el precio donde el stock 
+sea mayor a 15 y el nombre termine con 'g', o el precio sea menor a 5000, agrupando 
+por stock, mostrando el precio máximo, mínimo y la cantidad de productos, ordenando 
+por stock ascendente. */
+
+select stock, nombre_producto||' '||precio, max(precio), min(precio)
+from productos
+where (stock > 15 and nombre_producto like '%g') or precio<5000
+group by stock, nombre_producto, precio
+order by stock;
+
+/* 5. Mostrar los nombres concatenados con el teléfono de los clientes donde la ciudad 
+sea Oaxaca o Veracruz y el nombre contenga la letra 'a', agrupando por ciudad, 
+mostrando el teléfono máximo, mínimo y el conteo de clientes, ordenando por nombre. */
+
+select nombre||' '||telefono, ciudad, max(telefono), min(telefono), count(*)
+from clientes
+where ciudad in ('Oaxaca','Veracruz') and nombre like '%a%'
+group by nombre, telefono,ciudad
+order by nombre ;
+
+/* 6. Mostrar los productos concatenando nombre_producto y precio donde el precio 
+sea mayor a 1000 y el stock sea menor a 25, o el nombre contenga la letra 'o', 
+agrupando por stock, mostrando el precio máximo, mínimo y el conteo de productos, 
+ordenando por precio ascendente. */
+
+select nombre_producto||' '||precio, stock, max(precio), min(precio), count(*)
+from productos
+where (precio >1000 and stock <25) or nombre_producto like '%o%'
+group by stock, nombre_producto, precio
+order by precio desc;
+
+/* 7. Mostrar los nombres concatenados con las ciudades de los clientes donde el 
+id_cliente sea menor a 18 y el correo termine en '.com', o la ciudad contenga la 
+letra 'e', agrupando por ciudad, mostrando el id máximo, mínimo y la cantidad de 
+clientes, ordenando por id_cliente descendente. */
+
+select id_cliente, nombre||' '||ciudad, max(id_cliente), min(id_cliente), count(*)
+from clientes
+where (id_cliente <18 and correo like '.com%') or ciudad like '%e%'
+group by nombre, ciudad,id_cliente
+order by id_cliente;
+
+/* 8. Mostrar los productos concatenando el nombre y el stock donde el nombre del 
+producto empiece con 'C' y el precio sea mayor a 1500, o el stock sea mayor a 10, 
+agrupando por precio, mostrando el stock máximo, mínimo y el conteo de productos, 
+ordenando por nombre_producto. */
+
+select nombre_producto||' '||stock, max(precio), min(precio), count(*)
+from productos
+where (nombre_producto like 'C' and precio >1500) or stock >10
+group by precio, nombre_producto,stock
+order by nombre_producto;
+
+/* 9. Mostrar los nombres concatenados con el correo de los clientes donde la ciudad 
+sea Tijuana o Leon y el nombre termine con 'z', agrupando por ciudad, mostrando el 
+id máximo, mínimo y la cantidad de clientes, ordenando por ciudad descendente. */
+
+select ciudad, nombre||' '||correo, max(id_cliente), min(id_cliente), count(*)
+from clientes
+where ciudad in ('Tijuana','Leon') and nombre like '%z'
+group by ciudad, nombre, correo
+order by ciudad desc;
+
+/* 10. Mostrar los productos concatenando nombre_producto y precio donde el stock 
+sea mayor a 8 y el nombre contenga la letra 'a', o el precio sea mayor a 12000, 
+agrupando por stock, mostrando el precio máximo, mínimo y el conteo de productos, 
+ordenando por precio descendente. */
+
+select nombres_producto||' '||precio, max(precio), min(precio), count(*)
+from productos
+where (stock > 8 and nombre_producto like '%a%') or precio>12000
+group by stock
+order by precio desc;

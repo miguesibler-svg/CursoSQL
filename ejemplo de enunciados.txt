@@ -1,0 +1,156 @@
+Dame 10 enunciados de ejercicios SQL que contengan  CREATE TABLE con llave primaria y llave foránea, INSERT, UPDATE, DELETE y ALTER TABLE utilizando ADD COLUMN, DROP COLUMN, MODIFY COLUMN, RENAME COLUMN y RENAME TABLE.
+
+Además, cada ejercicio debe incluir CONSTRAINT utilizando UNIQUE y CHECK.
+
+Cada enunciado debe tener mínimo 5 consultas SQL donde se utilicen las cláusulas y funciones WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCATENACION, GROUP BY, ORDER BY, NOT, AVG y BETWEEN.
+
+Que los enunciando sean iguales que el enunciado del ejemplo, que estén comentado --, que los enunciado no tengan =================, no estén contestados y las consultas sean idénticos que la consulta ejemplo para los 5 consultas y debe de tener todas las clausuras y funciones ya dichas anteriormente, comienza dando primero solamente el primer enunciado
+
+-- EJERCICIO 1 EJEMPLO
+
+-- REALIZAR:
+-- CREATE TABLE
+-- PRIMARY KEY
+-- FOREIGN KEY
+-- INSERT (20 EN CADA TABLA)
+-- UPDATE (5 ACTUALIZACIONES)
+-- DELETE (3 ELIMINACIONES)
+-- ALTER TABLE
+-- ADD COLUMN (2 COLUMNAS NUEVAS)
+-- DROP COLUMN  (ELIMINAR LAS 2 COLUMNAS NUEVAS AGREGADAS)
+-- MODIFY COLUMN
+-- RENAME COLUMN
+-- RENAME TABLE
+-- CONSTRAINT(UNIQUE, CHECK)
+
+-- CONSULTAS:
+-- WHERE
+-- MAX
+-- MIN
+-- LENGTH
+-- LIKE
+-- AND
+-- OR
+-- COUNT
+-- IN
+-- SUM
+-- CONCATENACION
+-- GROUP BY
+-- ORDER BY
+-- NOT
+-- AVG
+-- BETWEEN
+
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA PROFESORES
+-- id_profesor
+-- nombre
+-- departamento
+
+-- 2. TABLA ESTUDIANTES
+-- id_estudiante
+-- nombre
+-- edad
+-- materia
+-- promedio
+-- id_profesor
+
+
+
+-- DATOS QUE SE DEBEN INSERTAR
+
+-- TABLA PROFESORES
+
+insert into profesores values(1,'Carlos Perez','Matematicas');
+insert into profesores values(2,'Ana Torres','Programacion');
+insert into profesores values(3,'Luis Gomez','Fisica');
+insert into profesores values(4,'Maria Lopez','Historia');
+insert into profesores values(5,'Jorge Ruiz','Quimica');
+insert into profesores values(6,'Fernanda Diaz','Programacion');
+insert into profesores values(7,'Pedro Sanchez','Biologia');
+insert into profesores values(8,'Laura Ramirez','Matematicas');
+insert into profesores values(9,'Miguel Torres','Fisica');
+insert into profesores values(10,'Andrea Cruz','Historia');
+insert into profesores values(11,'Sofia Martinez','Programacion');
+insert into profesores values(12,'Daniel Herrera','Quimica');
+insert into profesores values(13,'Javier Morales','Biologia');
+insert into profesores values(14,'Patricia Lopez','Historia');
+insert into profesores values(15,'Ricardo Flores','Matematicas');
+
+
+-- TABLA ESTUDIANTES
+
+insert into estudiantes values(101,'Pedro Diaz',20,'Algebra',85,1);
+insert into estudiantes values(102,'Laura Sanchez',22,'Programacion',90,2);
+insert into estudiantes values(103,'Miguel Ruiz',19,'Fisica',78,3);
+insert into estudiantes values(104,'Andrea Perez',24,'Historia',88,4);
+insert into estudiantes values(105,'Sofia Torres',18,'Quimica',95,5);
+insert into estudiantes values(106,'Daniel Lopez',21,'Programacion',80,2);
+insert into estudiantes values(107,'Fernanda Cruz',23,'Biologia',76,7);
+insert into estudiantes values(108,'Jorge Ramirez',25,'Historia',70,4);
+insert into estudiantes values(109,'Carlos Medina',20,'Programacion',89,6);
+insert into estudiantes values(110,'Patricia Gomez',22,'Biologia',91,7);
+insert into estudiantes values(111,'Luis Herrera',24,'Fisica',73,9);
+insert into estudiantes values(112,'Maria Flores',26,'Algebra',87,8);
+insert into estudiantes values(113,'Ricardo Perez',21,'Historia',82,10);
+insert into estudiantes values(114,'Ana Morales',23,'Programacion',94,11);
+insert into estudiantes values(115,'Javier Torres',19,'Quimica',79,12);
+
+
+
+-- ACTIVIDADES
+
+-- Cambiar la materia de Andrea Perez a Filosofia.
+
+-- Modificar el departamento de Luis Gomez para que ahora pertenezca al area de Astronomia.
+
+-- Actualizar el promedio de Pedro Diaz a 92.
+
+-- Cambiar el departamento de Ana Torres a Inteligencia Artificial.
+
+-- Actualizar la edad de Sofia Torres a 20 años.
+
+-- Eliminar el registro del estudiante con identificador 103.
+
+-- Eliminar el profesor con identificador 5.
+
+-- Eliminar el estudiante con identificador 110.
+
+-- Agregar una columna telefono en la tabla estudiantes.
+
+-- Agregar una columna salario en la tabla profesores.
+
+-- Eliminar la columna telefono.
+
+-- Eliminar la columna salario.
+
+-- Aumentar la capacidad del campo nombre para aceptar mas caracteres.
+
+-- Cambiar temporalmente el nombre de la columna materia por curso
+-- y despues regresar nuevamente a materia.
+
+-- Cambiar el nombre de la tabla estudiantes por alumnos
+-- y luego volver a dejar el nombre original.
+
+-- Evitar que existan nombres repetidos en la tabla profesores.
+
+-- Validar que las edades sean mayores a 17 años.
+
+
+
+-- CONSULTAS
+
+-- CONSULTA EJEMPLO
+-- Mostrar el ID del estudiante, nombre completo, edad, materia y promedio.
+-- Ademas, realizar una concatenacion entre el nombre del estudiante y la materia que cursa,
+-- mostrar la longitud del nombre,
+-- calcular la suma total de los promedios,
+-- mostrar el promedio maximo, minimo y promedio general,
+-- asi como la cantidad total de estudiantes encontrados.
+-- Considerar solamente los estudiantes cuyos nombres contengan la letra 'z',
+-- que pertenezcan a las materias de Programacion, Historia o Algebra,
+-- que tengan un promedio entre 70 y 95,
+-- excluyendo la materia Fisica.
+-- Ordenar los resultados de mayor a menor promedio.

@@ -1,0 +1,922 @@
+/* =========================================================
+EJERCICIO 1
+SISTEMA ESCOLAR
+=========================================================
+
+ENUNCIADO:
+
+Crear una base de datos para una escuela.
+
+La base de datos debe contener las siguientes tablas:
+
+1. TABLA MAESTROS
+- id_maestro
+- nombre
+- especialidad
+
+2. TABLA ALUMNOS
+- id_alumno
+- nombre
+- edad
+- promedio
+- id_maestro
+
+REALIZAR:
+
+- CREATE DATABASE
+- CREATE TABLE
+- PRIMARY KEY
+- FOREIGN KEY
+- INSERT
+- UPDATE
+- DELETE
+- ADD COLUMN
+- DROP COLUMN
+- MODIFY COLUMN
+- RENAME COLUMN
+- RENAME TABLE
+- CONSTRAINT
+
+DATOS QUE SE DEBEN INSERTAR
+
+TABLA MAESTROS
+
+(1,'Juan Lopez','Matematicas')
+(2,'Ana Torres','Historia')
+(3,'Carlos Ruiz','Fisica')
+(4,'Maria Perez','Quimica')
+(5,'Luis Gomez','Programacion')
+
+TABLA ALUMNOS
+
+(101,'Pedro Sanchez',15,9.5,1)
+(102,'Laura Diaz',16,8.7,2)
+(103,'Miguel Torres',17,7.5,3)
+(104,'Andrea Ruiz',14,6.8,4)
+(105,'Sofia Lopez',15,9.1,5)
+(106,'Daniel Perez',16,8.2,1)
+(107,'Fernanda Cruz',17,7.8,2)
+(108,'Jorge Ramirez',14,9.8,3)
+
+ACCIONES ESPECÍFICAS
+
+UPDATE
+- Cambiar el promedio de 'Andrea Ruiz' a 8.5
+- Cambiar la especialidad del maestro 'Luis Gomez'
+  a 'Base de Datos'
+
+DELETE
+- Eliminar al alumno con id_alumno = 104
+- Eliminar al maestro con id_maestro = 5
+
+ADD COLUMN
+- Agregar la columna telefono a la tabla alumnos
+
+DROP COLUMN
+- Eliminar la columna telefono de la tabla alumnos
+
+MODIFY COLUMN
+- Cambiar el tipo de dato de nombre
+  para aceptar más caracteres
+
+RENAME COLUMN
+- Cambiar el nombre de la columna promedio
+  por calificacion
+
+RENAME TABLE
+- Cambiar el nombre de la tabla alumnos
+  por estudiantes
+
+CONSTRAINT
+- Agregar una restricción UNIQUE al nombre
+  de la tabla maestros
+
+CONSULTAS
+
+-- Obtener el promedio máximo y mínimo de alumnos
+-- donde el id_maestro esté en (1, 3, 5)
+-- y el promedio sea mayor a 8.
+
+-- Mostrar alumnos de diferentes maestros
+-- donde el id_maestro esté en (1, 2, 4)
+-- y el promedio sea mayor a 7.
+
+-- Mostrar los alumnos
+-- donde la edad esté en (15, 16, 17)
+-- y el promedio sea mayor a 7.
+
+-- Ordenar los alumnos por promedio de mayor a menor
+-- donde el id_maestro esté en (2, 4)
+-- y el promedio sea mayor a 6.
+
+-- Agrupar alumnos por id_maestro
+-- donde la edad esté en (14, 15, 16)
+-- y el promedio sea mayor a 7.
+*/
+create table maestros(
+id_maestro number(10) generated always as identity primary key,
+nombre varchar2(150) not null,
+especialidad varchar2(150) not null
+);
+
+create table alumnos(
+id_alumno number(10) generated always as identity primary key,
+nombre varchar2(150) not null,
+edad number(2) not null,
+promedio number(10) not null,
+id_maestro number(10) not null,
+constraint fk_id_maestro
+foreign key(id_maestro)
+references maestros(id_maestro)
+);
+
+insert into maestros(nombre, especialidad) values('Juan Lopez','Matematicas');
+insert into maestros(nombre, especialidad) values('Ana Torres','Historia');
+insert into maestros(nombre, especialidad) values('Carlos Ruiz','Fisica');
+insert into maestros(nombre, especialidad) values('Maria Perez','Quimica');
+insert into maestros(nombre, especialidad) values('Luis Gomez','Programacion');
+
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Pedro Sanchez',15,9.5,1);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Laura Diaz',16,8.7,2);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Miguel Torres',17,7.5,3);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Andrea Ruiz',14,6.8,4);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Sofia Lopez',15,9.1,5);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Daniel Perez',16,8.2,1);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Fernanda Cruz',17,7.8,2);
+insert into alumnos(nombre,edad,promedio, id_maestro) values('Jorge Ramirez',14,9.8,3);
+
+--UPDATE
+--Cambiar el promedio de 'Andrea Ruiz' a 8.5
+update alumnos
+set promedio=8
+where nombre='Andrea Ruiz';
+--Cambiar la especialidad del maestro 'Luis Gomez' a 'Base de Datos'
+update maestros
+set especialidad='Base de Datos'
+where nombre='Luis Gomez';
+--DELETE
+--Eliminar al alumno con id_alumno = 104
+delete from alumnos where id_alumno=8;
+--Eliminar al maestro con id_maestro = 5
+delete from alumnos where id_alumno=5;
+--ADD COLUMN
+--Agregar la columna telefono a la tabla alumnos
+alter table alumnos
+add telefono number(10);
+
+--DROP COLUMN
+--Eliminar la columna telefono de la tabla alumnos
+alter table alumnos
+drop column telefono;
+
+--MODIFY COLUMN
+--Cambiar el tipo de dato de nombre para aceptar más caracteres
+alter table alumnos
+modify nombre varchar2(170);
+
+--RENAME COLUMN
+--Cambiar el nombre de la columna promedio por calificacion
+alter table alumnos
+rename column promedio to calificacion;
+--RENAME TABLE
+--Cambiar el nombre de la tabla alumnos por estudiantes
+alter table alumnos
+rename to estudiantes;
+--CONSTRAINT
+-- Agregar una restricción UNIQUE al nombre de la tabla maestros
+alter table maestros
+add constraint unq_nombre_maestro
+unique (nombre);
+--CONSULTAS
+-- Obtener el promedio máximo y mínimo de alumnos
+-- donde el id_maestro esté en (1, 3, 5)
+-- y el promedio sea mayor a 8.
+select max(calificacion), min(calificacion)
+from estudiantes
+where id_maestro in (1,3,5) and calificacion >= 8;
+-- Mostrar alumnos de diferentes maestros
+-- donde el id_maestro esté en (1, 2, 4)
+-- y el promedio sea mayor a 7.
+select distinct nombre
+from estudiantes
+where id_maestro in (1,2,4) and calificacion>7;
+-- Mostrar los alumnos
+-- donde la edad esté en (15, 16, 17)
+-- y el promedio sea mayor a 7.
+select nombre
+from estudiantes 
+where edad in (15,16,17) and calificacion >7;
+-- Ordenar los alumnos por promedio de mayor a menor
+-- donde el id_maestro esté en (2, 4)
+-- y el promedio sea mayor a 6.
+select nombre,calificacion
+from estudiantes
+where id_maestro in (2,4) and calificacion>6
+order by calificacion desc;
+-- Agrupar alumnos por id_maestro
+-- donde la edad esté en (14, 15, 16)
+-- y el promedio sea mayor a 7.
+select count(nombre), id_maestro 
+from estudiantes
+where edad in (14,15,16) and calificacion >7
+group by id_maestro;
+
+
+
+/* =========================================================
+EJERCICIO 3
+SISTEMA DE HOSPITAL
+=========================================================
+
+ENUNCIADO:
+
+Crear una base de datos para un hospital.
+
+La base de datos debe contener las siguientes tablas:
+
+1. TABLA DOCTORES
+- id_doctor
+- nombre
+- especialidad
+
+2. TABLA PACIENTES
+- id_paciente
+- nombre
+- edad
+- enfermedad
+- id_doctor
+
+REALIZAR:
+
+- CREATE DATABASE
+- CREATE TABLE
+- PRIMARY KEY
+- FOREIGN KEY
+- INSERT
+- UPDATE
+- DELETE
+- ADD COLUMN
+- DROP COLUMN
+- MODIFY COLUMN
+- RENAME COLUMN
+- RENAME TABLE
+- CONSTRAINT
+
+DATOS QUE SE DEBEN INSERTAR
+
+TABLA DOCTORES
+
+(1,'Carlos Perez','Cardiologia')
+(2,'Ana Lopez','Pediatria')
+(3,'Luis Gomez','Neurologia')
+(4,'Maria Torres','Dermatologia')
+(5,'Jose Ramirez','Traumatologia')
+
+TABLA PACIENTES
+
+(101,'Juan Diaz',30,'Hipertension',1)
+(102,'Laura Ruiz',12,'Fiebre',2)
+(103,'Miguel Santos',45,'Migraña',3)
+(104,'Andrea Cruz',27,'Acne',4)
+(105,'Pedro Leon',50,'Fractura',5)
+(106,'Sofia Perez',35,'Presion Alta',1)
+(107,'Carlos Diaz',15,'Gripe',2)
+(108,'Fernanda Ruiz',40,'Dolor Cabeza',3)
+
+ACCIONES ESPECÍFICAS
+
+UPDATE
+- Cambiar la enfermedad de 'Laura Ruiz'
+  a 'Gripe'
+- Cambiar la especialidad del doctor
+  'Luis Gomez' a 'Neurocirugia'
+
+DELETE
+- Eliminar el paciente con id_paciente = 104
+- Eliminar el doctor con id_doctor = 5
+
+ADD COLUMN
+- Agregar la columna telefono a la tabla pacientes
+
+DROP COLUMN
+- Eliminar la columna telefono de la tabla pacientes
+
+MODIFY COLUMN
+- Cambiar el tipo de dato de enfermedad
+  para aceptar más caracteres
+
+RENAME COLUMN
+- Cambiar el nombre de la columna enfermedad
+  por diagnostico
+
+RENAME TABLE
+- Cambiar el nombre de la tabla pacientes
+  por pacientes_hospital
+
+CONSTRAINT
+- Agregar una restricción UNIQUE al nombre
+  de la tabla doctores
+
+CONSULTAS
+
+-- Obtener la edad máxima y mínima de pacientes
+-- donde el id_doctor esté en (1, 3, 5)
+-- y la edad sea mayor a 20.
+
+-- Mostrar pacientes de diferentes doctores
+-- donde el id_doctor esté en (1, 2, 4)
+-- y la edad sea mayor a 10.
+
+-- Mostrar los pacientes
+-- donde la edad esté en (12, 30, 40)
+-- y la edad sea mayor a 10.
+
+-- Ordenar pacientes por edad de mayor a menor
+-- donde el id_doctor esté en (2, 4)
+-- y la edad sea mayor a 10.
+
+-- Agrupar pacientes por id_doctor
+-- donde la edad esté en (15, 30, 35)
+-- y la edad sea mayor a 10.
+*/
+
+create table doctores(
+id_doctor number(10) primary key,
+nombre varchar2(140) not null,
+especialidad varchar2(140) not null
+);
+
+
+create table pacientes(
+id_paciente number(10) primary key,
+nombre varchar2(140) not null,
+edad number(2) not null,
+enfermedad varchar2(140) not null,
+id_doctor number(10) not null,
+constraint fk_id_doctor
+foreign key(id_doctor)
+references doctores(id_doctor)
+);
+
+
+insert into doctores values(1,'Carlos Perez','Cardiologia');
+insert into doctores values(2,'Ana Lopez','Pediatria');
+insert into doctores values(3,'Luis Gomez','Neurologia');
+insert into doctores values(4,'Maria Torres','Dermatologia');
+insert into doctores values(5,'Jose Ramirez','Traumatologia');
+
+
+
+insert into pacientes values(101,'Juan Diaz',30,'Hipertension',1);
+insert into pacientes values(102,'Laura Ruiz',12,'Fiebre',2);
+insert into pacientes values(103,'Miguel Santos',45,'Migraña',3);
+insert into pacientes values(104,'Andrea Cruz',27,'Acne',4);
+insert into pacientes values(105,'Pedro Leon',50,'Fractura',5);
+insert into pacientes values(106,'Sofia Perez',35,'Presion Alta',1);
+insert into pacientes values(107,'Carlos Diaz',15,'Gripe',2);
+insert into pacientes values(108,'Fernanda Ruiz',40,'Dolor Cabeza',3);
+
+--UPDATE
+--Cambiar la enfermedad de 'Laura Ruiz' a 'Gripe'
+update PACIENTES
+set enfermedad='Gripe'
+where nombre='Laura Ruiz';
+commit;
+--Cambiar la especialidad del doctor 'Luis Gomez' a 'Neurocirugia'
+update doctores
+set especialidad ='Neurocirugia'
+where nombre='Luis Gomez';
+commit;
+--DELETE
+--Eliminar el paciente con id_paciente = 104
+delete from pacientes where id_paciente=105;
+commit;
+--Eliminar el doctor con id_doctor = 5
+delete from doctores where id_doctor=5;
+
+--ADD COLUMN
+--Agregar la columna telefono a la tabla pacientes
+alter table pacientes
+add telefono number(10) ;
+--DROP COLUMN
+--Eliminar la columna telefono de la tabla pacientes
+alter table pacientes 
+drop column telefono;
+commit;
+--MODIFY COLUMN
+--Cambiar el tipo de dato de enfermedad para aceptar más caracteres
+alter table pacientes
+modify enfermedad varchar(190);
+--RENAME COLUMN
+--Cambiar el nombre de la columna enfermedad por diagnostico
+alter table pacientes
+rename column enfermedad to diagnostico;
+commit;
+--RENAME TABLE
+--Cambiar el nombre de la tabla pacientes por pacientes_hospital
+alter table pacientes
+rename to pacientes_hospital;
+commit;
+--CONSTRAINT
+--Agregar una restricción UNIQUE al nombre de la tabla doctores
+alter table doctores
+add constraint unq_nombre
+unique (nombre);
+commit;
+
+-- Obtener la edad máxima y mínima de pacientes
+-- donde el id_doctor esté en (1, 3, 5)
+-- y la edad sea mayor a 20.
+select max(edad), min(edad)
+from PACIENTES_HOSPITAL
+where id_doctor in (1,3,5) and edad >20;
+-- Mostrar pacientes de diferentes doctores
+-- donde el id_doctor esté en (1, 2, 4)
+-- y la edad sea mayor a 10.
+select *
+from PACIENTES_HOSPITAL
+where id_doctor in (1,2,4) and edad >10;
+-- Mostrar los pacientes
+-- donde la edad esté en (12, 30, 40)
+-- y la edad sea mayor a 10.
+select *
+from pacientes_hospital
+where edad in(12,30,40) and edad>10;
+-- Ordenar pacientes por edad de mayor a menor
+-- donde el id_doctor esté en (2, 4)
+-- y la edad sea mayor a 10.
+select *
+from PACIENTES_HOSPITAL
+where id_doctor in (2,4) and edad >10
+order by edad desc;
+-- Agrupar pacientes por id_doctor
+-- donde la edad esté en (15, 30, 35)
+-- y la edad sea mayor a 10.
+select id_paciente, count(*)
+from PACIENTES_HOSPITAL
+where edad in (15,30,35) and edad>10
+group by id_paciente;
+
+/* =========================================================
+EJERCICIO 4
+SISTEMA DE GIMNASIO
+=========================================================
+
+ENUNCIADO:
+
+Crear una base de datos para un gimnasio.
+
+La base de datos debe contener las siguientes tablas:
+
+1. TABLA ENTRENADORES
+- id_entrenador
+- nombre
+- especialidad
+
+2. TABLA CLIENTES
+- id_cliente
+- nombre
+- edad
+- peso
+- id_entrenador
+
+REALIZAR:
+
+- CREATE DATABASE
+- CREATE TABLE
+- PRIMARY KEY
+- FOREIGN KEY
+- INSERT
+- UPDATE
+- DELETE
+- ADD COLUMN
+- DROP COLUMN
+- MODIFY COLUMN
+- RENAME COLUMN
+- RENAME TABLE
+- CONSTRAINT
+
+DATOS QUE SE DEBEN INSERTAR
+
+TABLA ENTRENADORES
+
+(1,'Luis Torres','Pesas')
+(2,'Ana Ruiz','Cardio')
+(3,'Pedro Gomez','Yoga')
+(4,'Maria Diaz','Crossfit')
+(5,'Carlos Perez','Natacion')
+
+TABLA CLIENTES
+
+(101,'Juan Lopez',20,70,1)
+(102,'Andrea Perez',25,60,2)
+(103,'Miguel Ruiz',30,85,3)
+(104,'Laura Torres',28,55,4)
+(105,'Pedro Diaz',35,90,5)
+(106,'Sofia Gomez',22,65,1)
+(107,'Carlos Ramirez',27,75,2)
+(108,'Fernanda Cruz',31,68,3)
+
+ACCIONES ESPECÍFICAS
+
+UPDATE
+- Cambiar el peso de 'Laura Torres' a 58
+- Cambiar la especialidad del entrenador
+  'Pedro Gomez' a 'Pilates'
+
+DELETE
+- Eliminar el cliente con id_cliente = 104
+- Eliminar el entrenador con id_entrenador = 5
+
+ADD COLUMN
+- Agregar la columna correo a la tabla clientes
+
+DROP COLUMN
+- Eliminar la columna correo de la tabla clientes
+
+MODIFY COLUMN
+- Cambiar el tipo de dato de nombre
+  para aceptar más caracteres
+
+RENAME COLUMN
+- Cambiar el nombre de la columna peso
+  por peso_actual
+
+RENAME TABLE
+- Cambiar el nombre de la tabla clientes
+  por usuarios_gym
+
+CONSTRAINT
+- Agregar una restricción UNIQUE al nombre
+  de la tabla entrenadores
+
+CONSULTAS
+
+-- Obtener el peso máximo y mínimo de clientes
+-- donde el id_entrenador esté en (1, 3, 5)
+-- y el peso sea mayor a 60.
+
+-- Mostrar clientes de diferentes entrenadores
+-- donde el id_entrenador esté en (1, 2, 4)
+-- y la edad sea mayor a 20.
+
+-- Mostrar los clientes
+-- donde la edad esté en (20, 25, 30)
+-- y el peso sea mayor a 60.
+
+-- Ordenar clientes por peso de mayor a menor
+-- donde el id_entrenador esté en (2, 4)
+-- y el peso sea mayor a 50.
+
+-- Agrupar clientes por id_entrenador
+-- donde la edad esté en (22, 27, 31)
+-- y el peso sea mayor a 60.
+*/
+
+create table entrenadores(
+id_entrenador number(10) primary key,
+nombre varchar2(100) not null,
+especialidad varchar2(100) not null
+);
+
+
+2. TABLA CLIENTES
+create table clientess(
+id_cliente number(10) primary key,
+nombre varchar2(100) not null,
+edad number(2) not null,
+peso number(10) not null,
+id_entrenador number(10) not null,
+constraint fk_id_entrenador
+foreign key (id_entrenador)
+references entrenadores(id_entrenador)
+);
+
+insert into entrenadores values(1,'Luis Torres','Pesas');
+insert into entrenadores values(2,'Ana Ruiz','Cardio');
+insert into entrenadores values(3,'Pedro Gomez','Yoga');
+insert into entrenadores values(4,'Maria Diaz','Crossfit');
+insert into entrenadores values(5,'Carlos Perez','Natacion');
+
+
+insert into clientess values(101,'Juan Lopez',20,70,1);
+insert into clientess values(102,'Andrea Perez',25,60,2);
+insert into clientess values(103,'Miguel Ruiz',30,85,3);
+insert into clientess values(104,'Laura Torres',28,55,4);
+insert into clientess values(105,'Pedro Diaz',35,90,5);
+insert into clientess values(106,'Sofia Gomez',22,65,1);
+insert into clientess values(107,'Carlos Ramirez',27,75,2);
+insert into clientess values(108,'Fernanda Cruz',31,68,3);
+
+--UPDATE
+--Cambiar el peso de 'Laura Torres' a 58
+update  clientess
+set peso=58
+where nombre='Laura Torres';
+commit;
+--Cambiar la especialidad del entrenador 'Pedro Gomez' a 'Pilates'
+update entrenadores 
+set especialidad='Pilates'
+where nombre='Pedro Gomez';
+commit;
+--DELETE
+--Eliminar el cliente con id_cliente = 104
+delete from clientess where id_cliente=105; 
+--Eliminar el entrenador con id_entrenador = 5
+delete from entrenadores where id_entrenador=5;
+commit;
+--ADD COLUMN
+--Agregar la columna correo a la tabla clientes
+alter table clientess
+add correo varchar2(100);
+--DROP COLUMN
+--Eliminar la columna correo de la tabla clientes
+alter table clientess
+drop column correo;
+--MODIFY COLUMN
+--Cambiar el tipo de dato de nombre para aceptar más caracteres
+alter table entrenadores
+modify nombre varchar2(150);
+--RENAME COLUMN
+--Cambiar el nombre de la columna peso por peso_actual
+alter table clientess
+rename column peso to peso_actual;
+--RENAME TABLE
+--Cambiar el nombre de la tabla clientes por usuarios_gym
+alter table clientess
+rename to usuarios_gym;
+--CONSTRAINT
+--Agregar una restricción UNIQUE al nombre de la tabla entrenadores
+alter table entrenadores
+add constraint unq_nombre_entre
+unique (nombre);
+commit;
+
+-- Obtener el peso máximo y mínimo de clientes
+-- donde el id_entrenador esté en (1, 3, 5)
+-- y el peso sea mayor a 60.
+select max(peso_actual), min(peso_actual)
+from usuarios_gym
+where id_entrenador in (1,3,5) and peso_actual>60;
+-- Mostrar clientes de diferentes entrenadores
+-- donde el id_entrenador esté en (1, 2, 4)
+-- y la edad sea mayor a 20.
+select *
+from usuarios_gym
+where id_entrenador in (1,2,4) and edad>20;
+-- Mostrar los clientes
+-- donde la edad esté en (20, 25, 30)
+-- y el peso sea mayor a 60.
+select *
+from usuarios_gym 
+where edad in (20,25,30) and peso_actual>60;
+-- Ordenar clientes por peso de mayor a menor
+-- donde el id_entrenador esté en (2, 4)
+-- y el peso sea mayor a 50.
+select *
+from usuarios_gym
+where id_entrenador in (2,4) and peso_actual>50
+order by peso_actual desc;
+-- Agrupar clientes por id_entrenador
+-- donde la edad esté en (22, 27, 31)
+-- y el peso sea mayor a 60.
+select id_entrenador, count(*)
+from usuarios_gym
+where edad in (22,27,31) and peso_actual>60
+group by id_entrenador;
+
+/* =========================================================
+EJERCICIO 5
+SISTEMA DE RESTAURANTE
+=========================================================
+
+ENUNCIADO:
+
+Crear una base de datos para un restaurante.
+
+La base de datos debe contener las siguientes tablas:
+
+1. TABLA MESEROS
+- id_mesero
+- nombre
+- turno
+
+2. TABLA PEDIDOS
+- id_pedido
+- platillo
+- precio
+- cantidad
+- id_mesero
+
+REALIZAR:
+
+- CREATE DATABASE
+- CREATE TABLE
+- PRIMARY KEY
+- FOREIGN KEY
+- INSERT
+- UPDATE
+- DELETE
+- ADD COLUMN
+- DROP COLUMN
+- MODIFY COLUMN
+- RENAME COLUMN
+- RENAME TABLE
+- CONSTRAINT
+
+DATOS QUE SE DEBEN INSERTAR
+
+TABLA MESEROS
+
+(1,'Carlos Ruiz','Mañana')
+(2,'Ana Lopez','Tarde')
+(3,'Luis Perez','Noche')
+(4,'Maria Torres','Mañana')
+(5,'Pedro Diaz','Tarde')
+
+TABLA PEDIDOS
+
+(101,'Hamburguesa',150,2,1)
+(102,'Pizza',250,1,2)
+(103,'Tacos',120,4,3)
+(104,'Ensalada',90,2,4)
+(105,'Pasta',200,3,5)
+(106,'Hot Dog',80,5,1)
+(107,'Burrito',140,2,2)
+(108,'Sushi',300,1,3)
+
+ACCIONES ESPECÍFICAS
+
+UPDATE
+- Cambiar el precio de 'Pizza' a 280
+- Cambiar el turno del mesero
+  'Pedro Diaz' a 'Noche'
+
+DELETE
+- Eliminar el pedido con id_pedido = 106
+- Eliminar el mesero con id_mesero = 5
+
+ADD COLUMN
+- Agregar la columna descripcion
+  a la tabla pedidos
+
+DROP COLUMN
+- Eliminar la columna descripcion
+  de la tabla pedidos
+
+MODIFY COLUMN
+- Cambiar el tipo de dato de platillo
+  para aceptar más caracteres
+
+RENAME COLUMN
+- Cambiar el nombre de la columna cantidad
+  por total_platillos
+
+RENAME TABLE
+- Cambiar el nombre de la tabla pedidos
+  por ordenes
+
+CONSTRAINT
+- Agregar una restricción UNIQUE al nombre
+  de la tabla meseros
+
+CONSULTAS
+
+-- Obtener el precio máximo y mínimo de pedidos
+-- donde el id_mesero esté en (1, 3, 5)
+-- y el precio sea mayor a 100.
+
+-- Mostrar pedidos de diferentes meseros
+-- donde el id_mesero esté en (1, 2, 4)
+-- y la cantidad sea mayor a 1.
+
+-- Mostrar los pedidos
+-- donde la cantidad esté en (1, 2, 4)
+-- y el precio sea mayor a 100.
+
+-- Ordenar pedidos por precio de mayor a menor
+-- donde el id_mesero esté en (2, 4)
+-- y la cantidad sea mayor a 1.
+
+-- Agrupar pedidos por id_mesero
+-- donde el precio esté en (90, 120, 150)
+-- y la cantidad sea mayor a 1.
+*/
+
+create table meseros(
+id_mesero number(10) primary key,
+nombre varchar2(100) not null,
+turno varchar2(100) not null
+);
+
+
+create table pedidoss(
+id_pedido number(10) primary key,
+platillo varchar2(100) not null,
+precio number(10) not null,
+cantidad number(10) not null,
+id_mesero number(10) not null,
+constraint fk_id_mesero
+foreign key(id_mesero)
+references meseros(id_mesero)
+);
+
+TABLA MESEROS
+
+insert into meseros values(1,'Carlos Ruiz','Mañana');
+insert into meseros values(2,'Ana Lopez','Tarde');
+insert into meseros values(3,'Luis Perez','Noche');
+insert into meseros values(4,'Maria Torres','Mañana');
+insert into meseros values(5,'Pedro Diaz','Tarde');
+commit;
+TABLA PEDIDOS
+
+insert into pedidoss values(101,'Hamburguesa',150,2,1);
+insert into pedidoss values(102,'Pizza',250,1,2);
+insert into pedidoss values(103,'Tacos',120,4,3);
+insert into pedidoss values(104,'Ensalada',90,2,4);
+insert into pedidoss values(105,'Pasta',200,3,5);
+insert into pedidoss values(106,'Hot Dog',80,5,1);
+insert into pedidoss values(107,'Burrito',140,2,2);
+insert into pedidoss values(108,'Sushi',300,1,3);
+
+commit;
+
+--UPDATE
+--Cambiar el precio de 'Pizza' a 280
+update pedidoss
+set precio=280
+where platillo='Pizza';
+commit;
+--Cambiar el turno del mesero 'Pedro Diaz' a 'Noche'
+update meseros
+set turno='Noche'
+where nombre='Pedro Diaz';
+commit;
+--DELETE
+--Eliminar el pedido con id_pedido = 106
+delete from pedidoss where  id_pedido=105;
+--Eliminar el mesero con id_mesero = 5
+delete from meseros where id_mesero=5;
+commit;
+--ADD COLUMN
+--Agregar la columna descripcion a la tabla pedidos
+alter table pedidoss
+add descripcion varchar2(100);
+--DROP COLUMN
+--Eliminar la columna descripcion de la tabla pedidos
+alter table pedidoss
+drop column descripcion;
+commit;
+--MODIFY COLUMN
+--Cambiar el tipo de dato de platillo para aceptar más caracteres
+alter table pedidoss
+modify platillo varchar2(150);
+--RENAME COLUMN
+--Cambiar el nombre de la columna cantidad por total_platillos
+alter table pedidoss
+rename column cantidad to total_platillos;
+--RENAME TABLE
+--Cambiar el nombre de la tabla pedidos por ordenes
+alter table pedidos
+rename to ordenes;
+commit;
+--CONSTRAINT
+--Agregar una restricción UNIQUE al nombre de la tabla meseros
+alter table meseros
+add constraint unq_meseros
+unique (nombre);
+commit;
+
+-- Obtener el precio máximo y mínimo de pedidos
+-- donde el id_mesero esté en (1, 3, 5)
+-- y el precio sea mayor a 100.
+select max(precio), min(precio)
+from pedidoss
+where id_mesero in (1,3,4) and precio>100;
+-- Mostrar pedidos de diferentes meseros
+-- donde el id_mesero esté en (1, 2, 4)
+-- y la cantidad sea mayor a 1.
+select *
+from pedidoss
+where id_mesero in(1,2,4) and total_platillos>1;
+-- Mostrar los pedidos
+-- donde la cantidad esté en (1, 2, 4)
+-- y el precio sea mayor a 100.
+select  *
+from pedidoss
+where total_platillos in (1,2,4) and precio>100;
+-- Ordenar pedidos por precio de mayor a menor
+-- donde el id_mesero esté en (2, 4)
+-- y la cantidad sea mayor a 1.
+select *
+from pedidoss
+where id_mesero in (2,4) and total_platillos>1
+order by precio desc;
+-- Agrupar pedidos por id_mesero
+-- donde el precio esté en (90, 120, 150)
+-- y la cantidad sea mayor a 1.
+select id_mesero, count(*)
+from pedidoss
+where precio in (90,120,150) and total_platillos>1
+group by id_mesero;
