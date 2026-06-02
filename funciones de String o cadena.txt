@@ -1,0 +1,22 @@
+funciones de String o cadena 
+
+cancat() 
+unifica dos textos
+
+chr()
+da un carcter del lenguje asqi 
+
+lpad()
+pone un una letra a la izquierda 
+
+rpad()
+pone una letra a la derecha
+
+ltrim()
+quita los espacios vacíos de la izquierda
+
+rtrim()
+quita los espacios vacíos de la derecha 
+
+replace ()
+remplaza una letra por otra 

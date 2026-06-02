@@ -1,0 +1,26 @@
+operadores relacionales o comparación
+
+= igual
+
+select * from notas_alumnos where nota1=15;
+
+<> distinto
+
+select * from notas_alumnos where nota1<>15;
+
+>mayor
+
+select * from notas_alumnos where nota1>=15;
+
+<menor
+
+select * from notas_alumnos where nota1<15;
+
+>= mayor o igual
+
+select * from notas_alumnos where nota1>=15;
+
+<= menor o igual
+
+select * from notas_alumnos where nota1<=15;
+
