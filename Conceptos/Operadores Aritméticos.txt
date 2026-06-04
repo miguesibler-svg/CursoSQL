@@ -1,0 +1,37 @@
+Operadores Aritméticos 
+
+1. SUMA (+)
+
+- Función: Suma dos valores numéricos.
+
+- Sintaxis: valor1 + valor2
+SELECT 10 + 5 FROM dual;
+- Resultado: 15
+
+
+2. RESTA (-)
+
+- Función: Resta un valor numérico de otro.
+
+- Sintaxis: valor1 - valor2
+SELECT 10 - 5 FROM dual;
+- Resultado: 5
+
+
+3. MULTIPLICACIÓN (*)
+
+- Función: Multiplica dos valores numéricos.
+
+- Sintaxis: valor1 * valor2
+SELECT 10 * 5 FROM dual;
+- Resultado: 50
+
+
+4. DIVISIÓN (/)
+
+- Función: Divide un valor numérico entre otro.
+
+- Sintaxis: valor1 / valor2
+SELECT 10 / 5 FROM dual;
+- Resultado: 2
+

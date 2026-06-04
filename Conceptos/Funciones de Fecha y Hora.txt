@@ -1,0 +1,110 @@
+Funciones de Fecha y Hora 
+
+1. CURRENT_DATE
+
+- Función: Devuelve la fecha actual de la sesión.
+
+- Sintaxis: CURRENT_DATE
+
+SELECT CURRENT_DATE FROM dual;  
+-Resultado: 04-JUN-26
+
+
+2. ADD_MONTHS()
+
+- Función: Agrega o resta meses a una fecha.
+
+- Sintaxis: ADD_MONTHS(fecha, numero_meses)
+
+SELECT ADD_MONTHS(SYSDATE, 3) FROM dual;  
+-Resultado: Fecha actual + 3 meses
+
+
+3. LAST_DAY()
+
+- Función: Devuelve el último día del mes de una fecha.
+
+- Sintaxis: LAST_DAY(fecha)
+
+SELECT LAST_DAY(SYSDATE) FROM dual;  
+-Resultado: Último día del mes actual
+
+
+-- 4. MONTHS_BETWEEN()
+
+-- Función: Calcula la cantidad de meses entre dos fechas.
+
+-- Sintaxis: MONTHS_BETWEEN(fecha1, fecha2)
+SELECT MONTHS_BETWEEN(
+       TO_DATE('31/12/2025','DD/MM/YYYY'),
+       TO_DATE('01/01/2025','DD/MM/YYYY')
+       ) FROM dual;
+-- Resultado: 11.97 aproximadamente
+
+
+5. NEXT_DAY()
+
+- Función: Devuelve la fecha del siguiente día de la semana indicado.
+
+- Sintaxis: NEXT_DAY(fecha, 'dia')
+
+SELECT NEXT_DAY(SYSDATE, 'FRIDAY') FROM dual;
+- Resultado: Próximo viernes
+
+
+6. SYSDATE
+
+- Función: Devuelve la fecha y hora actual del servidor.
+
+- Sintaxis: SYSDATE
+
+SELECT SYSDATE FROM dual;
+- Resultado: Fecha y hora actual
+
+
+7. CURRENT_TIMESTAMP
+
+- Función: Devuelve la fecha y hora actual con zona horaria de la sesión.
+
+- Sintaxis: CURRENT_TIMESTAMP
+
+SELECT CURRENT_TIMESTAMP FROM dual;
+- Resultado: Fecha y hora actual con zona horaria
+
+
+8. SYSTIMESTAMP
+
+- Función: Devuelve la fecha y hora actual del servidor con precisión de fracciones de segundo.
+
+- Sintaxis: SYSTIMESTAMP
+
+SELECT SYSTIMESTAMP FROM dual;
+- Resultado: Fecha y hora exacta con milisegundos
+
+
+9. EXTRACT()
+
+- Función: Extrae una parte específica de una fecha.
+
+- Sintaxis: EXTRACT(parte FROM fecha)
+
+SELECT EXTRACT(YEAR FROM SYSDATE) FROM dual;
+- Resultado: 2026
+
+SELECT EXTRACT(MONTH FROM SYSDATE) FROM dual;
+- Resultado: 6
+
+SELECT EXTRACT(DAY FROM SYSDATE) FROM dual;
+- Resultado: 4
+
+
+10. TO_DATE()
+
+- Función: Convierte una cadena de texto en una fecha.
+
+- Sintaxis: TO_DATE(cadena, formato)
+
+SELECT TO_DATE('15/08/2025','DD/MM/YYYY') FROM dual;
+- Resultado: 15-AGO-25
+
+

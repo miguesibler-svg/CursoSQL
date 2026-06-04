@@ -1,4 +1,0 @@
-colocar llave primari 
-
-alter table alumnos
-modify primary key (codigo_al)

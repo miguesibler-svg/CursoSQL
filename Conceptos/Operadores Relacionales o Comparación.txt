@@ -1,0 +1,56 @@
+Operadores Relacionales o Comparación
+
+1. IGUAL (=)
+
+- Función: Compara si dos valores son iguales.
+
+- Sintaxis: valor1 = valor2
+SELECT * FROM empleados
+WHERE salario = 5000;
+- Resultado: Muestra los empleados con salario igual a 5000.
+
+2. DISTINTO (<>)
+
+- Función: Compara si dos valores son diferentes.
+
+- Sintaxis: valor1 <> valor2
+SELECT * FROM empleados
+WHERE salario <> 5000;
+- Resultado: Muestra los empleados con salario diferente de 5000.
+
+3. MAYOR QUE (>)
+
+- Función: Compara si un valor es mayor que otro.
+
+- Sintaxis: valor1 > valor2
+SELECT * FROM empleados
+WHERE salario > 5000;
+- Resultado: Muestra los empleados con salario mayor a 5000.
+
+4. MENOR QUE (<)
+
+- Función: Compara si un valor es menor que otro.
+
+- Sintaxis: valor1 < valor2
+SELECT * FROM empleados
+WHERE salario < 5000;
+- Resultado: Muestra los empleados con salario menor a 5000.
+
+5. MAYOR O IGUAL QUE (>=)
+
+- Función: Compara si un valor es mayor o igual que otro.
+
+- Sintaxis: valor1 >= valor2
+SELECT * FROM empleados
+WHERE salario >= 5000;
+- Resultado: Muestra los empleados con salario mayor o igual a 5000.
+
+6. MENOR O IGUAL QUE (<=)
+
+- Función: Compara si un valor es menor o igual que otro.
+
+- Sintaxis: valor1 <= valor2
+SELECT * FROM empleados
+WHERE salario <= 5000;
+- Resultado: Muestra los empleados con salario menor o igual a 5000.
+

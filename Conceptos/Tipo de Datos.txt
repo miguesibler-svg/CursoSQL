@@ -1,0 +1,106 @@
+Tipo de Datos 
+
+TIPOS DE DATOS DE CARÁCTER
+
+CHAR
+
+- Función: Almacena cadenas de longitud fija.
+
+- Sintaxis: CHAR(tamaño)
+nombre CHAR(20);
+- Ejemplo: 'JUAN'
+
+VARCHAR2
+
+- Función: Almacena cadenas de longitud variable (Oracle).
+
+- Sintaxis: VARCHAR2(tamaño)
+nombre VARCHAR2(50);
+- Ejemplo: 'Miguel Angel'
+
+VARCHAR
+
+- Función: Almacena cadenas de longitud variable.
+
+- Sintaxis: VARCHAR(tamaño)
+direccion VARCHAR(100);
+- Ejemplo: 'Av. Reforma 123'
+
+- LONG
+
+- Función: Almacena grandes cantidades de texto.
+
+- Sintaxis: LONG
+descripcion LONG;
+- Ejemplo: Texto extenso de varios miles de caracteres.
+
+
+TIPOS DE DATOS NUMÉRICOS
+
+INT
+
+- Función: Almacena números enteros.
+
+- Sintaxis: INT
+edad INT;
+- Ejemplo: 25
+
+INTEGER
+
+- Función: Almacena números enteros.
+
+- Sintaxis: INTEGER
+cantidad INTEGER;
+- Ejemplo: 100
+
+NUMBER
+
+- Función: Almacena números enteros y decimales.
+
+- Sintaxis: NUMBER(presicion, escala)
+salario NUMBER(10,2);
+- Ejemplo: 15000.50
+
+DECIMAL
+
+- Función: Almacena números decimales exactos.
+
+- Sintaxis: DECIMAL(presicion, escala)
+precio DECIMAL(8,2);
+- Ejemplo: 299.99
+
+DOUBLE
+
+- Función: Almacena números decimales de doble precisión.
+
+- Sintaxis: DOUBLE PRECISION
+promedio DOUBLE PRECISION;
+- Ejemplo: 12345.6789
+
+FLOAT
+
+- Función: Almacena números de punto flotante.
+
+- Sintaxis: FLOAT
+temperatura FLOAT;
+- Ejemplo: 36.5
+
+
+TIPOS DE DATOS DE FECHA Y HORA
+
+TIME
+
+- Función: Almacena únicamente la hora.
+
+- Sintaxis: TIME
+hora_entrada TIME;
+- Ejemplo: 08:30:00
+
+TIMESTAMP
+
+- Función: Almacena fecha y hora con precisión de fracciones de segundo.
+
+- Sintaxis: TIMESTAMP
+fecha_registro TIMESTAMP;
+- Ejemplo: 2026-06-04 15:30:45.123456
+

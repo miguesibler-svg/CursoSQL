@@ -1,0 +1,46 @@
+Funciones Numéricas
+
+1. ROUND()
+
+- Función: Redondea un número a la cantidad de decimales indicada.
+
+- Sintaxis: ROUND(numero, decimales)
+SELECT ROUND(123.4567, 2) FROM dual;
+- Resultado: 123.46
+
+
+2. TRUNC()
+
+- Función: Elimina los decimales sin redondear.
+
+- Sintaxis: TRUNC(numero, decimales)
+SELECT TRUNC(123.4567, 2) FROM dual;
+- Resultado: 123.45
+
+
+3. SUM()
+
+- Función: Calcula la suma total de una columna numérica.
+
+- Sintaxis: SUM(columna)
+SELECT SUM(salario) FROM empleados;
+- Resultado: Suma total de todos los salarios
+
+
+4. MIN()
+
+- Función: Devuelve el valor mínimo de una columna.
+
+- Sintaxis: MIN(columna)
+SELECT MIN(salario) FROM empleados;
+- Resultado: Salario más bajo
+
+
+5. MAX()
+
+- Función: Devuelve el valor máximo de una columna.
+
+- Sintaxis: MAX(columna)
+SELECT MAX(salario) FROM empleados;
+- Resultado: Salario más alto
+

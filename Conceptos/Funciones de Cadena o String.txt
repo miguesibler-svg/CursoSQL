@@ -1,0 +1,106 @@
+Funciones de Cadena o String
+
+1. CONCAT()
+
+- Función: Une dos cadenas de texto.
+
+- Sintaxis: CONCAT(cadena1, cadena2)
+
+- Ejemplo: SELECT CONCAT('Hola ', 'Mundo') FROM dual; Resultado: Hola Mundo
+
+2. CHR()
+
+- Función: Devuelve el carácter correspondiente a un código ASCII.
+
+- Sintaxis: CHR(numero)
+
+- Ejemplo: SELECT CHR(65) FROM dual; Resultado: A
+
+3. LPAD()
+
+- Función: Completa una cadena por la izquierda hasta una longitud específica.
+
+- Sintaxis: LPAD(cadena, longitud, caracter)
+
+- Ejemplo: SELECT LPAD('123', 5, '0') FROM dual; Resultado: 00123
+
+4. RPAD()
+
+- Función: Completa una cadena por la derecha hasta una longitud específica.
+
+- Sintaxis: RPAD(cadena, longitud, caracter)
+
+- Ejemplo: SELECT RPAD('123', 5, '0') FROM dual; Resultado: 12300
+
+5. LTRIM()
+
+- Función: Elimina caracteres al inicio de una cadena.
+
+- Sintaxis: LTRIM(cadena, caracter)
+
+- Ejemplo SELECT LTRIM('###SQL', '#') FROM dual; Resultado: SQL
+
+6. RTRIM()
+
+- Función: Elimina caracteres al final de una cadena.
+
+- Sintaxis: RTRIM(cadena, caracter)
+
+- Ejemplo: SELECT RTRIM('SQL###', '#') FROM dual; Resultado: SQL
+
+7. REPLACE()
+
+- Función: Reemplaza una palabra o conjunto de caracteres por otro.
+
+- Sintaxis: REPLACE(cadena, buscar, reemplazar)
+
+- Ejemplo: SELECT REPLACE('Hola Mundo', 'Mundo', 'Oracle') FROM dual; Resultado: Hola Oracle
+
+8. TRANSLATE()
+
+- Función: Sustituye caracteres individuales por otros.
+
+- Sintaxis: TRANSLATE(cadena, origen, destino)
+
+- Ejemplo: SELECT TRANSLATE('ABC', 'ABC', '123') FROM dual; Resultado: 123
+
+9. LENGTH()
+
+- Función: Devuelve la cantidad de caracteres de una cadena.
+
+- Sintaxis: LENGTH(cadena)
+
+- Ejemplo: SELECT LENGTH('Oracle') FROM dual; Resultado: 6
+
+10. UPPER()
+
+- Función: Convierte una cadena a mayúsculas.
+
+- Sintaxis: UPPER(cadena)
+
+- Ejemplo: SELECT UPPER('oracle') FROM dual; Resultado: ORACLE
+
+11. LOWER()
+
+- Función: Convierte una cadena a minúsculas.
+
+- Sintaxis: LOWER(cadena)
+
+Ejemplo: SELECT LOWER('ORACLE') FROM dual; Resultado: oracle
+
+12. INITCAP()
+
+- Función: Convierte la primera letra de cada palabra en mayúscula.
+
+- Sintaxis: INITCAP(cadena)
+
+- Ejemplo: SELECT INITCAP('base de datos oracle') FROM dual; Resultado: Base De Datos Oracle
+
+13. SUBSTR()
+
+- Función: Extrae una parte de una cadena.
+
+- Sintaxis: SUBSTR(cadena, inicio, longitud)
+
+- Ejemplo: SELECT SUBSTR('ORACLE', 2, 3) FROM dual; Resultado: RAC
+

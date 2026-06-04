@@ -1,0 +1,40 @@
+Operadores Lógicos 
+
+1. AND (Y)
+
+- Función: Todas las condiciones deben cumplirse.
+
+- Sintaxis: condicion1 AND condicion2
+
+SELECT * FROM empleados
+WHERE salario > 5000 AND departamento = 'VENTAS';
+- Resultado: Empleados con salario mayor a 5000 y que pertenecen a VENTAS.
+
+2. OR (O)
+
+- Función: Basta con que una de las condiciones se cumpla.
+
+- Sintaxis: condicion1 OR condicion2
+SELECT * FROM empleados
+WHERE salario > 5000 OR departamento = 'VENTAS';
+- Resultado: Empleados con salario mayor a 5000 o que pertenecen a VENTAS.
+
+3. NOT (NO)
+
+- Función: Niega una condición.
+
+- Sintaxis: NOT condición
+SELECT * FROM empleados
+WHERE NOT departamento = 'VENTAS';
+- Resultado: Empleados que no pertenecen a VENTAS.
+
+4. PARÉNTESIS ()
+
+- Función: Agrupan condiciones y establecen prioridad en la evaluación.
+
+- Sintaxis: (condicion1 OR condicion2) AND condicion3
+SELECT * FROM empleados
+WHERE (departamento = 'VENTAS' OR departamento = 'MARKETING')
+AND salario > 5000;
+- Resultado: Empleados de VENTAS o MARKETING con salario mayor a 5000.
+

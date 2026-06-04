@@ -2,18 +2,18 @@ Dame 10 enunciados de ejercicios SQL que contengan  CREATE TABLE con llave prima
 
 Además, cada ejercicio debe incluir CONSTRAINT utilizando UNIQUE y CHECK.
 
-Cada enunciado debe tener mínimo 5 consultas SQL donde se utilicen las cláusulas y funciones WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCATENACION, GROUP BY, ORDER BY, NOT, AVG y BETWEEN.
+Cada enunciado debe tener mínimo 5 consultas SQL donde se utilicen las cláusulas y funciones WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_day.
 
-Que los enunciando sean iguales que el enunciado del ejemplo, que estén comentado --, que los enunciado no tengan =================, no estén contestados y las consultas sean idénticos que la consulta ejemplo para los 5 consultas y debe de tener todas las clausuras y funciones ya dichas anteriormente, comienza dando primero solamente el primer enunciado
+Que los enunciando sean iguales que el enunciado del ejemplo, que estén comentado --, que los enunciado no tengan =================, no estén contestados y las consultas sean idénticos que la consulta ejemplo para los 5 consultas y debe de tener todas las clausuras y funciones ya dichas anteriormente, sin inner join, comienza dando primero solamente el primer enunciado
 
 -- EJERCICIO 1 EJEMPLO
 
 -- REALIZAR:
--- CREATE TABLE
+-- CREATE TABLE(cadena, numérico, fecha)
 -- PRIMARY KEY
 -- FOREIGN KEY
 -- INSERT (20 EN CADA TABLA)
--- UPDATE (5 ACTUALIZACIONES)
+-- UPDATE (4 ACTUALIZACIONES)
 -- DELETE (3 ELIMINACIONES)
 -- ALTER TABLE
 -- ADD COLUMN (2 COLUMNAS NUEVAS)
@@ -140,7 +140,7 @@ insert into estudiantes values(115,'Javier Torres',19,'Quimica',79,12);
 
 
 
--- CONSULTAS
+-- CONSULTAS(WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_day, sin inner join)
 
 -- CONSULTA EJEMPLO
 -- Mostrar el ID del estudiante, nombre completo, edad, materia y promedio.

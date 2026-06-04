@@ -1,3 +1,0 @@
-consultar información de tablas
-SELECT column1, column2, ...
-FROM table_name;
