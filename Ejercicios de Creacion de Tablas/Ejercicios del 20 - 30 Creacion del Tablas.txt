@@ -1,0 +1,337 @@
+-- EJERCICIO 21
+
+-- REALIZAR:
+-- CREATE TABLE ESCUELAS CON LLAVE PRIMARIA.
+-- CREATE TABLE MAESTROS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA ESCUELAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA ESCUELAS
+-- id_escuela
+-- nombre_escuela
+-- direccion
+create table escuelas(
+id_escuela number(10) primary key,
+nombre_escuela varchar2(100) not null,
+direccion varchar2(100) not null
+);
+-- 2. TABLA MAESTROS
+-- id_maestro
+-- nombre
+-- especialidad
+-- antiguedad
+-- id_escuela
+create table maestros(
+id_maestro number(10) primary key,
+nombre varchar2(100) not null,
+especialidad varchar2(100) not null,
+antiguedad varchar2(100) not null,
+id_escuela number(10) not null,
+constraint fk_id_escuela
+foreign key(id_escuela)
+references escuelas(id_escuela)
+);
+
+-- EJERCICIO 22
+
+-- REALIZAR:
+-- CREATE TABLE CLIENTES CON LLAVE PRIMARIA.
+-- CREATE TABLE FACTURAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA CLIENTES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA CLIENTES
+-- id_cliente
+-- nombre
+-- direccion
+-- telefono
+create table clientes(
+id_cliente number(10) primary key,
+nombre varchar2(100) not null,
+direccion varchar2(100) not null,
+telefono number(10) not null
+);
+-- 2. TABLA FACTURAS
+-- id_factura
+-- fecha_factura
+-- monto
+-- id_cliente
+create table facturas(
+id_factura number(10) primary key,
+fecha_factura date not null,
+monto number(10) not null,
+id_cliente number(10) not null,
+constraint fk_id_cliente
+foreign key(id_cliente)
+references clientes(id_cliente)
+);
+
+-- EJERCICIO 23
+
+-- REALIZAR:
+-- CREATE TABLE FABRICAS CON LLAVE PRIMARIA.
+-- CREATE TABLE EMPLEADOS_FABRICA CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA FABRICAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA FABRICAS
+-- id_fabrica
+-- nombre_fabrica
+-- ciudad
+create table fabricas(
+id_fabrica number(10) primary key,
+nombre_fabrica varchar2(100) not null,
+ciudad varchar2(100) not null
+);
+-- 2. TABLA EMPLEADOS_FABRICA
+-- id_empleado
+-- nombre
+-- cargo
+-- salario
+-- id_fabrica
+create table empleados_fabrica(
+id_empleado number(10) generated always as identity primary key,
+nombre varchar2(100) not null,
+cargo varchar2(100) not null,
+salario number(10) not null,
+id_fabrica number(10) not null,
+constraint fk_id_fabrica
+foreign key(id_fabrica)
+references fabricas(id_fabrica)
+);
+
+-- EJERCICIO 24
+
+-- REALIZAR:
+-- CREATE TABLE DISTRIBUIDORES CON LLAVE PRIMARIA.
+-- CREATE TABLE PRODUCTOS_DISTRIBUIDOR CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA DISTRIBUIDORES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA DISTRIBUIDORES
+-- id_distribuidor
+-- nombre_distribuidor
+-- ciudad
+create table distribuidores(
+id_distribuidor number(10) generated always as identity primary key,
+nombre_disctribuidor varchar2(100) not null,
+ciudad varchar2(100) not null
+);
+-- 2. TABLA PRODUCTOS_DISTRIBUIDOR
+-- id_producto
+-- nombre_producto
+-- precio
+-- existencia
+-- id_distribuidor
+create table producto_distribuidor(
+id_producto number(10) generated always as identity primary key,
+nombre_producto varchar2(100) not null,
+precio number(10) not null,
+existecia number(10) not null,
+id_distribuidor number(10) not null,
+constraint fk_id_distribuidor
+foreign key (id_distribuidor)
+references distribuidores(id_distribuidor)
+);
+
+-- EJERCICIO 25
+
+-- REALIZAR:
+-- CREATE TABLE UNIVERSIDADES CON LLAVE PRIMARIA.
+-- CREATE TABLE FACULTADES CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA UNIVERSIDADES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA UNIVERSIDADES
+-- id_universidad
+-- nombre_universidad
+-- ciudad
+create table universidades(
+id_universidad number(10) generated always as identity primary key,
+nombre_universidad varchar2(100) not null,
+ciudad varchar2(100) not null
+);
+-- 2. TABLA FACULTADES
+-- id_facultad
+-- nombre_facultad
+-- decano
+-- id_universidad
+create table facultades(
+id_facultad number(10) primary key,
+nombre_facultad varchar2(100) not null,
+decano varchar2(100) not null,
+id_universidad number(10) not null,
+constraint fk_id_universidad
+foreign key(id_universidad)
+references universidades(id_universidad)
+);
+
+-- EJERCICIO 26
+
+-- REALIZAR:
+-- CREATE TABLE CINES CON LLAVE PRIMARIA.
+-- CREATE TABLE SALAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA CINES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA CINES
+-- id_cine
+-- nombre_cine
+-- ubicacion
+create table cines(
+id_cine number(10) generated always as identity primary key,
+nombre_cine varchar2(10) not null,
+ubicacion varchar2(10) not null
+);
+-- 2. TABLA SALAS
+-- id_sala
+-- numero_sala
+-- capacidad
+-- tipo_sala
+-- id_cine
+create table salas(
+id_sala number(10) generated always as identity primary key,
+numero_sala number(10) not null,
+capacidad number(10) not null,
+tipo_sala varchar2(100) not null,
+id_cine number(10) not null,
+constraint fk_id_cine
+foreign key(id_cine)
+references cines(id_cine)
+);
+
+-- EJERCICIO 27
+
+-- REALIZAR:
+-- CREATE TABLE COMPAÑIAS_ENVIO CON LLAVE PRIMARIA.
+-- CREATE TABLE PAQUETES CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA COMPAÑIAS_ENVIO.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA COMPAÑIAS_ENVIO
+-- id_compania
+-- nombre_compania
+-- pais
+create table compañias_envio(
+id_compania number(10) generated always as identity primary key,
+nombre_compania varchar2(100) not null,
+pais varchar2(100) not null
+);
+-- 2. TABLA PAQUETES
+-- id_paquete
+-- descripcion
+-- peso
+-- destino
+-- id_compania
+create table paquetes(
+id_paquete number(10) generated always as identity primary key,
+descripcion varchar2(100) not null,
+peso number(10) not null,
+destino varchar2(100) not null,
+id_compania number(10) not null,
+constraint fk_id_compania
+foreign key(id_compania)
+references compañias_envio(id_compania)
+);
+
+-- EJERCICIO 28
+
+-- REALIZAR:
+-- CREATE TABLE PROPIETARIOS CON LLAVE PRIMARIA.
+-- CREATE TABLE VEHICULOS_CONDUCTOR CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA PROPIETARIOS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA PROPIETARIOS
+-- id_propietario
+-- nombre
+-- direccion
+create table propietarios(
+id_propietario number(10) generated always as identity primary key,
+nombre varchar2(100) not null,
+direccion varchar2(100) not null
+);
+-- 2. TABLA VEHICULOS_CONDUCTOR
+-- id_vehiculo
+-- marca
+-- modelo
+-- placa
+-- id_propietario
+create table vehiculos_conductor(
+id_vehiculo number(10) generated always as identity primary key,
+marca varchar2(100) not null,
+modelo varchar2(100) not null,
+placa varchar2(100) not null,
+id_propietario number(10) not null,
+constraint fk_id_propietario
+foreign key(id_propietario)
+references propietarios (id_propietario)
+);
+
+-- EJERCICIO 29
+
+-- REALIZAR:
+-- CREATE TABLE TIENDAS CON LLAVE PRIMARIA.
+-- CREATE TABLE VENDEDORES CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA TIENDAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA TIENDAS
+-- id_tienda
+-- nombre_tienda
+-- ciudad
+create table tiendas(
+id_tienda number(10) generated always as identity primary key,
+nombre_tienda varchar2(100) not null,
+ciudad varchar2(100) not null
+);
+-- 2. TABLA VENDEDORES
+-- id_vendedor
+-- nombre
+-- comision
+-- antiguedad
+-- id_tienda
+create table vendedores(
+id_vendedor number(10) generated always as identity primary key,
+nombre varchar2(100) not null,
+comision number(10) not null,
+antiguedad varchar2(10) not null,
+id_tienda number(10) not null,
+constraint fk_id_tienda
+foreign key(id_tienda)
+references tiendas(id_tienda)
+);
+
+-- EJERCICIO 30
+
+-- REALIZAR:
+-- CREATE TABLE CLUBES CON LLAVE PRIMARIA.
+-- CREATE TABLE SOCIOS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA CLUBES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA CLUBES
+-- id_club
+-- nombre_club
+-- ubicacion
+create table clubes(
+id_club number(10) generated always as identity primary key,
+nombre_club varchar2(100) not null,
+ubicacion varchar2(100) not null
+);
+-- 2. TABLA SOCIOS
+-- id_socio
+-- nombre
+-- fecha_ingreso
+-- cuota_mensual
+-- id_club
+create table socios(
+id_socio number(10) generated always as identity primary key,
+nombre varchar2(100) not null,
+fecha_ingreso date not null,
+cuota_mensual number(10) not null,
+id_club number(10) not null,
+constraint fk_id_club
+foreign key(id_club)
+references clubes(id_club)
+);

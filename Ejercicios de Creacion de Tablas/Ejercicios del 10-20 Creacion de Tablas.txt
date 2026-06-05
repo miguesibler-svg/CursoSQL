@@ -1,0 +1,326 @@
+-- EJERCICIO 11
+
+-- REALIZAR:
+-- CREATE TABLE CARRERAS CON LLAVE PRIMARIA.
+-- CREATE TABLE ALUMNOS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA CARRERAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA CARRERAS
+-- id_carrera
+-- nombre_carrera
+-- facultad
+create table carreras(
+id_carrera number(10) primary key,
+nombre_carrera varchar2(10) not null,
+facultad varchar2(100) not null
+);
+-- 2. TABLA ALUMNOS
+-- id_alumno
+-- nombre
+-- edad
+-- semestre
+-- id_carrera
+create table alumnos(
+id_alumno number(10) primary key,
+nombre varchar2(100) not null,
+edad number(10) not null,
+semestre varchar2(100) not null,
+id_carrera number(10) not null,
+constraint fk_id_carrera
+foreign key(id_carrera)
+references carreras(id_carrera)
+);
+
+-- EJERCICIO 12
+
+-- REALIZAR:
+-- CREATE TABLE EDITORIALES CON LLAVE PRIMARIA.
+-- CREATE TABLE REVISTAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA EDITORIALES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA EDITORIALES
+-- id_editorial
+-- nombre_editorial
+-- pais
+create table editoriales(
+id_editorial number(10) primary key,
+nombre_editorial varchar2(100) not null,
+pais varchar2(100) not null
+);
+-- 2. TABLA REVISTAS
+-- id_revista
+-- titulo
+-- categoria
+-- fecha_publicacion
+-- id_editorial
+create table revistas(
+id_revista number(10) primary key,
+titulo varchar2(100) not null,
+categoria varchar2(100) not null,
+fecha_publicacion date not null,
+id_editorial number(10) not null,
+constraint fk_id_editorial
+foreign key(id_editorial)
+references editoriales(id_editorial)
+);
+
+-- EJERCICIO 13
+
+-- REALIZAR:
+-- CREATE TABLE MARCAS CON LLAVE PRIMARIA.
+-- CREATE TABLE COMPUTADORAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA MARCAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA MARCAS
+-- id_marca
+-- nombre_marca
+-- pais_origen
+create table marcas(
+id_marca number(10) primary key,
+nombre_marca varchar2(100) not null,
+pais_origen varchar2(100) not null
+);
+-- 2. TABLA COMPUTADORAS
+-- id_computadora
+-- modelo
+-- procesador
+-- memoria_ram
+-- id_marca
+create table computadoras(
+id_computadora number(10) primary key,
+modelo varchar2(100) not null,
+procesador varchar2(100) not null,
+memoria_ram number(10) not null,
+id_marca number(10) not null,
+constraint fk_id_marca
+foreign key(id_marca)
+references marcas(id_marca)
+);
+
+-- EJERCICIO 14
+
+-- REALIZAR:
+-- CREATE TABLE AEROLINEAS CON LLAVE PRIMARIA.
+-- CREATE TABLE VUELOS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA AEROLINEAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA AEROLINEAS
+-- id_aerolinea
+-- nombre_aerolinea
+-- pais
+create table aerolineas(
+id_aerolinea number(10) primary key,
+nombre_aerolinea varchar2(100) not null,
+pais varchar2(100) not null
+);
+-- 2. TABLA VUELOS
+-- id_vuelo
+-- origen
+-- destino
+-- fecha_vuelo
+-- id_aerolinea
+create table vuelos(
+id_vuelo number(10) primary key,
+origen varchar2(100) not null,
+destino varchar2(100) not null,
+fecha_vuelo date not null,
+id_aerolinea number(10) not null,
+constraint fk_id_aerolinea
+foreign key(id_aerolinea)
+references aerolineas(id_aerolinea)
+);
+
+-- EJERCICIO 15
+
+-- REALIZAR:
+-- CREATE TABLE BANCOS CON LLAVE PRIMARIA.
+-- CREATE TABLE CUENTAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA BANCOS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA BANCOS
+-- id_banco
+-- nombre_banco
+-- ciudad
+create table bancos(
+id_banco number(10) primary key,
+nombre_banco varchar2(100) not null,
+ciudad varchar2(100) not null
+);
+-- 2. TABLA CUENTAS
+-- id_cuenta
+-- numero_cuenta
+-- saldo
+-- tipo_cuenta
+-- id_banco
+create table cuentas(
+id_cuenta number(10) primary key,
+numero_cuenta number(10) not null,
+saldo number(10) not null,
+tipo_cuenta varchar2(100) not null,
+id_banco number(10) not null,
+constraint fk_id_banco
+foreign key(id_banco)
+references bancos(id_banco)
+);
+
+-- EJERCICIO 16
+
+-- REALIZAR:
+-- CREATE TABLE HOTELES CON LLAVE PRIMARIA.
+-- CREATE TABLE HABITACIONES CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA HOTELES.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA HOTELES
+-- id_hotel
+-- nombre_hotel
+-- categoria
+create table hoteles(
+id_hotel number(10) primary key,
+nombre_hotel varchar2(100) not null,
+categoria varchar2(100) not null
+);
+-- 2. TABLA HABITACIONES
+-- id_habitacion
+-- numero_habitacion
+-- precio_noche
+-- capacidad
+-- id_hotel
+create table habitaciones(
+id_habitacion number(10) primary key,
+numero_habitacion number(10) not null,
+precio_noche number(10) not null,
+capacidad number(10) not null,
+id_hotel number(10) not null,
+constraint fk_id_hotel
+foreign key (id_hotel)
+references hoteles(id_hotel)
+);
+
+-- EJERCICIO 17
+
+-- REALIZAR:
+-- CREATE TABLE EMPRESAS CON LLAVE PRIMARIA.
+-- CREATE TABLE PROYECTOS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA EMPRESAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA EMPRESAS
+-- id_empresa
+-- nombre_empresa
+-- sector
+create table empresas(
+id_empresa number(10) primary key,
+nombre_empresa varchar2(100) not null,
+sector varchar2(100) not null
+);
+-- 2. TABLA PROYECTOS
+-- id_proyecto
+-- nombre_proyecto
+-- presupuesto
+-- fecha_inicio
+-- id_empresa
+create table proyectos(
+id_proyecto number(10) not null,
+nombre_proyecto varchar2(100) not null,
+presupuesto number(10) not null,
+fecha_inicio date not null,
+id_empresa number(10) not null,
+constraint fk_id_empresa
+foreign key(id_empresa)
+references empresas(id_empresa)
+);
+
+-- EJERCICIO 18
+
+-- REALIZAR:
+-- CREATE TABLE MUSEOS CON LLAVE PRIMARIA.
+-- CREATE TABLE OBRAS_ARTE CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA MUSEOS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA MUSEOS
+-- id_museo
+-- nombre_museo
+-- ciudad
+
+-- 2. TABLA OBRAS_ARTE
+-- id_obra
+-- titulo
+-- autor
+-- anio_creacion
+-- id_museo
+
+
+-- EJERCICIO 19
+
+-- REALIZAR:
+-- CREATE TABLE CANALES_TV CON LLAVE PRIMARIA.
+-- CREATE TABLE PROGRAMAS CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA CANALES_TV.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA CANALES_TV
+-- id_canal
+-- nombre_canal
+-- pais
+create table canales_tv(
+id_canal number(10) primary key,
+nombre_canal varchar2(100) not null,
+pais varchar2(100) not null
+);
+-- 2. TABLA PROGRAMAS
+-- id_programa
+-- nombre_programa
+-- horario
+-- genero
+-- id_canal
+create table programas(
+id_programa number(10) primary key,
+nombre_programa varchar2(100) not null,
+horario varchar2(100) not null,
+genero varchar2(100) not null,
+id_canal number(10) not null,
+constraint fk_id_canal
+foreign key(id_canal)
+references canales_tv(id_canal)
+);
+
+-- EJERCICIO 20
+
+-- REALIZAR:
+-- CREATE TABLE GRANJAS CON LLAVE PRIMARIA.
+-- CREATE TABLE ANIMALES CON LLAVE PRIMARIA Y LLAVE FORÁNEA HACIA GRANJAS.
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA GRANJAS
+-- id_granja
+-- nombre_granja
+-- ubicacion
+create table granjas(
+id_granja number(10) primary key,
+nombre_granja varchar2(10) not null,
+ubicacion varchar2(100) not null
+);
+-- 2. TABLA ANIMALES
+-- id_animal
+-- nombre
+-- especie
+-- edad
+-- id_granja
+create table animales(
+id_animal number(10) primary key,
+nombre varchar2(100) not null,
+especie varchar2(100) not null,
+edad number(10) not null,
+id_granja number(10) not null,
+constraint fk_id_granja
+foreign key(id_granja)
+references granjas(id_granja)
+);

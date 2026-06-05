@@ -1,0 +1,568 @@
+-- TABLA PADRE
+CREATE TABLE CLIENTES (
+    ID_CLIENTE INT PRIMARY KEY,
+    NOMBRE VARCHAR(100),
+    CIUDAD VARCHAR(100),
+    TELEFONO VARCHAR(20)
+);
+
+-- TABLA HIJA
+CREATE TABLE PEDIDOS (
+    ID_PEDIDO INT PRIMARY KEY,
+    FECHA_PEDIDO DATE,
+    TOTAL DECIMAL(10,2),
+    ID_CLIENTE INT,
+    FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTES(ID_CLIENTE)
+);
+
+-- INSERTS CLIENTES
+INSERT INTO CLIENTES VALUES (1,'JUAN PEREZ','MEXICO','5511111111');
+INSERT INTO CLIENTES VALUES (2,'ANA LOPEZ','PUEBLA','5522222222');
+INSERT INTO CLIENTES VALUES (3,'CARLOS RUIZ','GUADALAJARA','5533333333');
+INSERT INTO CLIENTES VALUES (4,'MARIA GOMEZ','MONTERREY','5544444444');
+INSERT INTO CLIENTES VALUES (5,'PEDRO DIAZ','TOLUCA','5555555555');
+INSERT INTO CLIENTES VALUES (6,'LAURA TORRES','MERIDA','5566666666');
+INSERT INTO CLIENTES VALUES (7,'JORGE RAMOS','QUERETARO','5577777777');
+INSERT INTO CLIENTES VALUES (8,'SOFIA MORALES','LEON','5588888888');
+INSERT INTO CLIENTES VALUES (9,'DANIEL VARGAS','PACHUCA','5599999999');
+INSERT INTO CLIENTES VALUES (10,'ELENA CRUZ','VERACRUZ','5500000000');
+
+-- INSERTS PEDIDOS
+INSERT INTO PEDIDOS VALUES (101,to_date('2025-01-10','yyyy/mm/dd'),1500.00,1);
+INSERT INTO PEDIDOS VALUES (102,to_date('2025-01-12','yyyy/mm/dd'),2300.00,2);
+INSERT INTO PEDIDOS VALUES (103,to_date('2025-01-15','yyyy/mm/dd'),850.00,3);
+INSERT INTO PEDIDOS VALUES (104,to_date('2025-01-18','yyyy/mm/dd'),1200.00,4);
+INSERT INTO PEDIDOS VALUES (105,to_date('2025-01-20','yyyy/mm/dd'),3000.00,5);
+INSERT INTO PEDIDOS VALUES (106,to_date('2025-01-22','yyyy/mm/dd'),1750.00,6);
+INSERT INTO PEDIDOS VALUES (107,to_date('2025-01-25','yyyy/mm/dd'),950.00,7);
+INSERT INTO PEDIDOS VALUES (108,to_date('2025-01-27','yyyy/mm/dd'),2100.00,8);
+INSERT INTO PEDIDOS VALUES (109,to_date('2025-01-29','yyyy/mm/dd'),4000.00,9);
+INSERT INTO PEDIDOS VALUES (110,to_date('2025-01-30','yyyy/mm/dd'),500.00,10);
+
+-- EJERCICIO 1
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) ACTUALIZANDO EL CAMPO CIUDAD.
+update clientes
+set ciudad='toluca'
+where id_cliente=1;
+
+update clientes
+set ciudad='mexico'
+where id_cliente=1;
+
+update clientes
+set ciudad='alemania'
+where id_cliente=2;
+
+update clientes
+set ciudad='tijuana'
+where id_cliente=2;
+
+update clientes
+set ciudad='paris'
+where id_cliente=1;
+
+update clientes
+set ciudad='guanajuato'
+where id_cliente=1;
+
+update clientes
+set ciudad='cuahtemoc'
+where id_cliente=1;
+
+update clientes
+set ciudad='queretaro'
+where id_cliente=1;
+
+select * from pedidos;
+
+-- UPDATE (10 EN PEDIDOS) ACTUALIZANDO EL CAMPO TOTAL.
+update pedidos
+set total=200
+where id_pedido=101;
+
+update pedidos
+set total=199
+where id_pedido=102;
+
+update pedidos
+set total=222
+where id_pedido=101;
+
+update pedidos
+set total=333
+where id_pedido=102;
+
+update pedidos
+set total=322
+where id_pedido=103;
+
+update pedidos
+set total=111
+where id_pedido=102;
+
+update pedidos
+set total=233
+where id_pedido=102;
+
+update pedidos
+set total=122
+where id_pedido=101;
+
+update pedidos
+set total=555
+where id_pedido=101;
+
+
+-- EJERCICIO 2
+-- REALIZAR:
+
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) ACTUALIZANDO EL CAMPO TELEFONO.
+update clientes
+set telefono=1212342345
+where id_cliente=1;
+
+update clientes
+set telefono=1244324455
+where id_cliente=2;
+
+update clientes
+set telefono=1234432344
+where id_cliente=3;
+
+update clientes
+set telefono=1234533214
+where id_cliente=1;
+
+update clientes
+set telefono=23232323
+where id_cliente=2;
+
+update clientes
+set telefono=898989889
+where id_cliente=2;
+
+update clientes
+set telefono=38383292
+where id_cliente=2;
+
+update clientes
+set telefono=289938234
+where id_cliente=2;
+
+update clientes
+set telefono=2883947742
+where id_clientes;
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) ACTUALIZANDO EL CAMPO FECHA_PEDIDO.
+update pedidos
+set fecha_pedido=to_date('10/02/2012', 'dd/mm/yyyy')
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('07/02/2014','dd/mm/yyyy')
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('23/03/1222','dd/mm/yyyy')
+where id_pedido=104;
+
+update pedidos
+set fecha_pedido=to_date('23/05/2020','dd/mm/yyyy')
+where id_pedido=105;
+
+update pedidos
+set fecha_pedido=to_date('23/05/2021','dd/mm/yyyy')
+where id_pedido=106;
+
+update pedidos
+set fecha_pedido=to_date('24/03/2043','dd/mm/yyyy')
+where id_pedido=107;
+
+update pedidos
+set fecha_pedido=to_date('23/05/2021','dd/mm/yyyy')
+where id_pedido=108;
+
+update pedidos
+set fecha_pedido=to_date('23/05/2021','dd/mm/yyyy')
+where id_pedido=109;
+
+-- EJERCICIO 3
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) ACTUALIZANDO EL CAMPO NOMBRE.
+update clientes
+set nombre='miguel'
+where id_cliente=1;
+
+update clientes
+set nombre='luis'
+where id_cliente=2;
+
+update clientes
+set nombre='angel'
+where id_cliente=3;
+
+update clientes
+set nombre='barragan'
+where id_cliente=4;
+
+update clientes
+set nombre='gutierrez'
+where id_cliente=5;
+
+update clientes
+set nombre='mob'
+where id_cliente=6;
+
+update clientes
+set nombre='naruto'
+where id_cliente=7;
+
+update clientes
+set nombre='sasuke'
+where id_cliente=8;
+
+update clientes
+set nombre='ana'
+where id_cliente=9;
+
+update clientes
+set nombre='fernanda'
+where id_cliente=10;
+
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) ACTUALIZANDO EL CAMPO TOTAL AUMENTANDO $500.
+update pedidos
+set total=total+500
+where id_pedido=101;
+
+update pedidos
+set total=total+500
+where id_pedido=102;
+
+update pedidos
+set total=total+500
+where id_pedido=103;
+
+update pedidos
+set total=total+500
+where id_pedido=104;
+
+update pedidos
+set total=total+500
+where id_pedido=105;
+
+
+-- EJERCICIO 4
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) CAMBIANDO LA CIUDAD DE TODOS LOS REGISTROS.
+update clientes
+set ciudad='minato'
+where id_cliente=1;
+
+update clientes
+set ciudad='naruto'
+where id_cliente=2;
+
+update clientes
+set ciudad='toluca'
+where id_cliente=1;
+
+update clientes
+set ciudad='ciudad de mexico'
+where id_cliente=2;
+
+update clientes
+set ciudad='cancun'
+where id_cliente=2;
+
+update clientes
+set ciudad='ninn'
+where id_cliente=1;
+
+update clientes
+set ciudad='liverpool'
+where id_cliente=2;
+
+update clientes
+set ciudad='paris'
+where id_cliente=2;
+
+update clientes
+set ciudad='leon'
+where id_cliente=1;
+
+update clientes
+set ciudad='oaxaca'
+where id_cliente=3;
+
+update clientes
+set ciudad='queretaro'
+where id_cliente=3 ;
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) CAMBIANDO LA FECHA_PEDIDO DE TODOS LOS REGISTROS.
+update pedidos
+set fecha_pedido=to_date('20/06/2000','dd/mm/yyyy')
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('21/05/2001','dd/mm/yyyy')
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('11/04/2009','dd/mm/yyyy')
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('21/03/2001','dd/mm/yyyy')
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('02/04/2010','dd/mm/yyyy')
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('14/04/2010','dd/mm/yyyy')
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('14/04/2015','dd/mm/yyyy')
+where id_pedido=102;
+
+
+-- EJERCICIO 5
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) MODIFICANDO EL TELEFONO DE LOS CLIENTES.
+update clientes
+set telefono=122222
+where id_cliente=1;
+
+update clientes
+set telefono=23333
+where id_cliente=2;
+
+update clientes
+set telefono=288822
+where id_cliente=1;
+
+update clientes
+set telefono=383838
+where id_cliente=2;
+
+update clientes
+set telefono=23333
+where id_cliente=1;
+
+update clientes
+set telefono=283883
+where id_cliente=2;
+
+update clientes
+set telefono=383883
+where id_cliente=1;
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) REDUCIENDO EL TOTAL DE CADA PEDIDO EN $100.
+update pedidos
+set total=2323
+where id_pedido=101;
+
+update pedidos
+set total=2388
+where id_pedido=102;
+
+update pedidos
+set total=2883
+where id_pedido=101;
+
+update pedidos
+set total=2883
+where id_pedido=102;
+
+update pedidos
+set total=23488
+where id_pedido=101;
+
+update pedidos
+set total=23883
+where id_pedido=102;
+
+update pedidos
+set total=28834
+where id_pedido=101;
+
+update pedidos
+set total=377444
+where id_pedido=102;
+
+update pedidos
+set total=2838
+where id_pedido=101;
+
+
+-- EJERCICIO 6
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) CAMBIANDO EL NOMBRE DE CADA CLIENTE.
+update clientes
+set nombre='miguel'
+where id_cliente=1;
+
+update clientes
+set nombre='luis'
+where id_cliente=2;
+
+update clientes
+set nombre='jose'
+where id_cliente=3;
+
+update clientes
+set nombre='goku'
+where id_cliente=3;
+
+update clientes
+set nombre='porta'
+where id_cliente=3;
+
+update clientes
+set nombre='naruto'
+where id_cliente=3;
+
+update clientes
+set nombre='jose'
+where id_cliente=3;
+
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) INCREMENTANDO EL TOTAL DE CADA PEDIDO EN 10%.
+update pedidos
+set total=2323
+where id_pedido=1;
+
+update pedidos
+set total=2388
+where id_pedido=2;
+
+update pedidos
+set total=2883
+where id_pedido=1;
+
+update pedidos
+set total=2883
+where id_pedido=2;
+
+update pedidos
+set total=3883
+where id_pedido=1;
+
+update pedidos
+set total=38388
+where id_pedido=2;
+
+update pedidos
+set total=3884
+where id_pedido=1;
+
+update pedidos
+set total=23989
+where id_pedido=2;
+
+update pedidos
+set total=2398
+where id_pedido=1;
+
+-- EJERCICIO 7
+-- REALIZAR:
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) ACTUALIZANDO CIUDAD Y TELEFONO.
+
+update clientes
+set ciudad='mexico', telefono=2332323
+where id_cliente=1;
+
+update clientes
+set ciudad='leon', telefono=23344312
+where id_cliente=1;
+
+update clientes
+set ciudad='veracruz', telefono=1234566
+where id_cliente=1;
+
+update clientes
+set ciudad='cancun', telefono=18823774
+where id_cliente=1;
+
+update clientes
+set ciudad='toluca', telefono=83747744
+where id_cliente=1;
+
+update clientes
+set ciudad='nezahualcoyotl', telefono=5638903386
+where id_cliente=1;
+
+update clientes
+set ciudad='toluca', telefono=23332322
+where id_cliente=1;
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) ACTUALIZANDO FECHA_PEDIDO Y TOTAL.
+update pedidos
+set fecha_pedido=to_date('23/05/1999','dd/mm/yyyy'), total=3393
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('12/02/1999','dd/mm/yyyy'), total=288377
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('09/02/2000','dd/mm/yyyy'), total=12223
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('10/12/2000','dd/mm/yyyy'), total=13884
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('04/11/2000','dd/mm/yyyy'), total=12883
+where id_pedido=101;
+
+update pedidos
+set fecha_pedido=to_date('08/12/2020','dd/mm/yyyy'), total=283774
+where id_pedido=102;
+
+update pedidos
+set fecha_pedido=to_date('12/04/2020','dd/mm/yyyy'), total=283477
+where id_pedido=103;
+
+update pedidos
+set fecha_pedido=to_date('22/05/2021','dd/mm/yyyy'), total=283477
+where id_pedido=102;
+
+
+-- EJERCICIO 8
+-- REALIZAR:
+
+select * from clientes;
+-- UPDATE (10 EN CLIENTES) CAMBIANDO LOS DATOS DE LOS CLIENTES CON ID DEL 1 AL 10.
+
+
+select * from pedidos;
+-- UPDATE (10 EN PEDIDOS) CAMBIANDO LOS DATOS DE LOS PEDIDOS DEL 101 AL 110.
+
+-- EJERCICIO 9
+-- REALIZAR:
+-- UPDATE (10 EN CLIENTES) ASIGNANDO NUEVAS CIUDADES A CADA CLIENTE.
+-- UPDATE (10 EN PEDIDOS) ASIGNANDO NUEVOS TOTALES A CADA PEDIDO.
+
+-- EJERCICIO 10
+-- REALIZAR:
+-- UPDATE (10 EN CLIENTES) MODIFICANDO NOMBRE, CIUDAD Y TELEFONO.
+-- UPDATE (10 EN PEDIDOS) MODIFICANDO FECHA_PEDIDO Y TOTAL.

@@ -1,0 +1,421 @@
+-- EJERCICIO 1
+
+CREATE TABLE DEPARTAMENTO (
+    ID_DEPARTAMENTO INT PRIMARY KEY,
+    NOMBRE_DEPARTAMENTO VARCHAR(50) NOT NULL,
+    UBICACION VARCHAR(50)
+);
+
+CREATE TABLE EMPLEADO (
+    ID_EMPLEADO INT PRIMARY KEY,
+    NOMBRE VARCHAR(50) NOT NULL,
+    PUESTO VARCHAR(50),
+    SALARIO DECIMAL(10,2),
+    ID_DEPARTAMENTO INT,
+    FOREIGN KEY (ID_DEPARTAMENTO) REFERENCES DEPARTAMENTO(ID_DEPARTAMENTO)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from DEPARTAMENTO;
+
+insert into departamento values(1,'informatica','zocalo');
+insert into departamento values(2,'tecnologia','coyoacan');
+insert into departamento values(3,'maquillaje','zocalo');
+insert into departamento values(4,'animacion','alameda');
+insert into departamento values(5,'musica','mi casa');
+insert into departamento values(6,'arte','bellas artes');
+insert into departamento values(7,'computo','utn');
+insert into departamento values(8,'hokage','konoha');
+insert into departamento values(9,'albañil','vecino');
+insert into departamento values(10,'oficina','home office');
+
+
+select * from empleado;
+
+insert into empleado values(1,'miguel','tecnico',1500,1);
+insert into empleado values(2,'luis','musico',1200,2);
+insert into empleado values(3,'jose','pintor',1000,3);
+insert into empleado values(4,'peoe','mangaka',5999,4);
+insert into empleado values(5,'gonzalo','tutor',39393,5);
+insert into empleado values(6,'mob','valet',2999,6);
+insert into empleado values(7,'naruto','ninja',2000,7);
+insert into empleado values(8,'sasuke','shinn',3000,8);
+insert into empleado values(9,'yuji','estudiante',1000,9);
+insert into empleado values(10,'sakura','fuerte',10000,10);
+
+
+
+-- EJERCICIO 2
+
+CREATE TABLE CATEGORIA (
+    ID_CATEGORIA INT PRIMARY KEY,
+    NOMBRE_CATEGORIA VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE PRODUCTO (
+    ID_PRODUCTO INT PRIMARY KEY,
+    NOMBRE_PRODUCTO VARCHAR(100) NOT NULL,
+    PRECIO DECIMAL(10,2),
+    ID_CATEGORIA INT,
+    FOREIGN KEY (ID_CATEGORIA) REFERENCES CATEGORIA(ID_CATEGORIA)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+
+select * from categoria;
+
+insert into categoria values(1,'tecnologia');
+insert into categoria values(2,'bellesa');
+insert into categoria values(3,'anime');
+insert into categoria values(4,'caricatura');
+insert into categoria values(5,'futbol');
+insert into categoria values(6,'basquetbol');
+insert into categoria values(7,'computo');
+insert into categoria values(8,'viajes');
+insert into categoria values(9,'peliculas');
+insert into categoria values(10,'libros');
+
+select * from producto;
+
+insert into producto values(1,'telefono',1200,1);
+insert into producto values(2,'tablet',200,2);
+insert into producto values(3,'laptop',200,3);
+insert into producto values(4,'pantalla',300,4);
+insert into producto values(5,'cargador',200,5);
+insert into producto values(6,'impresora',200,6);
+insert into producto values(7,'multicontacto',200,7);
+insert into producto values(8,'ipad',300,8);
+insert into producto values(9,'luces',290,9);
+insert into producto values(10,'teclado',200,10);
+
+-- EJERCICIO 3
+
+CREATE TABLE CARRERA (
+    ID_CARRERA INT PRIMARY KEY,
+    NOMBRE_CARRERA VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE ALUMNO (
+    ID_ALUMNO INT PRIMARY KEY,
+    NOMBRE VARCHAR(100) NOT NULL,
+    EDAD INT,
+    ID_CARRERA INT,
+    FOREIGN KEY (ID_CARRERA) REFERENCES CARRERA(ID_CARRERA)
+);
+
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from carrera;
+insert into carrera values(1,'computo');
+insert into carrera values(2,'arquitectura');
+insert into carrera values(3,'economia');
+insert into carrera values(4,'adminstracion');
+insert into carrera values(5,'geofrafia');
+insert into carrera values(6,'biologia');
+insert into carrera values(7,'estadistica');
+insert into carrera values(8,'fisica');
+insert into carrera values(9,'quimica');
+insert into carrera values(10,'matematicas');
+
+
+select * from alumno;
+insert into alumno values(1,'luis',12,1);
+insert into alumno values(2,'miguel',22,2);
+insert into alumno values(3,'ana',34,3);
+insert into alumno values(4,'jose',34,4);
+insert into alumno values(5,'jorge',34,5);
+insert into alumno values(6,'marco',23,6);
+insert into alumno values(7,'nari',34,7);
+insert into alumno values(8,'maricruz',23,8);
+insert into alumno values(9,'modesto',23,9);
+insert into alumno values(10,'angel',23,10);
+
+
+
+
+-- EJERCICIO 4
+
+CREATE TABLE PROVEEDOR (
+    ID_PROVEEDOR INT PRIMARY KEY,
+    NOMBRE_PROVEEDOR VARCHAR(100) NOT NULL,
+    TELEFONO VARCHAR(20)
+);
+
+CREATE TABLE ARTICULO (
+    ID_ARTICULO INT PRIMARY KEY,
+    NOMBRE_ARTICULO VARCHAR(100) NOT NULL,
+    STOCK INT,
+    ID_PROVEEDOR INT,
+    FOREIGN KEY (ID_PROVEEDOR) REFERENCES PROVEEDOR(ID_PROVEEDOR)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from proveedor;
+
+insert into proveedor values(1,'jose',12222);
+insert into proveedor values(2,'porte',23232323);
+insert into proveedor values(3,'luis',22222);
+insert into proveedor values(4,'naruot',92929);
+insert into proveedor values(5,'porte',29292);
+insert into proveedor values(6,'jose',23232);
+insert into proveedor values(7,'vero',2323232);
+insert into proveedor values(8,'jose',2828282);
+insert into proveedor values(9,'ieiei',2929292);
+insert into proveedor values(10,'huhu',23232344);
+
+select * from articulo;
+insert into articulo values(1,'naurot',12,1);
+insert into articulo values(2,'poeir',133,2);
+insert into articulo values(3,'heheh',122,3);
+insert into articulo values(4,'oeiei',233,4);
+insert into articulo values(5,'ieie',223,5);
+insert into articulo values(6,'iiiwww',4424,6);
+insert into articulo values(7,'sksks',2323,7);
+insert into articulo values(8,'minato',444,8);
+insert into articulo values(9,'naruto',88,9);
+insert into articulo values(10,'juuju',9928,10);
+
+-- EJERCICIO 5
+
+CREATE TABLE CLIENTE (
+    ID_CLIENTE INT PRIMARY KEY,
+    NOMBRE_CLIENTE VARCHAR(100) NOT NULL,
+    CORREO VARCHAR(100)
+);
+
+CREATE TABLE PEDIDO (
+    ID_PEDIDO INT PRIMARY KEY,
+    FECHA_PEDIDO DATE,
+    TOTAL DECIMAL(10,2),
+    ID_CLIENTE INT,
+    FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTE(ID_CLIENTE)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from cliente;
+insert into cliente values(1,'miguel','ksksks@xom');
+insert into cliente values(2,'jose','lslsos@dlc');
+insert into cliente values(3,'luis','ksksks@kks.xom');
+insert into cliente values(4,'jusus','jsjsj@dkdk');
+insert into cliente values(5,'jsjsjs','jsjsjs@com');
+insert into cliente values(6,'lsfljsf','ksjsfjs@cocm');
+insert into cliente values(7,'minaldj','ksksks');
+insert into cliente values(8,'uwuwkkd','weweid');
+insert into cliente values(9,'iemmcnch','llndlsdl@slco');
+insert into cliente values(10,'naruto','porto');
+
+select * from pedido;
+insert into pedido values(1,to_date('09/05/1999', 'dd/mm/yyyy'),233,1);
+insert into pedido values(2,to_date('09/05/199','dd/mm/yyyy'),838,2);
+insert into pedido values(3,to_date('09/05/1999','dd/mm/yyyy'),233,3);
+insert into pedido values(4,to_date('09/05/1999','dd/mm/yyyy'),2838,3);
+insert into pedido values(5,to_date('09/05/1999','dd/mm/yyyy'),233,5);
+insert into pedido values(6,to_date('09/05/1998','dd/mm/yyyy'),2323,6);
+insert into pedido values(7,to_date('09/08/1999','dd/mm/yyyy'),2333,7);
+insert into pedido values(8,to_date('09/09/1999','dd/mm/yyyy'),7366,8);
+insert into pedido values(9,to_date('07/03/2023','dd/mm/yyyy'),877,9);
+insert into pedido values(10,to_date('23/03/1999','dd/mm/yyyy'),333,10);
+
+-- EJERCICIO 6
+
+CREATE TABLE ESPECIALIDAD (
+    ID_ESPECIALIDAD INT PRIMARY KEY,
+    NOMBRE_ESPECIALIDAD VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE MEDICO (
+    ID_MEDICO INT PRIMARY KEY,
+    NOMBRE_MEDICO VARCHAR(100) NOT NULL,
+    ID_ESPECIALIDAD INT,
+    FOREIGN KEY (ID_ESPECIALIDAD) REFERENCES ESPECIALIDAD(ID_ESPECIALIDAD)
+);
+
+select * from especialidad;
+insert into especialidad values(1,'miguel');
+insert into especialidad values(2,'luis');
+insert into especialidad values(3,'jose');
+insert into especialidad values(4,'naruto');
+insert into especialidad values(5,'gigio');
+insert into especialidad values(6,'gokui');
+insert into especialidad values(7,'juan');
+insert into especialidad values(8,'jorge');
+insert into especialidad values(9,'ruti');
+insert into especialidad values(10,'sasuke');
+
+
+select * from medico;
+insert into medico values(1,'miguel',2);
+insert into medico values(2,'luis',3);
+insert into medico values(3,'penelonpe',4);
+insert into medico values(4,'jorge',4);
+insert into medico values(5,'juan',5);
+insert into medico values(6,'nauto',6);
+insert into medico values(7,'jose',7);
+insert into medico values(8,'jul',8);
+insert into medico values(9,'gena',9);
+insert into medico values(10,'ana',10);
+
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+
+-- EJERCICIO 7
+
+CREATE TABLE MARCA (
+    ID_MARCA INT PRIMARY KEY,
+    NOMBRE_MARCA VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE VEHICULO (
+    ID_VEHICULO INT PRIMARY KEY,
+    MODELO VARCHAR(100) NOT NULL,
+    ANIO INT,
+    ID_MARCA INT,
+    FOREIGN KEY (ID_MARCA) REFERENCES MARCA(ID_MARCA)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from marca;
+insert into marca values(1,'ksks');
+insert into marca values(2,'djd');
+insert into marca values(3,'jdjd');
+insert into marca values(4,'ieiei');
+insert into marca values(5,'oeoeo');
+insert into marca values(6,'ieiei');
+insert into marca values(7,'ueueu');
+insert into marca values(8,'ieueu');
+insert into marca values(9,'peoe');
+insert into marca values(10,'iueuhd');
+
+select * from vehiculo;
+insert into vehiculo values(1,'dsdsd',1999,1);
+insert into vehiculo values(2,'ddd',399,2);
+insert into vehiculo values(3,'djdjd',2323,3);
+insert into vehiculo values(4,'udhdh',323,4);
+insert into vehiculo values(5,'jdeii',233,5);
+insert into vehiculo values(6,'owiu',3837,6);
+insert into vehiculo values(7,'sldsld',23838,7);
+insert into vehiculo values(8,'ieudjj',3333,8);
+insert into vehiculo values(9,'ueyyd',323,9);
+insert into vehiculo values(10,'lsmlm',233,10);
+
+-- EJERCICIO 8
+
+CREATE TABLE AUTOR (
+    ID_AUTOR INT PRIMARY KEY,
+    NOMBRE_AUTOR VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE LIBRO (
+    ID_LIBRO INT PRIMARY KEY,
+    TITULO VARCHAR(150) NOT NULL,
+    ANIO_PUBLICACION INT,
+    ID_AUTOR INT,
+    FOREIGN KEY (ID_AUTOR) REFERENCES AUTOR(ID_AUTOR)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from autor;
+insert into autor values(1,'jojo');
+insert into autor values(2,'eiudj');
+insert into autor values(3,'minado');
+insert into autor values(4,'naruto');
+insert into autor values(5,'ieie');
+insert into autor values(6,'ueuryh');
+insert into autor values(7,'dddd');
+insert into autor values(8,'euudj');
+insert into autor values(9,'jose');
+insert into autor values(10,'ueudjj');
+
+
+select * from libro;
+
+insert into libro values(1,'jueju',199,1);
+insert into libro values(2,'ueue',33,2);
+insert into libro values(3,'udjj',33,3);
+insert into libro values(4,'euei',399,4);
+insert into libro values(5,'ieied',233,5);
+insert into libro values(6,'ieiei',344,6);
+insert into libro values(7,'kdkdk',388,7);
+insert into libro values(8,'ieudj',233,8);
+insert into libro values(9,'ueudj',399,9);
+insert into libro values(10,'jdjdj',3988,10);
+
+-- EJERCICIO 9
+
+CREATE TABLE SUCURSAL (
+    ID_SUCURSAL INT PRIMARY KEY,
+    NOMBRE_SUCURSAL VARCHAR(100) NOT NULL,
+    CIUDAD VARCHAR(100)
+);
+
+CREATE TABLE VENDEDOR (
+    ID_VENDEDOR INT PRIMARY KEY,
+    NOMBRE_VENDEDOR VARCHAR(100) NOT NULL,
+    ID_SUCURSAL INT,
+    FOREIGN KEY (ID_SUCURSAL) REFERENCES SUCURSAL(ID_SUCURSAL)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from sucursal;
+insert into sucursal values(1,'jose','minaa');
+insert into sucursal values(2,'minat','mexico');
+insert into sucursal values(3,'juji','uuen');
+insert into sucursal values(4,'uedu','euuj');
+insert into sucursal values(5,'jeje','kdkdk');
+insert into sucursal values(6,'eoo','minall');
+insert into sucursal values(7,'iududu','euu');
+insert into sucursal values(8,'ieue','ieiei');
+insert into sucursal values(9,'ieiei','eiuu');
+insert into sucursal values(10,'eidu','eidi');
+
+select * from vendedor;
+-- EJERCICIO 10
+
+CREATE TABLE CURSO (
+    ID_CURSO INT PRIMARY KEY,
+    NOMBRE_CURSO VARCHAR(100) NOT NULL,
+    DURACION_HORAS INT
+);
+
+CREATE TABLE INSCRIPCION (
+    ID_INSCRIPCION INT PRIMARY KEY,
+    NOMBRE_ESTUDIANTE VARCHAR(100) NOT NULL,
+    ID_CURSO INT,
+    FOREIGN KEY (ID_CURSO) REFERENCES CURSO(ID_CURSO)
+);
+
+-- REALIZAR:
+-- INSERT (10 EN CADA TABLA)
+select * from curso ;
+insert into curso values(1,'miguel',2);
+insert into curso values(2,'jose',1);
+insert into curso values(3,'jose',3);
+insert into curso values(4,'lio',4);
+insert into curso values(5,'oeoe',5);
+insert into curso values(6,'minao',5);
+insert into curso values(7,'luis',7);
+insert into curso values(8,'uin',9);
+insert into curso values(9,'unii',10);
+insert into curso values(10,'uini',8);
+
+select * from inscripcion; 
+insert into inscripcion values(1,'minato',1);
+insert into inscripcion values(2,'naruo',2);
+insert into inscripcion values(3,'oerr',3);
+insert into inscripcion values(4,'luis',4);
+insert into inscripcion values(5,'hul',5);
+insert into inscripcion values(6,'ujj',6);
+insert into inscripcion values(7,'eiio',7);
+insert into inscripcion values(8,'uisjl',8);
+insert into inscripcion values(9,'eyyd',9);
+insert into inscripcion values(10,'euud',10);
+
