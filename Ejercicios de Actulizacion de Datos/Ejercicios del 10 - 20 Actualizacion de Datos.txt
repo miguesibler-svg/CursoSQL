@@ -1,0 +1,491 @@
+-- TABLA PADRE
+CREATE TABLE DEPARTAMENTOS (
+    ID_DEPARTAMENTO INT PRIMARY KEY,
+    NOMBRE_DEPARTAMENTO VARCHAR(100),
+    UBICACION VARCHAR(100),
+    TELEFONO VARCHAR(20)
+);
+
+-- TABLA HIJA
+CREATE TABLE EMPLEADOS (
+    ID_EMPLEADO INT PRIMARY KEY,
+    NOMBRE VARCHAR(100),
+    PUESTO VARCHAR(100),
+    SALARIO DECIMAL(10,2),
+    ID_DEPARTAMENTO INT,
+    FOREIGN KEY (ID_DEPARTAMENTO) REFERENCES DEPARTAMENTOS(ID_DEPARTAMENTO)
+);
+
+-- INSERTS DEPARTAMENTOS
+INSERT INTO DEPARTAMENTOS VALUES (1,'VENTAS','EDIFICIO A','5551001001');
+INSERT INTO DEPARTAMENTOS VALUES (2,'RECURSOS HUMANOS','EDIFICIO B','5551001002');
+INSERT INTO DEPARTAMENTOS VALUES (3,'CONTABILIDAD','EDIFICIO C','5551001003');
+INSERT INTO DEPARTAMENTOS VALUES (4,'SISTEMAS','EDIFICIO D','5551001004');
+INSERT INTO DEPARTAMENTOS VALUES (5,'COMPRAS','EDIFICIO E','5551001005');
+INSERT INTO DEPARTAMENTOS VALUES (6,'LOGISTICA','EDIFICIO F','5551001006');
+INSERT INTO DEPARTAMENTOS VALUES (7,'PRODUCCION','EDIFICIO G','5551001007');
+INSERT INTO DEPARTAMENTOS VALUES (8,'MARKETING','EDIFICIO H','5551001008');
+INSERT INTO DEPARTAMENTOS VALUES (9,'CALIDAD','EDIFICIO I','5551001009');
+INSERT INTO DEPARTAMENTOS VALUES (10,'FINANZAS','EDIFICIO J','5551001010');
+
+-- INSERTS EMPLEADOS
+INSERT INTO EMPLEADOS VALUES (101,'JUAN PEREZ','VENDEDOR',12000,1);
+INSERT INTO EMPLEADOS VALUES (102,'ANA LOPEZ','RECLUTADOR',14000,2);
+INSERT INTO EMPLEADOS VALUES (103,'CARLOS RUIZ','CONTADOR',16000,3);
+INSERT INTO EMPLEADOS VALUES (104,'MARIA GOMEZ','PROGRAMADOR',20000,4);
+INSERT INTO EMPLEADOS VALUES (105,'PEDRO DIAZ','COMPRADOR',13000,5);
+INSERT INTO EMPLEADOS VALUES (106,'LAURA TORRES','SUPERVISOR',18000,6);
+INSERT INTO EMPLEADOS VALUES (107,'JORGE RAMOS','OPERADOR',11000,7);
+INSERT INTO EMPLEADOS VALUES (108,'SOFIA MORALES','DISEÑADOR',17000,8);
+INSERT INTO EMPLEADOS VALUES (109,'DANIEL VARGAS','INSPECTOR',15000,9);
+INSERT INTO EMPLEADOS VALUES (110,'ELENA CRUZ','ANALISTA',19000,10);
+
+-- EJERCICIO 11
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO EL CAMPO NOMBRE_DEPARTAMENTO.
+update departamentos
+set nombre_departamento='putas'
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='perras'
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='putas'
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='perras'
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='Ventas'
+where id_departamento=1;
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO EL CAMPO SALARIO.
+update empleados
+set salario=20000
+where id_empleado=101;
+
+update empleados
+set salario=2000
+where id_empleado=102;
+
+update empleados
+set salario=20000
+where id_empleado=103;
+
+update empleados
+set salario=2000
+where id_empleado=104;
+
+update empleados
+set salario=20000
+where id_empleado=105;
+
+
+-- EJERCICIO 12
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO EL CAMPO UBICACION.
+update departamentos
+set ubicacion= 'narto'
+where id_departamento=1;
+
+update departamentos
+set ubicacion='konoha'
+where id_departamento=2;
+
+update departamentos
+set ubicacion='iztapalapa'
+where id_departamento=3;
+
+update departamentos
+set ubicacion='neza'
+where id_departamento=4;
+
+update departamentos
+set ubicacion='toluca'
+where id_departamento=5;
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO EL CAMPO PUESTO.
+update empleados
+set puesto='naruto'
+where id_empleado=101;
+
+update empleados
+set puesto='goju'
+where id_empleado=102;
+
+update empleados
+set puesto='hoha'
+where id_empleado=103;
+
+update empleados
+set puesto='naruo'
+where id_empleado=104;
+
+update empleados
+set puesto='naruto'
+where id_empleado=105;
+
+-- EJERCICIO 13
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO EL CAMPO TELEFONO.
+update departamentos
+set telefono=2938384849
+where id_departamento=1;
+
+update departamentos
+set telefono=2838483823
+where id_departamento=2;
+
+update departamentos
+set telefono=2923843443
+where id_departamento=3;
+
+update departamentos
+set telefono=3847573728
+where id_departamento=4;
+
+update departamentos
+set telefono=2344432122
+where id_departamento=5;
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) AUMENTANDO EL CAMPO SALARIO.
+update empleados
+set salario=293848
+where id_empleado=101;
+
+update empleados
+set salario=293848
+where id_empleado=102;
+
+update empleados
+set salario=293847
+where id_empleado=103;
+
+update empleados
+set salario=293848
+where id_empleado=104;
+
+update empleados
+set salario=293838
+where id_empleado=105;
+
+
+-- EJERCICIO 14
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO LOS CAMPOS NOMBRE_DEPARTAMENTO Y UBICACION.
+update departamentos
+set nombre_departamento='putos', ubicacion='neza'
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='perras', ubicacion='carraon'
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='jostos', ubicacion='toluxa'
+where id_departamento=3;
+
+update departamentos
+set nombre_departamento='PUTOS', ubicacion='torreon'
+where id_departamento=3;
+
+update departamentos
+set nombre_departamento='hojuu', ubicacion='naruto'
+where id_departamento=4;
+
+update departamentos
+set nombre_departamento='juju', ubicacion='ueurr'
+where id_departamento=3;
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO LOS CAMPOS PUESTO Y SALARIO.
+
+update empleados
+set puesto='eueue', salario=293838
+where id_empleado=101;
+
+update empleados
+set puesto='euee', salario=28383
+where id_empleado=102;
+
+update empleados
+set puesto='dsd', salario=29292
+where id_empleado=102;
+
+update empleados
+set puesto='wieie', salario=29348
+where id_empleado=101;
+
+update empleados
+set puesto='ssiiw', salario=29883
+where id_empleado=103;
+
+-- EJERCICIO 15
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO LOS CAMPOS UBICACION Y TELEFONO.
+update departamentos
+set ubicacion='sksks', telefono=22929
+where id_departamento=1;
+
+update departamentos
+set ubicacion='sisiw', telefono=29292
+where id_departamento=2;
+
+update departamentos
+set ubicacion='sdsd', telefono=2992
+where id_departamento=3;
+
+update departamentos
+set ubicacion='wiood', telefono=29399
+where id_departamento=1;
+
+update departamentos
+set ubicacion='skks', telefono=29922
+where id_departamento=2;
+
+update departamentos
+set ubicacion='eiid', telefono=2993
+where id_departamento=2;
+
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) DISMINUYENDO EL CAMPO SALARIO.
+update empleados
+set salario=2992
+where id_empleado=101;
+
+update empleados
+set salario=2992
+where id_empleado=102;
+
+update empleados
+set salario=2992
+where id_empleado=103;
+
+update empleados
+set salario=2992
+where id_empleado=103;
+
+-- EJERCICIO 16
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO LOS CAMPOS NOMBRE_DEPARTAMENTO Y TELEFONO.
+update departamentos
+set nombre_departamento='sksksk', telefono=29292
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='dsdsd', telefono=2993
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='jose', telefono=222
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='ueueu', telefono=222
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='ekke', telefono=2222
+where id_departamento=3;
+
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO EL CAMPO PUESTO.
+update empleados
+set puesto='sdsd'
+where id_empleado=101;
+
+update empleados
+set puesto='eewe'
+where id_empleado=102;
+
+update empleados
+set puesto='sdsd'
+where id_empleado=102;
+
+update empleados
+set puesto='ppp'
+where id_empleado=103;
+
+update empleados
+set puesto='wooe'
+where id_empleado=104;
+
+
+-- EJERCICIO 17
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO NOMBRE_DEPARTAMENTO, UBICACION Y TELEFONO.
+update departamentos
+set nombre_departamento='sdsd', ubicacion='sdsd', telefono=2323
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='sdsd', ubicacion='sdsd', telefono=2323
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='sdsd', ubicacion='sdsd', telefono=2323
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='skks', ubicacion='sdsd', telefono=2323
+where id_departamento=3;
+
+update departamentos
+set nombre_departamento='sdsd', ubicacion='sdsd', telefono=2323
+where id_departamento=1;
+
+
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO PUESTO Y SALARIO.
+
+-- EJERCICIO 18
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) ASIGNANDO NUEVAS UBICACIONES.
+update departamentos
+set ubicacion='sdsd'
+where id_departamento=1;
+
+update departamentos
+set ubicacion='sdsd'
+where id_departamento=2;
+
+update departamentos
+set ubicacion='sdsd'
+where id_departamento=3;
+
+update departamentos
+set ubicacion='sdsdsd'
+where id_departamento=5;
+
+update departamentos
+set ubicacion='sdsd'
+where id_departamento=4;
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) ASIGNANDO NUEVOS PUESTOS.
+update empleados
+set puesto='sdsd'
+where id_empleado=101;
+
+update empleados
+set puesto='sdfsf'
+where id_empleado=102;
+
+update empleados
+set puesto='sdsd'
+where id_empleado=104;
+
+update empleados
+set puesto='sdsd'
+where id_empleado=103;
+
+
+-- EJERCICIO 19
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) CAMBIANDO LOS NUMEROS DE TELEFONO.
+update departamentos
+set telefono=32323;
+
+update departamentos
+set telefono=23232
+where id_departamento=1;
+
+update departamentos
+set telefono=232334
+where id_departamento=2;
+
+update departamentos
+set telefono=232344
+where id_departamento=3;
+
+update departamentos
+set telefono=234499
+where id_departamento=1;
+
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) INCREMENTANDO EL SALARIO EN UN 10%.
+update empleados
+set salario=salario-(salario*.10)
+where id_empleado=101;
+
+update empleados
+set salario=salario-(salario*.10)
+where id_empleado=102;
+
+update empleados
+set salario=salario-(salario*.10)
+where id_empleado=103;
+
+update empleados
+set salario=salario-(salario*.10)
+where id_empleado=104;
+
+update empleados
+set salario=salario-(salario*.10)
+where id_empleado=105;
+
+-- EJERCICIO 20
+-- REALIZAR:
+select * from departamentos;
+-- UPDATE (5 EN DEPARTAMENTOS) MODIFICANDO NOMBRE_DEPARTAMENTO, UBICACION Y TELEFONO.
+update departamentos
+set nombre_departamento='slsls', ubicacion='sdsd', telefono=121212
+where id_departamento=1;
+
+update departamentos
+set nombre_departamento='ssdsd', ubicacion='sds', telefono=2323
+where id_departamento=2;
+
+update departamentos
+set nombre_departamento='sdsd', ubicacion='dsdsd', telefono=2323
+where id_departamento=3;
+
+update departamentos
+set nombre_departamento='sdff', ubicacion='sdsd', telefono=2323
+where id_departamento=4;
+
+update departamentos
+set nombre_departamento='sdsd', ubicacion='sdsd', telefono=2323
+where id_departamento=3;
+
+
+select * from empleados;
+-- UPDATE (5 EN EMPLEADOS) MODIFICANDO PUESTO Y SALARIO.
+update empleados
+set puesto='dsdsd', salario=2323
+where id_empleado=101;
+
+update empleados
+set puesto='sdsd', salario=32323
+where id_empleado=102;
+
+update empleados
+set puesto='sdds', salario=2323
+where id_empleado=103;
+
+update empleados
+set puesto='sdsdsd', salario=2323
+where id_empleado=105;
+
+update empleados
+set puesto='sfmmd', salario=2994
+where id_empleado=104;
+

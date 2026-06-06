@@ -1,0 +1,810 @@
+-- EJERCICIO 1
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE CLIENTES (
+    ID_CLIENTE NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20)
+);
+
+CREATE TABLE PEDIDOS (
+    ID_PEDIDO NUMBER(5) PRIMARY KEY,
+    FECHA_PEDIDO DATE,
+    TOTAL NUMBER(10,2),
+    ID_CLIENTE NUMBER(5),
+    CONSTRAINT FK_PEDIDOS_CLIENTES
+    FOREIGN KEY (ID_CLIENTE)
+    REFERENCES CLIENTES(ID_CLIENTE)
+);
+
+
+-- REALIZAR EN LA TABLA CLIENTES:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE en la tabla CLIENTES.
+alter table clientes
+add fecha_nacimiento date ;
+-- Elimina la columna llamada TELEFONO de la tabla CLIENTES.
+alter table clientes
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL en la tabla CLIENTES.
+alter table clientes
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 100 caracteres.
+alter table clientes
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_CLIENTE.
+alter table clientes
+add constraint check_id_cliente
+check (id_cliente>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table clientes
+add constraint unique_correo_cliente
+unique (email);
+-- Cambia el nombre de la tabla CLIENTES por CLIENTES_REGISTRADOS.
+alter table clientes
+rename to clientes_registrados;
+
+-- REALIZAR EN LA TABLA PEDIDOS:
+
+-- Agrega una columna llamada ESTADO de tipo VARCHAR2(20).
+alter table pedidos
+add estado varchar2(20);
+-- Elimina la columna llamada FECHA_PEDIDO.
+alter table pedidos
+drop column fecha_pedido;
+-- Cambia el nombre de la columna TOTAL por MONTO_TOTAL.
+alter table pedidos
+rename column total to monto_total;
+-- Modifica la columna TOTAL para que permita almacenar valores
+-- con el formato NUMBER(12,2).
+alter table pedidos
+modify monto_total number(12,2);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna TOTAL.
+alter table pedidos
+add constraint check_monto_total
+check (monto_total>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_PEDIDO.
+alter table pedidos
+add constraint unique_fehca_uniw
+unique (fecha_pedido);
+-- Cambia el nombre de la tabla PEDIDOS por PEDIDOS_CLIENTES.
+alter table pedidos
+rename to pedidos_clientes;
+
+
+-- EJERCICIO 2
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE ESTUDIANTES (
+    ID_ESTUDIANTE NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    CARRERA VARCHAR2(50)
+);
+
+CREATE TABLE INSCRIPCIONES (
+    ID_INSCRIPCION NUMBER(5) PRIMARY KEY,
+    FECHA_INSCRIPCION DATE,
+    COSTO NUMBER(10,2),
+    PERIODO VARCHAR2(20),
+    ESTADO VARCHAR2(20),
+    ID_ESTUDIANTE NUMBER(5),
+    CONSTRAINT FK_INSCRIPCIONES_ESTUDIANTES
+    FOREIGN KEY (ID_ESTUDIANTE)
+    REFERENCES ESTUDIANTES(ID_ESTUDIANTE)
+);
+
+-- REALIZAR EN LA TABLA ESTUDIANTES:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE.
+alter table estudiantes
+add fecha_nacimiento date ;
+-- Elimina la columna llamada TELEFONO.
+alter table estudiantes
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table estudiantes
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table estudiantes
+modify nombre varchar2(60);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_ESTUDIANTE.
+alter table estudiantes
+add constraint chek_id_estudiante
+check (id_estudiante>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table estudiantes
+add constraint uniq_email
+unique (email);
+-- Cambia el nombre de la tabla ESTUDIANTES por ESTUDIANTES_ACTIVOS.
+alter table estudiantes
+rename to estudiantes_activo;
+-- REALIZAR EN LA TABLA INSCRIPCIONES:
+
+-- Agrega una columna llamada DESCUENTO de tipo NUMBER(8,2).
+alter table inscripciones
+add descuento number(8,2);
+-- Elimina la columna llamada ESTADO.
+alter table inscripciones
+drop column estado;
+-- Cambia el nombre de la columna COSTO por MONTO.
+alter table inscripciones
+rename column costo to monto;
+-- Modifica la columna PERIODO para que permita almacenar hasta 30 caracteres.
+alter table inscripciones
+modify periodo varchar2(30);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna COSTO.
+alter table inscripciones
+add constraint check_monto
+check (monto>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_INSCRIPCION.
+
+-- Cambia el nombre de la tabla INSCRIPCIONES por REGISTRO_INSCRIPCIONES.
+alter table inscripciones
+rename to registro_inscripciones;
+
+
+-- EJERCICIO 3
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE EMPLEADOS (
+    ID_EMPLEADO NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    PUESTO VARCHAR2(50)
+);
+
+CREATE TABLE DEPARTAMENTOS (
+    ID_DEPARTAMENTO NUMBER(5) PRIMARY KEY,
+    NOMBRE_DEPARTAMENTO VARCHAR2(50),
+    UBICACION VARCHAR2(50),
+    PRESUPUESTO NUMBER(12,2),
+    EXTENSION VARCHAR2(10),
+    ID_EMPLEADO NUMBER(5),
+    CONSTRAINT FK_DEPARTAMENTOS_EMPLEADOS
+    FOREIGN KEY (ID_EMPLEADO)
+    REFERENCES EMPLEADOS(ID_EMPLEADO)
+);
+
+-- REALIZAR EN LA TABLA EMPLEADOS:
+
+-- Agrega una columna llamada FECHA_INGRESO de tipo DATE.
+alter table empleados
+add fecha_ingreso date;
+-- Elimina la columna llamada TELEFONO.
+alter table empleados
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table empleados
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table empleados
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_EMPLEADO.
+alter table empleados
+add constraint check_nombre_empleado
+check (nombre>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table empleados
+add constraint unq_email_empleado
+unique (email);
+-- Cambia el nombre de la tabla EMPLEADOS por EMPLEADOS_ACTIVOS.
+alter table empleados
+rename to empleados_activos;
+-- REALIZAR EN LA TABLA DEPARTAMENTOS:
+
+-- Agrega una columna llamada JEFE_DEPARTAMENTO de tipo VARCHAR2(60).
+alter table departamentos
+add jefe_departamento varchar2(60);
+-- Elimina la columna llamada EXTENSION.
+alter table departamentos
+drop column extension;
+-- Cambia el nombre de la columna PRESUPUESTO por FONDO_ASIGNADO.
+alter table departamentos
+rename column presupuesto to fondo_asignado;
+-- Modifica la columna NOMBRE_DEPARTAMENTO para que permita almacenar
+-- hasta 100 caracteres.
+alter table departamentos
+modify nombre_departamento varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna PRESUPUESTO.
+alter table departamentos
+add constraint cke_presupuesto
+check (fondo_asignado>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna NOMBRE_DEPARTAMENTO.
+alter table departamentos
+add constraint unq_nombre_departameto
+unique (nombre_departamento);
+-- Cambia el nombre de la tabla DEPARTAMENTOS por AREAS_EMPRESA.
+alter table departamentos
+rename to areas_empresa;
+
+
+-- EJERCICIO 4
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE PROVEEDORES (
+    ID_PROVEEDOR NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    EMPRESA VARCHAR2(60),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    CIUDAD VARCHAR2(50)
+);
+
+CREATE TABLE COMPRAS (
+    ID_COMPRA NUMBER(5) PRIMARY KEY,
+    FECHA_COMPRA DATE,
+    TOTAL NUMBER(10,2),
+    METODO_PAGO VARCHAR2(30),
+    ESTADO VARCHAR2(20),
+    ID_PROVEEDOR NUMBER(5),
+    CONSTRAINT FK_COMPRAS_PROVEEDORES
+    FOREIGN KEY (ID_PROVEEDOR)
+    REFERENCES PROVEEDORES(ID_PROVEEDOR)
+);
+
+-- REALIZAR EN LA TABLA PROVEEDORES:
+
+-- Agrega una columna llamada PAGINA_WEB de tipo VARCHAR2(100).
+alter table proveedores
+add pagina_web varchar2(100);
+-- Elimina la columna llamada TELEFONO.
+alter table proveedores
+drop column telefono;
+-- Cambia el nombre de la columna EMPRESA por NOMBRE_EMPRESA.
+alter table proveedores
+rename column empresa to nombre_empresa;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table proveedores
+modify nombre varchar(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_PROVEEDOR.
+alter table proveedores
+add constraint che_id_proveedor
+check (ID_PROVEEDOR>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table proveedores
+add constraint uniq_corre_proev
+unique (correo);
+-- Cambia el nombre de la tabla PROVEEDORES por PROVEEDORES_ACTIVOS.
+alter table proveedores
+rename to proveedores_activos;
+-- REALIZAR EN LA TABLA COMPRAS:
+
+-- Agrega una columna llamada OBSERVACIONES de tipo VARCHAR2(200).
+alter table compras
+add observaciones varchar2(100);
+-- Elimina la columna llamada ESTADO.
+alter table compras
+drop column estado;
+-- Cambia el nombre de la columna TOTAL por MONTO_TOTAL.
+alter table compras
+rename column total to monto_total;
+-- Modifica la columna METODO_PAGO para que permita almacenar
+-- hasta 50 caracteres.
+alter table compras
+modify metodo_pago varchar2(50);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna TOTAL.
+alter table compras
+add constraint check_total_compr
+check (total>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_COMPRA.
+alter table compras
+add constraint uniqu_id_compra;
+-- Cambia el nombre de la tabla COMPRAS por HISTORIAL_COMPRAS.
+alter table compras
+rename to historial_compras;
+
+
+-- EJERCICIO 5
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE AUTORES (
+    ID_AUTOR NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    NACIONALIDAD VARCHAR2(50)
+);
+
+CREATE TABLE LIBROS (
+    ID_LIBRO NUMBER(5) PRIMARY KEY,
+    TITULO VARCHAR2(100),
+    FECHA_PUBLICACION DATE,
+    ISBN VARCHAR2(20),
+    GENERO VARCHAR2(50),
+    ID_AUTOR NUMBER(5),
+    CONSTRAINT FK_LIBROS_AUTORES
+    FOREIGN KEY (ID_AUTOR)
+    REFERENCES AUTORES(ID_AUTOR)
+);
+
+-- REALIZAR EN LA TABLA AUTORES:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE.
+alter table autores
+add fecha_nacimiento date;
+-- Elimina la columna llamada TELEFONO.
+alter table autores
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table autores
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table autores
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_AUTOR.
+alter table autores
+add constraint check_id_autor
+check (id_autor>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table autores
+add constraint uniq_correo_auot
+unique (email);
+-- Cambia el nombre de la tabla AUTORES por AUTORES_REGISTRADOS.
+alter table autores
+rename to autores_registrados;
+-- REALIZAR EN LA TABLA LIBROS:
+
+-- Agrega una columna llamada EDITORIAL de tipo VARCHAR2(80).
+alter table libros
+add editorial varchar2(100);
+-- Elimina la columna llamada GENERO.
+alter table libros
+drop column genero;
+-- Cambia el nombre de la columna TITULO por NOMBRE_LIBRO.
+alter table libros
+rename column titulo to nombre_libro;
+-- Modifica la columna ISBN para que permita almacenar hasta 30 caracteres.
+alter table libros
+modify isbn varchar2(30);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_LIBRO.
+alter table libros
+add constraint check_id_libro
+check(id_libro>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ISBN.
+alter table libros
+add constraint uniq_isbn_libro
+unique (isbn);
+-- Cambia el nombre de la tabla LIBROS por CATALOGO_LIBROS.
+alter table libros
+rename to catalogo_libros;
+
+
+-- EJERCICIO 6
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE PACIENTES (
+    ID_PACIENTE NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    TIPO_SANGRE VARCHAR2(5)
+);
+
+CREATE TABLE CITAS (
+    ID_CITA NUMBER(5) PRIMARY KEY,
+    FECHA_CITA DATE,
+    CONSULTORIO VARCHAR2(20),
+    DIAGNOSTICO VARCHAR2(100),
+    ESTADO VARCHAR2(20),
+    ID_PACIENTE NUMBER(5),
+    CONSTRAINT FK_CITAS_PACIENTES
+    FOREIGN KEY (ID_PACIENTE)
+    REFERENCES PACIENTES(ID_PACIENTE)
+);
+
+-- REALIZAR EN LA TABLA PACIENTES:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE.
+alter table pacientes
+add fecha_nacimiento date ;
+-- Elimina la columna llamada TELEFONO.
+alter table pacientes
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table pacientes
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table pacientes
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_PACIENTE.
+alter table pacientes
+add constraint che_id_paciente
+check (id_paciente>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table pacientes
+add constraint uqn_email_pacien
+unique (email);
+-- Cambia el nombre de la tabla PACIENTES por PACIENTES_REGISTRADOS.
+alter table pacientes
+rename to pacientes_registrado;
+-- REALIZAR EN LA TABLA CITAS:
+
+-- Agrega una columna llamada COSTO de tipo NUMBER(10,2).
+alter table citas
+add costo number(10,2);
+-- Elimina la columna llamada ESTADO.
+alter table citas
+drop column estado;
+-- Cambia el nombre de la columna CONSULTORIO por NUMERO_CONSULTORIO.
+alter table citas
+rename column consultorio to numero_consultorio;
+-- Modifica la columna DIAGNOSTICO para que permita almacenar hasta 200 caracteres.
+alter table citas
+modify diagnostico varchar(200);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_CITA.
+alter table citas
+add constraint chek_id_cita
+check(id_cita>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna FECHA_CITA.
+alter table citas
+add constraint unique_fecha_cita
+unique (fecha_cita);
+-- Cambia el nombre de la tabla CITAS por HISTORIAL_CITAS.
+alter table citas
+rename to historial_citas;
+
+
+-- EJERCICIO 7
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE PRODUCTOS (
+    ID_PRODUCTO NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    DESCRIPCION VARCHAR2(100),
+    PRECIO NUMBER(10,2),
+    STOCK NUMBER(5),
+    MARCA VARCHAR2(50)
+);
+
+CREATE TABLE VENTAS (
+    ID_VENTA NUMBER(5) PRIMARY KEY,
+    FECHA_VENTA DATE,
+    CANTIDAD NUMBER(5),
+    TOTAL NUMBER(10,2),
+    METODO_PAGO VARCHAR2(30),
+    ID_PRODUCTO NUMBER(5),
+    CONSTRAINT FK_VENTAS_PRODUCTOS
+    FOREIGN KEY (ID_PRODUCTO)
+    REFERENCES PRODUCTOS(ID_PRODUCTO)
+);
+
+-- REALIZAR EN LA TABLA PRODUCTOS:
+
+-- Agrega una columna llamada FECHA_REGISTRO de tipo DATE.
+alter table productos
+add fecha_registro date;
+-- Elimina la columna llamada MARCA.
+alter table productos
+drop column marca;
+-- Cambia el nombre de la columna DESCRIPCION por DETALLE_PRODUCTO.
+alter table productos
+rename column descripcion to detalle_producto;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table productos
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_PRODUCTO.
+alter table productos
+add constraint chek_id_producto
+check (id_producto>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna NOMBRE.
+alter table productos
+add constraint uniq_nombre_uen
+unique (nombre);
+-- Cambia el nombre de la tabla PRODUCTOS por PRODUCTOS_INVENTARIO.
+alter table productos
+rename to productos_inventario;
+-- REALIZAR EN LA TABLA VENTAS:
+
+-- Agrega una columna llamada DESCUENTO de tipo NUMBER(8,2).
+alter table ventas
+add descuento number(8,2);
+-- Elimina la columna llamada METODO_PAGO.
+alter table ventas
+drop column metodo_pago;
+-- Cambia el nombre de la columna TOTAL por MONTO_TOTAL.
+alter table ventas
+rename column total to monto_total;
+
+-- Modifica la columna CANTIDAD para que permita almacenar hasta 8 dígitos.
+alter table ventas
+modify cantidad number(8);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna TOTAL.
+alter table ventas
+add constraint che_total_ventas
+check (monto_total>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_VENTA.
+alter table ventas
+add constraint unuq_id_venta
+unique(id_venta);
+-- Cambia el nombre de la tabla VENTAS por HISTORIAL_VENTAS.
+alter table ventas
+rename to historial_ventas;
+
+
+-- EJERCICIO 8
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE PASAJEROS (
+    ID_PASAJERO NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    NACIONALIDAD VARCHAR2(50)
+);
+
+CREATE TABLE RESERVAS (
+    ID_RESERVA NUMBER(5) PRIMARY KEY,
+    FECHA_RESERVA DATE,
+    DESTINO VARCHAR2(50),
+    COSTO NUMBER(10,2),
+    ESTADO VARCHAR2(20),
+    ID_PASAJERO NUMBER(5),
+    CONSTRAINT FK_RESERVAS_PASAJEROS
+    FOREIGN KEY (ID_PASAJERO)
+    REFERENCES PASAJEROS(ID_PASAJERO)
+);
+
+-- REALIZAR EN LA TABLA PASAJEROS:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE.
+alter table pasajeros
+add fecha_nacimiento date ;
+-- Elimina la columna llamada TELEFONO.
+alter table pasajeros
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table pasajeros
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table pasajeros
+modify nombre varchar2(80);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_PASAJERO.
+alter table pasajeros
+add constraint che_id_pasajero
+check (id_pasajero>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table pasajeros
+add constraint unqi_email_pasajero
+unique (email);
+-- Cambia el nombre de la tabla PASAJEROS por PASAJEROS_REGISTRADOS.
+alter table pasajeros
+rename to pasajeros_registrados;
+-- REALIZAR EN LA TABLA RESERVAS:
+
+-- Agrega una columna llamada NUMERO_ASIENTO de tipo VARCHAR2(10).
+alter table reservas
+add numero_asiento varchar2(10);
+-- Elimina la columna llamada ESTADO.
+alter table reservas
+drop column estado;
+-- Cambia el nombre de la columna COSTO por PRECIO_RESERVA.
+alter table reservas
+rename column costo to precio_reserva;
+-- Modifica la columna DESTINO para que permita almacenar hasta 100 caracteres.
+alter table reservas
+modify destino varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna COSTO.
+alter table reservas
+add constraint che_precio_reserva
+check (precio_reserva>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_RESERVA.
+alter table reservas
+add constraint unqi_id_reserva
+unique (id_reserva);
+-- Cambia el nombre de la tabla RESERVAS por HISTORIAL_RESERVAS.
+alter table reservas
+rename to historial_reservas;
+
+
+-- EJERCICIO 9
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE JUGADORES (
+    ID_JUGADOR NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    POSICION VARCHAR2(30),
+    EDAD NUMBER(3),
+    NACIONALIDAD VARCHAR2(50)
+);
+
+CREATE TABLE EQUIPOS (
+    ID_EQUIPO NUMBER(5) PRIMARY KEY,
+    NOMBRE_EQUIPO VARCHAR2(50),
+    CIUDAD VARCHAR2(50),
+    ESTADIO VARCHAR2(50),
+    FUNDACION DATE,
+    ID_JUGADOR NUMBER(5),
+    CONSTRAINT FK_EQUIPOS_JUGADORES
+    FOREIGN KEY (ID_JUGADOR)
+    REFERENCES JUGADORES(ID_JUGADOR)
+);
+
+-- REALIZAR EN LA TABLA JUGADORES:
+
+-- Agrega una columna llamada FECHA_NACIMIENTO de tipo DATE.
+alter table jugadores
+add fecha_nacimiento date;
+-- Elimina la columna llamada EDAD.
+alter table jugadores
+drop column edad;
+-- Cambia el nombre de la columna POSICION por ROL_JUEGO.
+alter table jugadores
+rename column posicion to rol_juego;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table jugadores
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_JUGADOR.
+alter table jugadores
+add constraint chk_id_jugador
+check (id_jugador>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la combinación de NOMBRE y APELLIDO.
+alter table jugadores
+add constraint unq_nombre_apellido
+unique (nombre, apellido);
+-- Cambia el nombre de la tabla JUGADORES por JUGADORES_REGISTRADOS.
+alter table jugadores
+rename to jugadores_registrados;
+-- REALIZAR EN LA TABLA EQUIPOS:
+
+-- Agrega una columna llamada PRESIDENTE de tipo VARCHAR2(60).
+alter table equipos
+add presidente varchar2(100);
+-- Elimina la columna llamada ESTADIO.
+alter table equipos
+drop column estadio;
+-- Cambia el nombre de la columna NOMBRE_EQUIPO por EQUIPO_NOMBRE.
+alter table equipos
+rename column nombre_equipo to equipo_nombre;
+-- Modifica la columna CIUDAD para que permita almacenar hasta 100 caracteres.
+alter table equipos
+modify ciudad varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_EQUIPO.
+alter table equipos
+add constraint check_id_equipo
+check (id_equipo>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna NOMBRE_EQUIPO.
+alter table equipos
+add constraint unq_equipo_nombre
+unique (equipo_nombre);
+-- Cambia el nombre de la tabla EQUIPOS por CLUBES_DEPORTIVOS.
+alter table equipos
+rename to clubes_deportivos;
+
+
+-- EJERCICIO 10
+
+-- CREAR LAS SIGUIENTES TABLAS
+
+CREATE TABLE USUARIOS (
+    ID_USUARIO NUMBER(5) PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    CORREO VARCHAR2(100),
+    TELEFONO VARCHAR2(20),
+    TIPO_USUARIO VARCHAR2(30)
+);
+
+CREATE TABLE FACTURAS (
+    ID_FACTURA NUMBER(5) PRIMARY KEY,
+    FECHA_FACTURA DATE,
+    MONTO NUMBER(10,2),
+    METODO_PAGO VARCHAR2(30),
+    ESTADO VARCHAR2(20),
+    ID_USUARIO NUMBER(5),
+    CONSTRAINT FK_FACTURAS_USUARIOS
+    FOREIGN KEY (ID_USUARIO)
+    REFERENCES USUARIOS(ID_USUARIO)
+);
+
+-- REALIZAR EN LA TABLA USUARIOS:
+
+-- Agrega una columna llamada FECHA_REGISTRO de tipo DATE.
+alter table usuarios
+add fecha_registro date;
+-- Elimina la columna llamada TELEFONO.
+alter table usuarios
+drop column telefono;
+-- Cambia el nombre de la columna CORREO por EMAIL.
+alter table usuarios
+rename column correo to email;
+-- Modifica la columna NOMBRE para que permita almacenar hasta 80 caracteres.
+alter table usuarios
+modify nombre varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna ID_USUARIO.
+alter table usuarios
+add constraint check_id_usuario
+check (id_usuario>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna CORREO.
+alter table  usuarios
+add constraint uniq_email_usuario
+unique (email);
+-- Cambia el nombre de la tabla USUARIOS por USUARIOS_REGISTRADOS.
+alter table usuarios
+rename to usuarios_registrados;
+-- REALIZAR EN LA TABLA FACTURAS:
+
+-- Agrega una columna llamada DESCUENTO de tipo NUMBER(8,2).
+alter table facturas
+add descuento number(8,2);
+-- Elimina la columna llamada ESTADO.
+alter table facturas
+drop column estado;
+-- Cambia el nombre de la columna MONTO por TOTAL_FACTURA.
+alter table facturas
+rename column monto to total_factura;
+-- Modifica la columna METODO_PAGO para que permita almacenar hasta 50 caracteres.
+alter table facturas
+modify metodo_pago varchar2(100);
+-- Agrega una restricción que permita únicamente valores mayores a cero
+-- en la columna MONTO.
+alter table facturas
+add constraint check_total_factura
+check (total_factura>0);
+-- Agrega una restricción para evitar que se repitan los valores
+-- de la columna ID_FACTURA.
+alter table facturas
+add constraint unq_id_factura
+unique (id_factura);
+-- Cambia el nombre de la tabla FACTURAS por HISTORIAL_FACTURAS.
+alter table facturas
+rename to historial_facturas;
+
+

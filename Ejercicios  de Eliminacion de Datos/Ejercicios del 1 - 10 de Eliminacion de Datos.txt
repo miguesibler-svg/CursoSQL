@@ -1,0 +1,590 @@
+-- EJERCICIO 1
+
+-- TABLA PADRE
+CREATE TABLE categorias (
+    id_categoria INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE productos (
+    id_producto INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    precio DECIMAL(10,2),
+    stock INT,
+    id_categoria INT,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
+);
+
+-- INSERTS CATEGORIAS
+INSERT INTO categorias VALUES (1,'Lacteos','Productos derivados de leche');
+INSERT INTO categorias VALUES (2,'Bebidas','Refrescos y jugos');
+INSERT INTO categorias VALUES (3,'Panaderia','Pan y pasteles');
+INSERT INTO categorias VALUES (4,'Carnes','Productos carnicos');
+INSERT INTO categorias VALUES (5,'Limpieza','Articulos de limpieza');
+INSERT INTO categorias VALUES (6,'Frutas','Frutas frescas');
+INSERT INTO categorias VALUES (7,'Verduras','Verduras frescas');
+INSERT INTO categorias VALUES (8,'Botanas','Snacks');
+INSERT INTO categorias VALUES (9,'Congelados','Productos congelados');
+INSERT INTO categorias VALUES (10,'Mascotas','Alimento para mascotas');
+
+-- INSERTS PRODUCTOS
+INSERT INTO productos VALUES (1,'Leche',25.50,50,1);
+INSERT INTO productos VALUES (2,'Yogurt',18.00,30,1);
+INSERT INTO productos VALUES (3,'Coca Cola',22.00,80,2);
+INSERT INTO productos VALUES (4,'Pan Blanco',35.00,40,3);
+INSERT INTO productos VALUES (5,'Res',180.00,20,4);
+INSERT INTO productos VALUES (6,'Jabon',15.00,60,5);
+INSERT INTO productos VALUES (7,'Manzana',32.00,70,6);
+INSERT INTO productos VALUES (8,'Zanahoria',20.00,90,7);
+INSERT INTO productos VALUES (9,'Papas',17.00,100,8);
+INSERT INTO productos VALUES (10,'Croquetas',250.00,15,10);
+
+-- REALIZAR:
+select * from productos;
+-- DELETE (5 EN PRODUCTOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from productos where id_producto=1;
+delete from productos where id_producto=2;
+delete from productos where id_producto=3;
+delete from productos where id_producto=4;
+delete from productos where id_producto=6;
+
+select * from categorias;
+-- DELETE (5 EN CATEGORIAS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from categorias where id_categoria=1;
+delete from categorias where id_categoria=2;
+delete from categorias where id_categoria=3;
+delete from categorias where id_categoria=4;
+delete from categorias where id_categoria=5;
+
+
+-- EJERCICIO 2
+
+-- TABLA PADRE
+CREATE TABLE editoriales (
+    id_editorial INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    pais VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE libros (
+    id_libro INT PRIMARY KEY,
+    titulo VARCHAR(100),
+    autor VARCHAR(100),
+    precio DECIMAL(10,2),
+    id_editorial INT,
+    FOREIGN KEY (id_editorial) REFERENCES editoriales(id_editorial)
+);
+
+-- INSERTS EDITORIALES
+INSERT INTO editoriales VALUES (1,'Planeta','Mexico');
+INSERT INTO editoriales VALUES (2,'Alfaomega','España');
+INSERT INTO editoriales VALUES (3,'McGraw Hill','Estados Unidos');
+INSERT INTO editoriales VALUES (4,'Pearson','Inglaterra');
+INSERT INTO editoriales VALUES (5,'Santillana','Mexico');
+INSERT INTO editoriales VALUES (6,'Trillas','Mexico');
+INSERT INTO editoriales VALUES (7,'Limusa','Mexico');
+INSERT INTO editoriales VALUES (8,'Anaya','España');
+INSERT INTO editoriales VALUES (9,'Porrua','Mexico');
+INSERT INTO editoriales VALUES (10,'Oceano','Argentina');
+
+-- INSERTS LIBROS
+INSERT INTO libros VALUES (1,'SQL Basico','Juan Perez',250,1);
+INSERT INTO libros VALUES (2,'Java','Ana Lopez',350,2);
+INSERT INTO libros VALUES (3,'Python','Luis Torres',400,3);
+INSERT INTO libros VALUES (4,'Redes','Carlos Ruiz',320,4);
+INSERT INTO libros VALUES (5,'Base de Datos','Mario Diaz',290,5);
+INSERT INTO libros VALUES (6,'C++','Pedro Leon',280,6);
+INSERT INTO libros VALUES (7,'HTML','Laura Cruz',220,7);
+INSERT INTO libros VALUES (8,'CSS','Sofia Ramos',210,8);
+INSERT INTO libros VALUES (9,'JavaScript','Miguel Soto',360,9);
+INSERT INTO libros VALUES (10,'PHP','Elena Castro',310,10);
+
+-- REALIZAR:
+select * from libros;
+-- DELETE (5 EN LIBROS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from libros where id_libro=1;
+delete from libros where id_libro=2;
+delete from libros where id_libro=3;
+delete from libros where id_libro=4;
+delete from libros where id_libro=5;
+
+select * from editoriales;
+-- DELETE (5 EN EDITORIALES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from editoriales where id_editorial=1;
+delete from editoriales where id_editorial=2;
+delete from editoriales where id_editorial=3;
+delete from editoriales where id_editorial=4;
+delete from editoriales where id_editorial=5;
+
+
+-- EJERCICIO 3
+
+-- TABLA PADRE
+CREATE TABLE proveedores (
+    id_proveedor INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+-- TABLA HIJA
+CREATE TABLE compras (
+    id_compra INT PRIMARY KEY,
+    fecha_compra DATE,
+    total DECIMAL(10,2),
+    id_proveedor INT,
+    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor)
+);
+
+-- INSERTS PROVEEDORES
+INSERT INTO proveedores VALUES (1,'Proveedor A','5551111');
+INSERT INTO proveedores VALUES (2,'Proveedor B','5552222');
+INSERT INTO proveedores VALUES (3,'Proveedor C','5553333');
+INSERT INTO proveedores VALUES (4,'Proveedor D','5554444');
+INSERT INTO proveedores VALUES (5,'Proveedor E','5555555');
+INSERT INTO proveedores VALUES (6,'Proveedor F','5556666');
+INSERT INTO proveedores VALUES (7,'Proveedor G','5557777');
+INSERT INTO proveedores VALUES (8,'Proveedor H','5558888');
+INSERT INTO proveedores VALUES (9,'Proveedor I','5559999');
+INSERT INTO proveedores VALUES (10,'Proveedor J','5550000');
+
+-- INSERTS COMPRAS
+INSERT INTO compras VALUES (1,to_date('2025-01-10','yyyy/mm/dd'),1000,1);
+INSERT INTO compras VALUES (2,to_date('2025-01-11','yyyy/mm/dd'),1200,2);
+INSERT INTO compras VALUES (3,to_date('2025-01-12','yyyy/mm/dd'),1400,3);
+INSERT INTO compras VALUES (4,to_date('2025-01-13','yyyy/mm/dd'),1600,4);
+INSERT INTO compras VALUES (5,to_date('2025-01-14','yyyy/mm/dd'),1800,5);
+INSERT INTO compras VALUES (6,to_date('2025-01-15','yyyy/mm/dd'),2000,6);
+INSERT INTO compras VALUES (7,to_date('2025-01-16','yyyy/mm/dd'),2200,7);
+INSERT INTO compras VALUES (8,to_date('2025-01-17','yyyy/mm/dd'),2400,8);
+INSERT INTO compras VALUES (9,to_date('2025-01-18','yyyy/mm/dd'),2600,9);
+INSERT INTO compras VALUES (10,to_date('2025-01-19','yyyy/mm/dd'),2800,10);
+
+-- REALIZAR:
+select * from compras;
+-- DELETE (5 EN COMPRAS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from compras where id_compra=1;
+delete from compras where id_compra=2;
+delete from compras where id_compra=3;
+delete from compras where id_compra=4;
+delete from compras where id_compra=5;
+
+
+-- DELETE (5 EN PROVEEDORES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from proveedores where id_proveedor=1;
+delete from proveedores where id_proveedor=2;
+delete from proveedores where id_proveedor=3;
+delete from proveedores where id_proveedor=4;
+delete from proveedores where id_proveedor=5;
+
+
+-- EJERCICIO 4
+
+-- TABLA PADRE
+CREATE TABLE clientes (
+    id_cliente INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    ciudad VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE facturas (
+    id_factura INT PRIMARY KEY,
+    fecha_factura DATE,
+    total DECIMAL(10,2),
+    id_cliente INT,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- INSERTS CLIENTES
+INSERT INTO clientes VALUES (1,'Juan Perez','Monterrey');
+INSERT INTO clientes VALUES (2,'Maria Lopez','Guadalajara');
+INSERT INTO clientes VALUES (3,'Carlos Ruiz','Puebla');
+INSERT INTO clientes VALUES (4,'Ana Torres','Toluca');
+INSERT INTO clientes VALUES (5,'Luis Gomez','Merida');
+INSERT INTO clientes VALUES (6,'Laura Diaz','Cancun');
+INSERT INTO clientes VALUES (7,'Pedro Sanchez','Queretaro');
+INSERT INTO clientes VALUES (8,'Sofia Ramos','Leon');
+INSERT INTO clientes VALUES (9,'Miguel Soto','Tijuana');
+INSERT INTO clientes VALUES (10,'Elena Castro','Veracruz');
+
+-- INSERTS FACTURAS
+INSERT INTO facturas VALUES (1,to_date('2025-02-01','yyyy/mm/dd'),1200,1);
+INSERT INTO facturas VALUES (2,to_date('2025-02-02','yyyy/mm/dd'),1350,2);
+INSERT INTO facturas VALUES (3,to_date('2025-02-03','yyyy/mm/dd'),1500,3);
+INSERT INTO facturas VALUES (4,to_date('2025-02-04','yyyy/mm/dd'),1650,4);
+INSERT INTO facturas VALUES (5,to_date('2025-02-05','yyyy/mm/dd'),1800,5);
+INSERT INTO facturas VALUES (6,to_date('2025-02-06','yyyy/mm/dd'),1950,6);
+INSERT INTO facturas VALUES (7,to_date('2025-02-07','yyyy/mm/dd'),2100,7);
+INSERT INTO facturas VALUES (8,to_date('2025-02-08','yyyy/mm/dd'),2250,8);
+INSERT INTO facturas VALUES (9,to_date('2025-02-09','yyyy/mm/dd'),2400,9);
+INSERT INTO facturas VALUES (10,to_date('2025-02-10','yyyy/mm/dd'),2550,10);
+
+-- REALIZAR:
+-- DELETE (5 EN FACTURAS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from facturas where id_factura=1;
+delete from facturas where id_factura=2;
+delete from facturas where id_factura=3;
+delete from facturas where id_factura=4;
+delete from facturas where id_factura=5;
+
+
+-- DELETE (5 EN CLIENTES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from clientes where id_cliente=1;
+delete from clientes where id_cliente=2;
+delete from clientes where id_cliente=3;
+delete from clientes where id_cliente=4;
+delete from clientes where id_cliente=5;
+
+
+-- EJERCICIO 5
+
+-- TABLA PADRE
+CREATE TABLE cursos (
+    id_curso INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    duracion INT
+);
+
+-- TABLA HIJA
+CREATE TABLE alumnos (
+    id_alumno INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    edad INT,
+    id_curso INT,
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso)
+);
+
+-- INSERTS CURSOS
+INSERT INTO cursos VALUES (1,'Matematicas',60);
+INSERT INTO cursos VALUES (2,'Programacion',80);
+INSERT INTO cursos VALUES (3,'Bases de Datos',70);
+INSERT INTO cursos VALUES (4,'Redes',50);
+INSERT INTO cursos VALUES (5,'Seguridad Informatica',90);
+INSERT INTO cursos VALUES (6,'Python',65);
+INSERT INTO cursos VALUES (7,'Java',75);
+INSERT INTO cursos VALUES (8,'HTML',40);
+INSERT INTO cursos VALUES (9,'CSS',35);
+INSERT INTO cursos VALUES (10,'JavaScript',85);
+
+-- INSERTS ALUMNOS
+INSERT INTO alumnos VALUES (1,'Miguel',20,1);
+INSERT INTO alumnos VALUES (2,'Andrea',21,2);
+INSERT INTO alumnos VALUES (3,'Jorge',22,3);
+INSERT INTO alumnos VALUES (4,'Paola',19,4);
+INSERT INTO alumnos VALUES (5,'Raul',23,5);
+INSERT INTO alumnos VALUES (6,'Diana',20,6);
+INSERT INTO alumnos VALUES (7,'Fernando',24,7);
+INSERT INTO alumnos VALUES (8,'Karen',22,8);
+INSERT INTO alumnos VALUES (9,'Ricardo',21,9);
+INSERT INTO alumnos VALUES (10,'Valeria',25,10);
+
+-- REALIZAR:
+
+-- DELETE (5 EN ALUMNOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from alumnos where id_alumno=1;
+delete from alumnos where id_alumno=2;
+delete from alumnos where id_alumno=3;
+delete from alumnos where id_alumno=4;
+delete from alumnos where id_alumno=5;
+
+
+-- DELETE (5 EN CURSOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from cursos where id_curso=1;
+delete from cursos where id_curso=2;
+delete from cursos where id_curso=3;
+delete from cursos where id_curso=4;
+delete from cursos where id_curso=5;
+
+
+-- EJERCICIO 6
+
+-- TABLA PADRE
+CREATE TABLE sucursales (
+    id_sucursal INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    ciudad VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE empleados (
+    id_empleado INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    puesto VARCHAR(100),
+    id_sucursal INT,
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal)
+);
+
+-- INSERTS SUCURSALES
+INSERT INTO sucursales VALUES (1,'Sucursal Norte','Monterrey');
+INSERT INTO sucursales VALUES (2,'Sucursal Sur','Guadalajara');
+INSERT INTO sucursales VALUES (3,'Sucursal Este','Puebla');
+INSERT INTO sucursales VALUES (4,'Sucursal Oeste','Toluca');
+INSERT INTO sucursales VALUES (5,'Sucursal Centro','CDMX');
+INSERT INTO sucursales VALUES (6,'Sucursal Uno','Merida');
+INSERT INTO sucursales VALUES (7,'Sucursal Dos','Leon');
+INSERT INTO sucursales VALUES (8,'Sucursal Tres','Tijuana');
+INSERT INTO sucursales VALUES (9,'Sucursal Cuatro','Cancun');
+INSERT INTO sucursales VALUES (10,'Sucursal Cinco','Queretaro');
+
+-- INSERTS EMPLEADOS
+INSERT INTO empleados VALUES (1,'Juan Perez','Gerente',1);
+INSERT INTO empleados VALUES (2,'Maria Lopez','Supervisor',2);
+INSERT INTO empleados VALUES (3,'Carlos Ruiz','Vendedor',3);
+INSERT INTO empleados VALUES (4,'Ana Torres','Cajero',4);
+INSERT INTO empleados VALUES (5,'Luis Gomez','Auxiliar',5);
+INSERT INTO empleados VALUES (6,'Laura Diaz','Supervisor',6);
+INSERT INTO empleados VALUES (7,'Pedro Sanchez','Gerente',7);
+INSERT INTO empleados VALUES (8,'Sofia Ramos','Vendedor',8);
+INSERT INTO empleados VALUES (9,'Miguel Soto','Cajero',9);
+INSERT INTO empleados VALUES (10,'Elena Castro','Auxiliar',10);
+
+-- REALIZAR:
+-- DELETE (5 EN EMPLEADOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from empleados where id_empleado=1;
+delete from empleados where id_empleado=2;
+delete from empleados where id_empleado=3;
+delete from empleados where id_empleado=4;
+delete from empleados where id_empleado=5;
+
+-- DELETE (5 EN SUCURSALES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from sucursales where id_sucursal=1;
+delete from sucursales where id_sucursal=2;
+delete from sucursales where id_sucursal=3;
+delete from sucursales where id_sucursal=4;
+delete from sucursales where id_sucursal=5;
+
+
+-- EJERCICIO 7
+
+-- TABLA PADRE
+CREATE TABLE marcas (
+    id_marca INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    pais VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE vehiculos (
+    id_vehiculo INT PRIMARY KEY,
+    modelo VARCHAR(100),
+    anio INT,
+    precio DECIMAL(10,2),
+    id_marca INT,
+    FOREIGN KEY (id_marca) REFERENCES marcas(id_marca)
+);
+
+-- INSERTS MARCAS
+INSERT INTO marcas VALUES (1,'Toyota','Japon');
+INSERT INTO marcas VALUES (2,'Ford','Estados Unidos');
+INSERT INTO marcas VALUES (3,'Chevrolet','Estados Unidos');
+INSERT INTO marcas VALUES (4,'Nissan','Japon');
+INSERT INTO marcas VALUES (5,'Volkswagen','Alemania');
+INSERT INTO marcas VALUES (6,'Kia','Corea del Sur');
+INSERT INTO marcas VALUES (7,'Hyundai','Corea del Sur');
+INSERT INTO marcas VALUES (8,'Mazda','Japon');
+INSERT INTO marcas VALUES (9,'Honda','Japon');
+INSERT INTO marcas VALUES (10,'BMW','Alemania');
+
+-- INSERTS VEHICULOS
+INSERT INTO vehiculos VALUES (1,'Corolla',2022,350000,1);
+INSERT INTO vehiculos VALUES (2,'Focus',2021,280000,2);
+INSERT INTO vehiculos VALUES (3,'Aveo',2020,220000,3);
+INSERT INTO vehiculos VALUES (4,'Sentra',2023,390000,4);
+INSERT INTO vehiculos VALUES (5,'Jetta',2022,410000,5);
+INSERT INTO vehiculos VALUES (6,'Rio',2021,260000,6);
+INSERT INTO vehiculos VALUES (7,'Elantra',2022,340000,7);
+INSERT INTO vehiculos VALUES (8,'Mazda 3',2023,420000,8);
+INSERT INTO vehiculos VALUES (9,'Civic',2022,430000,9);
+INSERT INTO vehiculos VALUES (10,'Serie 3',2024,850000,10);
+
+-- REALIZAR:
+-- DELETE (5 EN VEHICULOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from vehiculos where id_vehiculo=1;
+delete from vehiculos where id_vehiculo=2;
+delete from vehiculos where id_vehiculo=3;
+delete from vehiculos where id_vehiculo=4;
+delete from vehiculos where id_vehiculo=5;
+
+
+-- DELETE (5 EN MARCAS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from marcas where id_marca=1;
+delete from marcas where id_marca=2;
+delete from marcas where id_marca=3;
+delete from marcas where id_marca=4;
+delete from marcas where id_marca=5;
+
+
+-- EJERCICIO 8
+
+-- TABLA PADRE
+CREATE TABLE medicos (
+    id_medico INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    especialidad VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE pacientes (
+    id_paciente INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    edad INT,
+    id_medico INT,
+    FOREIGN KEY (id_medico) REFERENCES medicos(id_medico)
+);
+
+-- INSERTS MEDICOS
+INSERT INTO medicos VALUES (1,'Juan Perez','Cardiologia');
+INSERT INTO medicos VALUES (2,'Maria Lopez','Pediatria');
+INSERT INTO medicos VALUES (3,'Carlos Ruiz','Neurologia');
+INSERT INTO medicos VALUES (4,'Ana Torres','Dermatologia');
+INSERT INTO medicos VALUES (5,'Luis Gomez','Traumatologia');
+INSERT INTO medicos VALUES (6,'Laura Diaz','Ginecologia');
+INSERT INTO medicos VALUES (7,'Pedro Sanchez','Oftalmologia');
+INSERT INTO medicos VALUES (8,'Sofia Ramos','Oncologia');
+INSERT INTO medicos VALUES (9,'Miguel Soto','Psiquiatria');
+INSERT INTO medicos VALUES (10,'Elena Castro','Medicina General');
+
+-- INSERTS PACIENTES
+INSERT INTO pacientes VALUES (1,'Roberto',30,1);
+INSERT INTO pacientes VALUES (2,'Daniela',12,2);
+INSERT INTO pacientes VALUES (3,'Fernando',45,3);
+INSERT INTO pacientes VALUES (4,'Patricia',28,4);
+INSERT INTO pacientes VALUES (5,'Ricardo',39,5);
+INSERT INTO pacientes VALUES (6,'Valeria',22,6);
+INSERT INTO pacientes VALUES (7,'Jorge',55,7);
+INSERT INTO pacientes VALUES (8,'Karla',41,8);
+INSERT INTO pacientes VALUES (9,'Andres',34,9);
+INSERT INTO pacientes VALUES (10,'Monica',26,10);
+
+-- REALIZAR:
+-- DELETE (5 EN PACIENTES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from pacientes where id_paciente=1;
+delete from pacientes where id_paciente=2;
+delete from pacientes where id_paciente=3;
+delete from pacientes where id_paciente=4;
+delete from pacientes where id_paciente=5;
+
+-- DELETE (5 EN MEDICOS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from pacientes where id_paciente=1;
+delete from pacientes where id_paciente=2;
+delete from pacientes where id_paciente=3;
+delete from pacientes where id_paciente=4;
+delete from pacientes where id_paciente=5;
+
+-- EJERCICIO 9
+
+-- TABLA PADRE
+CREATE TABLE proveedores (
+    id_proveedor INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+-- TABLA HIJA
+CREATE TABLE inventario (
+    id_producto INT PRIMARY KEY,
+    producto VARCHAR(100),
+    existencia INT,
+    id_proveedor INT,
+    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor)
+);
+
+-- INSERTS PROVEEDORES
+INSERT INTO proveedores VALUES (1,'Proveedor Norte','5551001');
+INSERT INTO proveedores VALUES (2,'Proveedor Sur','5551002');
+INSERT INTO proveedores VALUES (3,'Proveedor Este','5551003');
+INSERT INTO proveedores VALUES (4,'Proveedor Oeste','5551004');
+INSERT INTO proveedores VALUES (5,'Proveedor Centro','5551005');
+INSERT INTO proveedores VALUES (6,'Proveedor Uno','5551006');
+INSERT INTO proveedores VALUES (7,'Proveedor Dos','5551007');
+INSERT INTO proveedores VALUES (8,'Proveedor Tres','5551008');
+INSERT INTO proveedores VALUES (9,'Proveedor Cuatro','5551009');
+INSERT INTO proveedores VALUES (10,'Proveedor Cinco','5551010');
+
+-- INSERTS INVENTARIO
+INSERT INTO inventario VALUES (1,'Teclado',50,1);
+INSERT INTO inventario VALUES (2,'Mouse',70,2);
+INSERT INTO inventario VALUES (3,'Monitor',20,3);
+INSERT INTO inventario VALUES (4,'Laptop',15,4);
+INSERT INTO inventario VALUES (5,'Impresora',10,5);
+INSERT INTO inventario VALUES (6,'Scanner',12,6);
+INSERT INTO inventario VALUES (7,'Webcam',30,7);
+INSERT INTO inventario VALUES (8,'Bocinas',25,8);
+INSERT INTO inventario VALUES (9,'Microfono',18,9);
+INSERT INTO inventario VALUES (10,'Proyector',8,10);
+
+-- REALIZAR:
+-- DELETE (5 EN INVENTARIO) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from inventario where id_producto=1;
+delete from inventario where id_producto=2;
+delete from inventario where id_producto=3;
+delete from inventario where id_producto=4;
+delete from inventario where id_producto=5;
+
+-- DELETE (5 EN PROVEEDORES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from proveedores where id_proveedor=1;
+delete from proveedores where id_proveedor=2;
+delete from proveedores where id_proveedor=3;
+delete from proveedores where id_proveedor=4;
+delete from proveedores where id_proveedor=5;
+
+-- EJERCICIO 10
+
+-- TABLA PADRE
+CREATE TABLE peliculas (
+    id_pelicula INT PRIMARY KEY,
+    titulo VARCHAR(100),
+    genero VARCHAR(100)
+);
+
+-- TABLA HIJA
+CREATE TABLE funciones (
+    id_funcion INT PRIMARY KEY,
+    fecha_funcion DATE,
+    sala INT,
+    id_pelicula INT,
+    FOREIGN KEY (id_pelicula) REFERENCES peliculas(id_pelicula)
+);
+
+-- INSERTS PELICULAS
+INSERT INTO peliculas VALUES (1,'Avatar','Ciencia Ficcion');
+INSERT INTO peliculas VALUES (2,'Titanic','Drama');
+INSERT INTO peliculas VALUES (3,'Gladiador','Accion');
+INSERT INTO peliculas VALUES (4,'Coco','Animacion');
+INSERT INTO peliculas VALUES (5,'Batman','Accion');
+INSERT INTO peliculas VALUES (6,'Frozen','Animacion');
+INSERT INTO peliculas VALUES (7,'Joker','Drama');
+INSERT INTO peliculas VALUES (8,'Interestelar','Ciencia Ficcion');
+INSERT INTO peliculas VALUES (9,'Shrek','Comedia');
+INSERT INTO peliculas VALUES (10,'Matrix','Ciencia Ficcion');
+
+-- INSERTS FUNCIONES
+INSERT INTO funciones VALUES (1,to_date('2025-03-01','yyyy/mm/dd'),1,1);
+INSERT INTO funciones VALUES (2,to_date('2025-03-02','yyyy/mm/dd'),2,2);
+INSERT INTO funciones VALUES (3,to_date('2025-03-03','yyyy/mm/dd'),3,3);
+INSERT INTO funciones VALUES (4,to_date('2025-03-04','yyyy/mm/dd'),4,4);
+INSERT INTO funciones VALUES (5,to_date('2025-03-05','yyyy/mm/dd'),5,5);
+INSERT INTO funciones VALUES (6,to_date('2025-03-06','yyyy/mm/dd'),1,6);
+INSERT INTO funciones VALUES (7,to_date('2025-03-07','yyyy/mm/dd'),2,7);
+INSERT INTO funciones VALUES (8,to_date('2025-03-08','yyyy/mm/dd'),3,8);
+INSERT INTO funciones VALUES (9,to_date('2025-03-09','yyyy/mm/dd'),4,9);
+INSERT INTO funciones VALUES (10,to_date('2025-03-10','yyyy/mm/dd'),5,10);
+
+-- REALIZAR:
+-- DELETE (5 EN FUNCIONES) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from funciones where id_funcion=1;
+delete from funciones where id_funcion=2;
+delete from funciones where id_funcion=3;
+delete from funciones where id_funcion=4;
+delete from funciones where id_funcion=5;
+
+-- DELETE (5 EN PELICULAS) ELIMINANDO LOS REGISTROS CON ID 1, 2, 3, 4 Y 5.
+delete from peliculas where id_pelicula=1;
+delete from peliculas where id_pelicula=2;
+delete from peliculas where id_pelicula=3;
+delete from peliculas where id_pelicula=4;
+delete from peliculas where id_pelicula=5;
+

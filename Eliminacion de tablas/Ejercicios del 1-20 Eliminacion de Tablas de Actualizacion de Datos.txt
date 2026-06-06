@@ -1,0 +1,4 @@
+drop table clientes;
+drop table departamentos;
+drop table empleados;
+drop table pedidos;
