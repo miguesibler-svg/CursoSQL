@@ -1,0 +1,161 @@
+Dame 10 ejercicios de SQL.
+
+Cada ejercicio debe contener:
+
+1 tablas con PRIMARY KEY 
+10 sentencias INSERT para cada tabla.
+Utilizar TO_DATE() en todos los campos de tipo fecha.
+5 consultas idénticas a la consulta ejemplo
+
+Únicamente mostrar la estructura solicitada como texto comentado utilizando --.
+
+La tabla debe cumplir obligatoriamente con la siguiente estructura:
+
+La tabla principal debe contener exactamente 5 columnas.
+Los nombres de las columnas deben ser coherentes con la tabla creada.
+No utilizar nombres genéricos como campo1, campo2, dato1 o columna_extra.
+
+Los enunciados de CONSULTA 1, CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5 deben ser idénticos al ejemplo de la consulta 1.
+
+NO modificar:
+
+Ninguna palabra.
+Ninguna oración.
+Ningún párrafo.
+Ninguna viñeta.
+Ningún orden de los textos.
+Ningún título.
+Ninguna condición.
+Ningún filtro.
+
+NO:
+
+Crear variantes.
+Parafrasear.
+Resumir.
+Adaptar el texto al tema de las tablas.
+Cambiar nombres de campos.
+Cambiar categorías.
+Cambiar condiciones.
+Cambiar ejemplos.
+Cambiar el orden del contenido.
+
+Debe ser idéntico al ejemplo de CONSULTA 1.
+
+Además:
+
+Todos los ejercicios deben estar comentados utilizando --.
+Todas las consultas deben estar comentadas utilizando /* */.
+No utilizar líneas con símbolos como =======.
+No responder las consultas.
+No generar instrucciones SELECT.
+Solo generar:
+Tablas.
+Inserts.
+Enunciados de las consultas.
+
+Las consultas deben contemplar el uso de:
+
+WHERE
+MAX
+MIN
+LENGTH
+LIKE
+AND
+OR
+COUNT
+IN
+SUM
+CONCAT
+GROUP BY
+ORDER BY
+NOT
+AVG
+BETWEEN
+LPAD
+RPAD
+RTRIM
+LTRIM
+REPLACE
+TRANSLATE
+ROUND
+TRUNC
+MOD
+CURRENT_DATE
+ADD_MONTHS
+LAST_DAY
+MONTHS_BETWEEN
+NEXT_DAY
+SYSDATE
+CURRENT_TIMESTAMP
+SYSTIMESTAMP
+EXTRACT
+TO_DATE
+
+No utilizar INNER JOIN.
+
+Formato obligatorio de cada ejercicio:
+-- EJERCICIO 1 EJEMPLO
+
+-- REALIZAR:
+
+-- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_date sin inner join)
+
+-- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+
+-- 1. TABLA LIBROS
+-- id_libro
+-- titulo
+-- autor
+-- genero
+-- fecha_publicacion
+
+
+-- DATOS QUE SE DEBEN INSERTAR
+
+-- TABLA LIBROS
+
+insert into libros values(1,'Cien Años de Soledad','Gabriel Garcia Marquez','Novela',to_date('1967-05-30','YYYY-MM-DD'));
+insert into libros values(2,'Don Quijote de la Mancha','Miguel de Cervantes','Clásico',to_date('1605-01-16','YYYY-MM-DD'));
+insert into libros values(3,'La Odisea','Homero','Épico',to_date('0800-01-01','YYYY-MM-DD'));
+insert into libros values(4,'El Principito','Antoine de Saint-Exupéry','Fábula',to_date('1943-04-06','YYYY-MM-DD'));
+insert into libros values(5,'1984','George Orwell','Distopía',to_date('1949-06-08','YYYY-MM-DD'));
+insert into libros values(6,'Fahrenheit 451','Ray Bradbury','Ciencia Ficción',to_date('1953-10-19','YYYY-MM-DD'));
+insert into libros values(7,'Orgullo y Prejuicio','Jane Austen','Romance',to_date('1813-01-28','YYYY-MM-DD'));
+insert into libros values(8,'Moby Dick','Herman Melville','Aventura',to_date('1851-10-18','YYYY-MM-DD'));
+insert into libros values(9,'Crimen y Castigo','Fiódor Dostoyevski','Novela',to_date('1866-01-01','YYYY-MM-DD'));
+insert into libros values(10,'Rayuela','Julio Cortázar','Experimental',to_date('1963-06-28','YYYY-MM-DD'));
+
+
+-- CONSULTA 1 EJEMPLO (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_date sin inner join)
+
+/*
+Mostrar el ID del libro, título, autor, género y estado del préstamo.
+
+Además:
+
+Presentar una descripción compuesta por el título del libro y el estado del préstamo en un mismo campo.
+Mostrar la cantidad de caracteres del título de cada libro.
+Generar diferentes versiones del título aplicando ajustes de espacios, sustitución de caracteres y relleno de texto.
+Realizar cálculos adicionales sobre multas, considerando redondeos, truncamientos y residuos.
+Mostrar estadísticas generales del sistema de préstamos: multa máxima, mínima, suma total, promedio y cantidad de registros.
+Incluir información de fechas como fecha actual, fecha y hora del sistema, último día del mes, fechas futuras, diferencias entre fechas y componentes específicos.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el título del libro contenga la letra a.
+Que pertenezcan a los géneros Novela, Distopía o Aventura.
+Que la multa esté entre 0 y 15.
+Excluir libros del género Ciencia Ficción.
+Permitir combinaciones de condiciones para obtener resultados más específicos.
+
+Agrupar la información por género para obtener estadísticas por categoría y mostrar únicamente los grupos que cumplan con los criterios establecidos.
+
+Finalmente, ordenar los resultados por nivel de multa, mostrando primero los registros con mayor penalización.
+
+*/
+
+IMPORTANTE:
+Después de este ejemplo debes generar también la CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5
+
+Genera únicamente el EJERCICIO 1. No generes los demás ejercicios hasta que sean solicitados explícitamente.

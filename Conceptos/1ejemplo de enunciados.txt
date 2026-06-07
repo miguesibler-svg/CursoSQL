@@ -1,11 +1,117 @@
-Dame 10 enunciados de ejercicios SQL que contengan  CREATE TABLE con llave primaria y llave foránea, INSERT, UPDATE, DELETE y ALTER TABLE utilizando ADD COLUMN, DROP COLUMN, MODIFY COLUMN, RENAME COLUMN y RENAME TABLE.
+Dame 10 ejercicios de SQL.
 
-Además, cada ejercicio debe incluir CONSTRAINT utilizando UNIQUE y CHECK.
+Cada ejercicio debe contener:
 
-Cada enunciado debe tener mínimo 5 consultas SQL donde se utilicen las cláusulas y funciones WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_day.
+* 2 tablas relacionadas mediante PRIMARY KEY y FOREIGN KEY
+* 10 sentencias INSERT para cada tabla.
+* Utilizar TO_DATE() en todos los campos de tipo fecha.
+* 5 consultas idénticas a la consulta ejemplo
 
-Que los enunciando sean iguales que el enunciado del ejemplo, que estén comentado --, que los enunciado no tengan =================, no estén contestados y las consultas sean idénticos que la consulta ejemplo para los 5 consultas y debe de tener todas las clausuras y funciones ya dichas anteriormente, sin inner join, comienza dando primero solamente el primer enunciado
+REQUISITO OBLIGATORIO:
 
+Las tablas NO deben resolverse.
+
+NO generar sentencias SQL de creación de tablas.
+
+NO generar:
+
+CREATE TABLE
+PRIMARY KEY
+FOREIGN KEY
+CONSTRAINT
+
+Únicamente mostrar la estructura solicitada como texto comentado utilizando --.
+
+Las tablas deben cumplir obligatoriamente con la siguiente estructura:
+
+* La tabla padre debe contener exactamente 5 columnas.
+* La tabla hija debe contener exactamente 6 columnas.
+* La sexta columna de la tabla hija debe corresponder al identificador de la tabla padre (campo que será utilizado posteriormente como FOREIGN KEY).
+* Los nombres de las columnas deben ser coherentes con el tema de las tablas.
+* No utilizar nombres genéricos como campo1, campo2, dato1 o columna_extra.
+
+
+Los enunciados de CONSULTA 1, CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5 deben idénticos que la consulta 1 ejemplo.
+
+NO modificar:
+
+* Ninguna palabra.
+* Ninguna oración.
+* Ningún párrafo.
+* Ninguna viñeta.
+* Ningún orden de los textos.
+* Ningún título.
+* Ninguna condición.
+* Ningún filtro.
+
+NO:
+
+* Crear variantes.
+* Parafrasear.
+* Resumir.
+* Adaptar el texto al tema de las tablas.
+* Cambiar nombres de campos.
+* Cambiar materias.
+* Cambiar condiciones.
+* Cambiar ejemplos.
+* Cambiar el orden del contenido.
+
+Ser idéntico que la consulta CONSULTA 1 EJEMPLO
+
+Además:
+
+* Todos los ejercicios deben estar comentados utilizando `--`.
+* Todas las consultas deben estar comentadas utilizando `/* */`.
+* No utilizar líneas con símbolos como `=======`.
+* No responder las consultas.
+* No generar instrucciones `SELECT`.
+* Solo generar:
+
+  * Tablas.
+  * Inserts.
+  * Enunciados de las consultas.
+
+Las consultas deben contemplar el uso de:
+
+* WHERE
+* MAX
+* MIN
+* LENGTH
+* LIKE
+* AND
+* OR
+* COUNT
+* IN
+* SUM
+* CONCAT
+* GROUP BY
+* ORDER BY
+* NOT
+* AVG
+* BETWEEN
+* LPAD
+* RPAD
+* RTRIM
+* LTRIM
+* REPLACE
+* TRANSLATE
+* ROUND
+* TRUNC
+* MOD
+* CURRENT_DATE
+* ADD_MONTHS
+* LAST_DAY
+* MONTHS_BETWEEN
+* NEXT_DAY
+* SYSDATE
+* CURRENT_TIMESTAMP
+* SYSTIMESTAMP
+* EXTRACT
+* TO_DATE
+
+No utilizar `INNER JOIN`.
+
+Formato obligatorio de cada ejercicio:
 -- EJERCICIO 1 EJEMPLO
 
 -- REALIZAR:
@@ -44,18 +150,20 @@ Que los enunciando sean iguales que el enunciado del ejemplo, que estén comenta
 
 -- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
 
--- 1. TABLA PROFESORES
--- id_profesor
+-- 1. TABLA CLIENTES
+-- id_cliente
 -- nombre
--- departamento
+-- apellido
+-- telefono
+-- fecha_registro
 
--- 2. TABLA ESTUDIANTES
--- id_estudiante
--- nombre
--- edad
--- materia
--- promedio
--- id_profesor
+-- 2. TABLA PEDIDOS
+-- id_pedido
+-- fecha_pedido
+-- producto
+-- cantidad
+-- total
+-- id_cliente
 
 
 
@@ -139,18 +247,36 @@ insert into estudiantes values(115,'Javier Torres',19,'Quimica',79,12);
 -- Validar que las edades sean mayores a 17 años.
 
 
+-- CONSULTA 1 EJEMPLO (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_day, sin inner join)
 
--- CONSULTAS(WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_day, sin inner join)
+/*
+Mostrar el ID del estudiante, nombre completo, edad, materia y promedio.
 
--- CONSULTA EJEMPLO
--- Mostrar el ID del estudiante, nombre completo, edad, materia y promedio.
--- Ademas, realizar una concatenacion entre el nombre del estudiante y la materia que cursa,
--- mostrar la longitud del nombre,
--- calcular la suma total de los promedios,
--- mostrar el promedio maximo, minimo y promedio general,
--- asi como la cantidad total de estudiantes encontrados.
--- Considerar solamente los estudiantes cuyos nombres contengan la letra 'z',
--- que pertenezcan a las materias de Programacion, Historia o Algebra,
--- que tengan un promedio entre 70 y 95,
--- excluyendo la materia Fisica.
--- Ordenar los resultados de mayor a menor promedio.
+Además:
+
+- Presentar una descripción compuesta por el nombre del estudiante y la materia que cursa en un mismo campo.
+- Mostrar la cantidad de caracteres que posee el nombre de cada estudiante.
+- Generar diferentes versiones del nombre aplicando ajustes de espacios, sustitución de caracteres y relleno de texto tanto al inicio como al final.
+- Realizar cálculos adicionales sobre los promedios, considerando aproximaciones, eliminación de decimales y obtención de residuos.
+- Mostrar estadísticas generales de rendimiento académico, incluyendo el valor más alto, el más bajo, la suma acumulada, el promedio general y la cantidad de registros encontrados.
+- Incluir información relacionada con fechas, como la fecha actual, la fecha y hora del sistema, la fecha del último día del mes, una fecha futura, la diferencia entre fechas y la obtención de componentes específicos de una fecha.
+
+Considerar únicamente los estudiantes que cumplan con las siguientes condiciones:
+
+- Que su nombre contenga la letra z.
+- Que pertenezcan a las materias Programación, Historia o Álgebra.
+- Que tengan un promedio comprendido entre 70 y 95.
+- Excluir a los estudiantes que cursen la materia Física.
+- Permitir que algunas condiciones se combinen entre sí para obtener resultados más específicos.
+
+Agrupar la información por materia para obtener estadísticas académicas de cada grupo y mostrar únicamente los grupos que cumplan con los criterios establecidos.
+
+Finalmente, ordenar los resultados de acuerdo con el desempeño académico, mostrando primero a los estudiantes con mejores calificaciones.
+
+*/
+
+IMPORTANTE:
+Después de este ejemplo debes generar también la CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5
+
+
+Genera únicamente el EJERCICIO 1. No generes los demás ejercicios hasta que sean solicitados explícitamente.
