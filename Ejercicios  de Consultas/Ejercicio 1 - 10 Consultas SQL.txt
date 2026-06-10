@@ -1,0 +1,977 @@
+-- EJERCICIO 1
+
+-- REALIZAR:
+
+-- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE sin INNER JOIN)
+
+-- CREATE TABLE
+
+CREATE TABLE EMPLEADOS (
+    ID_EMPLEADO NUMBER PRIMARY KEY,
+    NOMBRE VARCHAR2(50),
+    APELLIDO VARCHAR2(50),
+    DEPARTAMENTO VARCHAR2(30),
+    SALARIO NUMBER(10,2),
+    VENTAS NUMBER(10,2),
+    FECHA_CONTRATACION DATE
+);
+
+-- INSERT
+
+INSERT INTO EMPLEADOS VALUES (1,'ANA','MARTINEZ','VENTAS',4200.50,18000,TO_DATE('15/02/2022','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (2,'ELENA','GARCIA','MARKETING',3100.75,9500,TO_DATE('10/04/2022','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (3,'CARLOS','PEREZ','IT',4700.20,14500,TO_DATE('22/06/2023','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (4,'MARIO','SANCHEZ','VENTAS',2800.90,12000,TO_DATE('18/08/2022','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (5,'LAURA','RAMIREZ','RRHH',2600.00,4000,TO_DATE('12/03/2023','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (6,'ESTEBAN','LOPEZ','IT',3900.80,13000,TO_DATE('05/05/2024','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (7,'ANDREA','TORRES','MARKETING',3500.40,11000,TO_DATE('14/09/2022','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (8,'PEDRO','CASTILLO','VENTAS',5100.00,22000,TO_DATE('20/11/2023','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (9,'ERICA','DIAZ','IT',3300.25,9000,TO_DATE('09/01/2024','DD/MM/YYYY'));
+INSERT INTO EMPLEADOS VALUES (10,'ALBERTO','VARGAS','VENTAS',4400.60,16000,TO_DATE('27/07/2022','DD/MM/YYYY'));
+
+-- CONSULTA 1
+
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada empleado.
+Muestra el nombre rellenado con asteriscos por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con puntos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "A" por "@" en el nombre de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 100.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en tres meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente lunes posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del empleado contenga la letra A o la letra E.
+Que pertenezcan a los departamentos VENTAS, MARKETING o IT, excluyendo aquellos cuyo salario sea inferior a 2.500.
+Que el salario esté comprendido entre 2.000 y 5.000 o que las ventas superen los 10.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra Z.
+Que hayan sido contratados después del 01/01/2022 y antes de la fecha actual.
+Que pertenezcan al departamento VENTAS y tengan un salario superior a 3.500, o que pertenezcan al departamento IT y hayan realizado ventas superiores a 12.000.
+
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor volumen de ventas y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
+
+*/
+select id_empleado, ltrim(nombre)||' '||rtrim(apellido), length(nombre), lpad(nombre,15,'*'), rpad(nombre,20,'.'), 
+       replace(upper(nombre),'A','@'), translate(upper(nombre),'AEIOU','12345'), round(salario,1), trunc(salario), mod(salario,100), 
+       max(salario), min(salario), sum(salario), avg(salario), count(*), sysdate, add_months(fecha_contratacion,3), 
+       last_day(fecha_contratacion), months_between(sysdate, fecha_contratacion), next_day(fecha_contratacion, 'MONDAY'), 
+       extract(year from fecha_contratacion), extract(day from fecha_contratacion), SYSTIMESTAMP
+from empleados 
+where (nombre like '%A%' or nombre like '%E%') 
+      and (departamento in ('VENTAS', 'MARKETING', 'IT') and salario <2500) 
+      and  (salario between 2000 and 5000 or ventas > 10000)  
+      and (departamento <> 'RRHH' and apellido like 'z')
+      and (fecha_contratacion < to_date('01/01/2022','dd/mm/yyyy') and fecha_contratacion < sysdate)
+      and  departamento='VENTAS' and salario > 35000 or departamento= 'IT' and ventas>12000
+group by departamento, id_empleado, salario, nombre, apellido, ventas, FECHA_CONTRATACION
+order by max(departamento), departamento desc;
+
+-- CONSULTA 2
+
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del apellido de cada empleado.
+Muestra el nombre rellenado con almohadillas por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con guiones por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "E" por "#" en el apellido de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 200.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en seis meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente viernes posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del empleado contenga la letra I o la letra O.
+Que pertenezcan a los departamentos IT, MARKETING o VENTAS, excluyendo aquellos cuyo salario sea inferior a 3.000.
+Que el salario esté comprendido entre 2.500 y 5.500 o que las ventas superen los 9.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra X.
+Que hayan sido contratados después del 01/06/2022 y antes de la fecha actual.
+Que pertenezcan al departamento MARKETING y tengan un salario superior a 3.200, o que pertenezcan al departamento VENTAS y hayan realizado ventas superiores a 15.000.
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor salario promedio y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
+*/
+select id_empleado, ltrim(nombre)||' '||rtrim(apellido), length(apellido), lpad(nombre,15,'#'), rpad(apellido,20,'-'), 
+       replace(upper(apellido),'E','#'), translate(upper(apellido), 'AEIOU',09876), round(salario,2), trunc(salario,1), mod(salario,200),
+       max(salario), min(salario), sum(salario), count(*), current_date,sysdate, add_months(fecha_contratacion,6),
+       months_between(sysdate, fecha_contratacion), last_day(fecha_contratacion), next_day(fecha_contratacion, 'FRIDAY'), 
+       extract(year from fecha_contratacion), extract(month from fecha_contratacion), current_timestamp, systimestamp
+from EMPLEADOS
+where (upper(nombre) like '%I%' or upper(nombre) like '%O%') 
+      and (departamento in ('IT','MARKETING','VENTAS') and salario <> 3000)
+      and (salario between 2500 and 5500 or ventas >9000)
+      and (departamento<>'RRHH' and upper(apellido) not like '%X%')
+      and (fecha_contratacion > to_date('01/06/2022','dd/mm/yyyy') and fecha_contratacion < sysdate)
+      and (departamento='MARKETING' and salario > 3200 or departamento='VENTAS' and ventas > 15000)
+group by departamento,id_empleado, nombre, apellido, salario, fecha_contratacion
+order by max(salario), departamento desc;
+
+
+
+-- CONSULTA 3
+
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada empleado.
+Muestra el nombre rellenado con signos de suma por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con guiones bajos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "I" por "!" en el nombre de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 150.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en cuatro meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente martes posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del empleado contenga la letra R o la letra A.
+Que pertenezcan a los departamentos IT, VENTAS o MARKETING, excluyendo aquellos cuyo salario sea inferior a 2.800.
+Que el salario esté comprendido entre 2.500 y 5.200 o que las ventas superen los 11.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra Q.
+Que hayan sido contratados después del 01/03/2022 y antes de la fecha actual.
+Que pertenezcan al departamento IT y tengan un salario superior a 3.800, o que pertenezcan al departamento MARKETING y hayan realizado ventas superiores a 10.000.
+
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor cantidad de empleados y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
+
+*/
+select id_empleado, trim(nombre)||' '||trim(apellido), length(nombre), lpad(nombre,15,'+'), rpad(nombre,20,'_'), 
+      replace(lower(nombre),'i','!'), translate(lower(nombre),'aeiou','34567'), round(salario,2), trunc(salario,3), mod(salario,150),
+      max(salario), min(salario), sum(salario), avg(salario), count(*), current_date, sysdate, add_months(fecha_contratacion,4), 
+      last_day(sysdate), months_between(sysdate, fecha_contratacion), next_day(sysdate,'TUESDAY'), extract(year from sysdate), 
+      extract(month from sysdate), extract(day from sysdate), current_timestamp, systimestamp
+from EMPLEADOS
+where (upper(nombre) like '%R%' and upper(nombre) like '%A%')
+      and (departamento in ('VENTAS','IT', 'MARKETING') and not salario < 2800)
+      and (salario between 2500 and 5200 or ventas > 11000)
+      and (departamento <> 'RRHH' and not apellido like 'Q%')
+      and (fecha_contratacion > to_date('01/03/2022','dd/mm/yyyy') and fecha_contratacion < sysdate)
+      and (departamento='IT' and salario>3800 or departamento='MARKETING' and ventas>10000)
+group by id_empleado, nombre, apellido, salario, fecha_contratacion, ventas
+order departamento,nombre;
+
+
+
+-- CONSULTA 4
+
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del apellido de cada empleado.
+Muestra el nombre rellenado con ceros por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con signos igual por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "O" por "%" en el apellido de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 250.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en ocho meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente miércoles posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del empleado contenga la letra N o la letra E.
+Que pertenezcan a los departamentos MARKETING, IT o VENTAS, excluyendo aquellos cuyo salario sea inferior a 2.700.
+Que el salario esté comprendido entre 2.200 y 5.300 o que las ventas superen los 12.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra W.
+Que hayan sido contratados después del 01/02/2022 y antes de la fecha actual.
+Que pertenezcan al departamento VENTAS y tengan un salario superior a 4.000, o que pertenezcan al departamento MARKETING y hayan realizado ventas superiores a 10.500.
+
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor salario máximo y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
+
+*/
+
+select id_empleado, trim(nombre)||' '||trim(apellido), length(apellido), lpad(nombre,15,'0'), rpad(nombre,20,'='),
+       replace(upper(nombre),'O','%'), translate(upper(nombre),'AEIOU','87654'), round(salario), trunc(salario,2), mod(salario,250),
+       max(salario), min(salario), sum(salario), avg(salario), count(*), current_date, sysdate, add_months(sysdate,8), 
+       last_day(fecha_contratacion), months_between(sysdate, fecha_contratacion), next_day(sysdate,'WEDNESDAY'), 
+       extract(year from fecha_contratacion), extract(month from fecha_contratacion), extract(day from fecha_contratacion),
+       current_timestamp, SYSTIMESTAMP
+from empleados
+where (upper(nombre) like '%N%' or upper(nombre) like '%E%')
+      and (departamento in ('MARKETING', 'IT', 'VENTAS') and not salario < 2700)
+      and (salario between 2200 and 5300 or ventas > 12000)
+      and (not departamento='RRHH' and upper(apellido) like 'W%')
+      and (fecha_contratacion>to_date('01/02/2022','dd/mm/yyyy') and fecha_contratacion<sysdate)
+      and departamento='VENTAS' and salario>4000 or departamento='MARKETING' and  ventas>10500
+group by id_empleado, nombre, apellido, salario, fecha_contratacion, ventas
+order by max(departamento), nombre desc;
+
+
+-- CONSULTA 5
+
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada empleado.
+Muestra el nombre rellenado con signos de interrogación por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con comas por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "R" por "&" en el nombre de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 300.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en cinco meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente jueves posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del empleado contenga la letra C o la letra A.
+Que pertenezcan a los departamentos VENTAS, IT o MARKETING, excluyendo aquellos cuyo salario sea inferior a 2.900.
+Que el salario esté comprendido entre 2.300 y 5.400 o que las ventas superen los 13.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra Y.
+Que hayan sido contratados después del 01/04/2022 y antes de la fecha actual.
+Que pertenezcan al departamento IT y tengan un salario superior a 3.600, o que pertenezcan al departamento VENTAS y hayan realizado ventas superiores a 14.000.
+
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor suma de salarios y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
+
+*/
+select id_empleado, trim(nombre)||' '||trim(apellido), length(apellido), lpad(nombre,15,'?'), rpad(nombre,20,','), 
+      replace(upper(apellido),'R','&'), translate(lower(apellido),'ertm','aerio'), round(salario,1), trunc(salario,2), max(salario), 
+      min(salario),sum(salario), avg(salario), count(*), current_date, sysdate, add_months(fecha_contratacion,5), 
+      last_day(fecha_contratacion), months_between(sysdate, fecha_contratacion), next_day(sysdate, 'THURSDAY'), 
+      extract(year from sysdate), extract(month from sysdate), current_timestamp, systimestamp
+from empleados 
+where upper(nombre) like '%C%' or upper(nombre) like '%A%'
+      and (departamento in ('VENTAS','MARKETING','IT') and not salario <2900)
+      and (salario between 2300 and 5400 or ventas>13000)
+      and (departamento <> 'RRHH' and not upper(apellido) like 'Y%')
+      and (fecha_contratacion > to_date('01/04/2022','dd/mm/yyyy') and fecha_contratacion<sysdate)
+      and (departamento = 'IT' and salario>3600 or departamento='VENTAS' and ventas>14000)
+group by departamento, id_empleado, nombre, apellido, ventas, fecha_contratacion, salario
+order by sum(salario) desc, departamento desc;
+
+
+
+-- EJERCICIO 2 (Corregido)
+
+-- REALIZAR:
+
+-- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE sin INNER JOIN)
+
+-- CREATE TABLE
+CREATE TABLE VEHICULOS (
+id_vehiculo NUMBER PRIMARY KEY,
+marca VARCHAR2(50),
+modelo VARCHAR2(50),
+precio NUMBER(10,2),
+kilometraje NUMBER(10,2),
+categoria VARCHAR2(50),
+fecha_fabricacion DATE
+);
+
+-- INSERT
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (1, 'TOYOTA', 'COROLLA', 24000.00, 12500.00, 'SEDAN', TO_DATE('15/03/2023', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (2, 'FORD', 'RANGER', 35000.00, 8500.00, 'PICKUP', TO_DATE('20/05/2022', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (3, 'HONDA', 'CIVIC', 26000.00, 14000.00, 'COMPACTO', TO_DATE('10/01/2023', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (4, 'NISSAN', 'SENTRA', 21000.00, 5000.00, 'SEDAN', TO_DATE('05/11/2021', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (5, 'HYUNDAI', 'TUCSON', 29000.00, 16000.00, 'SUV', TO_DATE('12/08/2022', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (6, 'CHEVROLET', 'ONIX', 18500.00, 11000.00, 'COMPACTO', TO_DATE('25/02/2023', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (7, 'VOLKSWAGEN', 'TAOS', 31000.00, 9000.00, 'SUV', TO_DATE('14/07/2022', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (8, 'RENAULT', 'DUSTER', 19800.00, 9500.00, 'SUV', TO_DATE('19/09/2021', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (9, 'FIAT', 'CRONOS', 17000.00, 13500.00, 'SEDAN', TO_DATE('01/04/2023', 'DD/MM/YYYY'));
+INSERT INTO VEHICULOS (id_vehiculo, marca, modelo, precio, kilometraje, categoria, fecha_fabricacion) VALUES (10, 'JEEP', 'COMPASS', 38000.00, 26000.00, 'SUV', TO_DATE('18/06/2022', 'DD/MM/YYYY'));
+
+-- CONSULTA 1
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada vehículo.
+Muestra el nombre completo de cada vehículo concatenando marca y modelo en un único campo denominado nombre_completo.
+Muestra la longitud de la marca de cada vehículo.
+Muestra la marca rellenada con asteriscos por la izquierda hasta completar 15 caracteres.
+Muestra el modelo rellenado con puntos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de las marcas y modelos.
+Sustituye todas las letras "A" por "@" en la marca de los vehículos.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 100.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los vehículos.
+Obtén la cantidad total de vehículos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de fabricación incrementada en tres meses.
+Muestra el último día del mes correspondiente a la fecha de fabricación.
+Calcula los meses transcurridos desde la fecha de fabricación hasta la fecha actual.
+Muestra el siguiente lunes posterior a la fecha de fabricación.
+Extrae el año y el mes de la fecha de fabricación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que la marca del vehículo contenga la letra A o la letra E.
+Que pertenezcan a las categorías SEDAN, PICKUP o COMPACTO, excluyendo aquellos cuyo precio sea inferior a 2.500.
+Que el precio esté comprendido entre 2.000 y 5.000 o que el kilometraje supere los 10.000.
+Excluir a los vehículos pertenecientes a la categoría SUV y a aquellos cuyo modelo comience por la letra Z.
+Que hayan sido fabricados después del 01/01/2022 y antes de la fecha actual.
+Que pertenezcan a la categoría SEDAN y tengan un precio superior a 3.500, o que pertenezcan a la categoría COMPACTO y tengan un kilometraje superior a 12.000.
+
+Agrupar la información por categoría para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las categorías con mayor volumen de kilometraje y, en caso de empate, ordenando alfabéticamente por nombre de la categoría.
+
+*/
+select id_vehiculo, trim(marca)||' - '||trim(modelo), length(marca), lpad(marca,15,'*'), rpad(modelo,20,'.'), 
+       replace(lower(marca),'e','@'), translate(lower(marca),'aeiou','87654'), round(precio,2), trunc(precio,2), mod(precio,100), 
+       max(precio), min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(fecha_fabricacion, 3),
+       last_day(fecha_fabricacion), months_between(sysdate, fecha_fabricacion), next_day(fecha_fabricacion,'MONDAY'), 
+       extract(year from fecha_fabricacion), extract(month from fecha_fabricacion), current_timestamp, SYSTIMESTAMP
+from VEHICULOS
+where upper(marca) like '%A%' or upper(marca) like '%E%'
+      and (categoria in ('SEDAN', 'PICKUP', 'COMPACTO') and not precio < 2500 )
+      and (precio between 2000 and 5000 or kilometraje >10000)
+      and (not categoria='SUV' and upper(modelo) like 'Z%')
+      and (fecha_fabricacion > to_date('01/01/2022','dd/mm/yyyy') and fecha_fabricacion<sysdate)
+      and (categoria='SEDAN' and precio > 3500 or categoria= 'COMPACTO' and kilometraje > 12000)
+group by id_vehiculo, marca, modelo, precio, categoria, fecha_fabricacion, kilometraje
+order by max(kilometraje), categoria desc;
+
+
+-- CONSULTA 2
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada vehículo.
+Muestra el nombre completo de cada vehículo concatenando marca y modelo en un único campo denominado nombre_completo.
+Muestra la longitud de la marca de cada vehículo.
+Muestra la marca rellenada con guiones por la izquierda hasta completar 15 caracteres.
+Muestra el modelo rellenado con asteriscos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de las marcas y modelos.
+Sustituye todas las letras "E" por "#" en la marca de los vehículos.
+Traduce las vocales "AEIOU" por los caracteres "BCDFG".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 50.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los vehículos.
+Obtén la cantidad total de vehículos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de fabricación incrementada en un mes.
+Muestra el último día del mes correspondiente a la fecha de fabricación.
+Calcula los meses transcurridos desde la fecha de fabricación hasta la fecha actual.
+Muestra el siguiente martes posterior a la fecha de fabricación.
+Extrae el año y el mes de la fecha de fabricación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que la marca del vehículo contenga la letra O o la letra I.
+Que pertenezcan a las categorías SEDAN, PICKUP o COMPACTO, excluyendo aquellos cuyo precio sea inferior a 18.000.
+Que el precio esté comprendido entre 15.000 y 30.000 o que el kilometraje supere los 50.000.
+Excluir a los vehículos pertenecientes a la categoría SUV y a aquellos cuyo modelo comience por la letra X.
+Que hayan sido fabricados después del 01/06/2021 y antes de la fecha actual.
+Que pertenezcan a la categoría SEDAN y tengan un precio superior a 22.000, o que pertenezcan a la categoría COMPACTO y tengan un kilometraje superior a 40.000.
+
+Agrupar la información por categoría para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las categorías con mayor precio promedio y, en caso de empate, ordenando alfabéticamente por nombre de la categoría.
+
+*/
+select id_vehiculo, trim(marca)||' '||trim(modelo), length(marca), lpad(marca,15,'-'), rpad(modelo,20,'*'), replace(upper(marca),'E','#'),
+       translate(upper(modelo),'AEIOU','ytnnl'), round(precio,1), trunc(precio,1), mod(precio,50), max(precio), min(precio), sum(precio),
+       avg(precio), count(*), current_date, sysdate, add_months(fecha_fabricacion,1), last_day(fecha_fabricacion), 
+       months_between(sysdate, fecha_fabricacion), next_day(fecha_fabricacion,'THURSDAY'), extract(year from fecha_fabricacion),
+       extract(day from fecha_fabricacion), extract(month from fecha_fabricacion), current_timestamp, systimestamp
+from vehiculos 
+where upper(marca) like '%O%' or upper(marca) like '%I%'
+      and (categoria in ('SEDAN', 'PICKUP', 'COMPACTO') and  precio > 18000)
+      and (precio between 15000 and 30000 or kilometraje > 50000)
+      and (categoria<>'SUV' and upper(modelo) not like 'X%')
+      and (fecha_fabricacion > to_date('01/06/2021','dd/mm/yyyy') and fecha_fabricacion<sysdate)
+      and ((categoria='SEDAN' and precio>22000) or (categoria='COMPACTO' and kilometraje > 40000))
+group by id_vehiculo, marca, precio, fecha_fabricacion, kilometraje, modelo, CATEGORIA
+order by avg(precio), categoria ;
+
+
+-- CONSULTA 3
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada vehículo.
+Muestra el nombre completo de cada vehículo concatenando marca y modelo en un único campo denominado nombre_completo.
+Muestra la longitud de la marca de cada vehículo.
+Muestra la marca rellenada con la letra x por la izquierda hasta completar 15 caracteres.
+Muestra el modelo rellenado con guiones bajos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de las marcas y modelos.
+Sustituye todas las letras "O" por "0" en la marca de los vehículos.
+Traduce las vocales "AEIOU" por las letras "XYZWV".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 200.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los vehículos.
+Obtén la cantidad total de vehículos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de fabricación incrementada en seis meses.
+Muestra el último día del mes correspondiente a la fecha de fabricación.
+Calcula los meses transcurridos desde la fecha de fabricación hasta la fecha actual.
+Muestra el siguiente miércoles posterior a la fecha de fabricación.
+Extrae el año y el mes de la fecha de fabricación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que la marca del vehículo contenga la letra U o la letra A.
+Que pertenezcan a las categorías SUV, PICKUP o SEDAN, excluyendo aquellos cuyo precio sea inferior a 20.000.
+Que el precio esté comprendido entre 16.000 y 40.000 o que el kilometraje supere los 25.000.
+Excluir a los vehículos pertenecientes a la categoría COMPACTO y a aquellos cuyo modelo comience por la letra Y.
+Que hayan sido fabricados después del 01/01/2020 y antes de la fecha actual.
+Que pertenezcan a la categoría SUV y tengan un precio superior a 30.000, o que pertenezcan a la categoría PICKUP y tengan un kilometraje superior a 35.000.
+
+Agrupar la información por categoría para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finally, ordenar los resultados según los criterios establecidos, mostrando primero las categorías con menor cantidad total de vehículos y, en caso de empate, ordenando alfabéticamente por nombre de la categoría.
+
+*/
+select id_vehiculo, trim(marca)||' '||trim(modelo), length(marca), lpad(marca,15,'x'), rpad(modelo,20,'_'), replace(upper(marca),'O','0'),
+       translate(upper(marca),'AEIOU','XCVBN'), round(precio,1), trunc(precio,1), mod(precio,200), max(precio), min(precio), sum(precio),
+       avg(precio), count(*), current_date, sysdate, add_months(fecha_fabricacion,6), last_day(fecha_fabricacion),
+       months_between(sysdate, fecha_fabricacion), next_day(fecha_fabricacion,'WEDNESDAY'),extract(year from sysdate), 
+       extract(day from sysdate), current_timestamp, systimestamp
+from vehiculos 
+where upper(marca) like '%U%' or upper(marca) like '%A%'
+      and categoria in ('SUV', 'PICKUP', 'SEDAN') and precio > 20000
+      and precio between 16000 and 40000 or kilometraje > 25000
+      and categoria <> 'COMPACTO' and modelo not like 'Y%'
+      and fecha_fabricacion>to_date('01/01/2020','dd/mm/yyyy') and fecha_fabricacion<sysdate
+      and categoria='SUV' and precio >30000 or categoria='Pickup' and kilometraje > 35000
+group by id_vehiculo, marca, fecha_fabricacion, categoria, kilometraje, precio, modelo
+order by categoria  desc;
+
+-- CONSULTA 4
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada vehículo.
+Muestra el nombre completo de cada vehículo concatenando marca y modelo en un único campo denominado nombre_completo.
+Muestra la longitud de la marca de cada vehículo.
+Muestra la marca rellenada con ceros por la izquierda hasta completar 15 caracteres.
+Muestra el modelo rellenado con signos de más por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de las marcas y modelos.
+Sustituye todas las letras "I" por "1" en la marca de los vehículos.
+Traduce las vocales "AEIOU" por los símbolos "hijkl".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 150.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los vehículos.
+Obtén la cantidad total de vehículos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de fabricación incrementada en doce meses.
+Muestra el último día del mes correspondiente a la fecha de fabricación.
+Calcula los meses transcurridos desde la fecha de fabricación hasta la fecha actual.
+Muestra el siguiente jueves posterior a la fecha de fabricación.
+Extrae el año y el mes de la fecha de fabricación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que la marca del vehículo contenga la letra I o la letra E.
+Que pertenezcan a las categorías COMPACTO, SUV o SEDAN, excluyendo aquellos cuyo precio sea inferior a 15.000.
+Que el precio esté comprendido entre 14.000 y 35.000 o que el kilometraje supere los 30.000.
+Excluir a los vehículos pertenecientes a la categoría PICKUP y a aquellos cuyo modelo comience por la letra W.
+Que hayan sido fabricados después del 01/03/2021 y antes de la fecha actual.
+Que pertenezcan a la categoría COMPACTO y tengan un precio superior a 19.000, o que pertenezcan a la categoría SUV y tengan un kilometraje superior a 20.000.
+
+Agrupar la información por categoría para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las categorías con mayor suma total de precios y, en caso de empate, ordenando alfabéticamente por nombre de la categoría.
+
+*/
+
+select id_vehiculo, trim(upper(marca))||' '||trim(upper(marca)), length(marca), lpad(marca,15,'0'), rpad(modelo,20,'+'), 
+       replace(upper(marca),'I','1'), translate(upper(marca),'AEIOU','jhgio'), round(precio,1), trunc(precio,1), mod(precio,150),
+       max(precio), min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(fecha_fabricacion, 12), 
+       last_day(fecha_fabricacion), months_between(sysdate, fecha_fabricacion), next_day(fecha_fabricacion, 'THURSDAY'), 
+       extract(year from fecha_fabricacion), extract(day from fecha_fabricacion), current_timestamp, systimestamp
+from vehiculos 
+where upper(marca) like '%I%' or upper(marca) like '%E%'
+      and categoria in ('COMPACTO', 'SUV', 'SEDAN') AND precio > 30000
+      and precio between 14000 and 35000 or kilometraje>30000
+      and categoria <> 'PICKUP' and modelo not like '%W%'
+      and fecha_fabricacion > to_date('01/03/2021','dd/mm/yyyy') and fecha_fabricacion<sysdate
+      and categoria='COMPACTO' and precio > 19000 or categoria='SUV' and kilometraje>20000
+group by marca, id_vehiculo, modelo, precio, fecha_fabricacion, kilometraje, categoria
+order by sum(precio), categoria desc;
+
+-- CONSULTA 5
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada vehículo.
+Muestra el nombre completo de cada vehículo concatenando marca y modelo en un único campo denominado nombre_completo.
+Muestra la longitud de la marca de cada vehículo.
+Muestra la marca rellenada con signos de número por la izquierda hasta completar 15 caracteres.
+Muestra el modelo rellenado con guiones por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de las marcas y modelos.
+Sustituye todas las letras "U" por "V" en la marca de los vehículos.
+Traduce las vocales "AEIOU" por las letras "67890".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 250.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los vehículos.
+Obtén la cantidad total de vehículos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de fabricación incrementada en dos meses.
+Muestra el último día del mes correspondiente a la fecha de fabricación.
+Calcula los meses transcurridos desde la fecha de fabricación hasta la fecha actual.
+Muestra el siguiente viernes posterior a la fecha de fabricación.
+Extrae el año y el mes de la fecha de fabricación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que la marca del vehículo contenga la letra O o la letra A.
+Que pertenezcan a las categorías SUV, SEDAN o PICKUP, excluyendo aquellos cuyo precio sea inferior a 25.000.
+Que el precio esté comprendido entre 22.000 y 50.000 o que el kilometraje supere los 40.000.
+Excluir a los vehículos pertenecientes a la categoría COMPACTO y a aquellos cuyo modelo comience por la letra V.
+Que hayan sido fabricados después del 15/05/2022 y antes de la fecha actual.
+Que pertenezcan a la categoría SUV y tengan un precio superior a 32.000, o que pertenezcan a la categoría SEDAN y tengan un kilometraje superior a 15.000.
+
+Agrupar la información por categoría para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las categorías con menor precio mínimo registrado y, en caso de empate, ordenando alfabéticamente por nombre de la categoría.
+*/
+select id_vehiculo, trim(marca)||' '||trim(modelo), length(marca), lpad(marca,15,'$'), rpad(marca,20,'-'), replace(upper(marca),'U','V'),
+       translate(upper(marca),'AEIOU','38485'), round(precio,2), trunc(precio,2), mod(precio,150), max(precio), min(precio), sum(precio),
+       avg(precio), count(*), current_date, sysdate, add_months(fecha_fabricacion,3), last_day(sysdate),
+       months_between(sysdate, fecha_fabricacion), next_day(sysdate,'FRISDAY'), extract(day from sysdate), extract(month from sysdate),
+       extract(year from sysdate), current_timestamp, systimestamp 
+from vehiculos
+where upper(marca) like '%O%' and upper(marca) like '%A%' 
+      and categoria in ('SUV', 'SEDAN', 'PICKUP') and precio > 25000
+      and precio between 22000 and 50000 or kilometraje > 40000
+      and categoria <> 'COMPACTO' and upper(modelo) not like '%V%'
+      and fecha_fabricacion>to_date('15/05/2022', 'dd/mm/yyyy') and fecha_fabricacion<sysdate
+      and categoria ='SUV' and precio > 23000 or categoria='SEDAN' and kilometraje>15000
+group by categoria, id_vehiculo, marca, modelo, fecha_fabricacion, precio, kilometraje
+order by min(precio), categoria des;
+
+
+-- EJERCICIO 3
+
+-- REALIZAR:
+
+-- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE sin INNER JOIN)
+
+-- CREATE TABLE
+CREATE TABLE PRODUCTOS (
+id_producto NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+marca VARCHAR2(50),
+precio NUMBER(10,2),
+stock NUMBER(10,2),
+linea VARCHAR2(50),
+fecha_ingreso DATE
+);
+
+-- INSERT
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (1, 'TELEVISOR', 'SAMSUNG', 24000.00, 12500.00, 'ELECTRONICA', TO_DATE('15/03/2023', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (2, 'LAVADORA', 'LG', 35000.00, 8500.00, 'LINEA_BLANCA', TO_DATE('20/05/2022', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (3, 'LAPTOP', 'DELL', 26000.00, 14000.00, 'COMPUTO', TO_DATE('10/01/2023', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (4, 'LICUADORA', 'OSTER', 21000.00, 5000.00, 'ELECTRONICA', TO_DATE('05/11/2021', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (5, 'REFRIGERADOR', 'MABE', 29000.00, 16000.00, 'HOGAR', TO_DATE('12/08/2022', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (6, 'MONITOR', 'ASUS', 18500.00, 11000.00, 'COMPUTO', TO_DATE('25/02/2023', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (7, 'IMPRESORA', 'HP', 31000.00, 9000.00, 'HOGAR', TO_DATE('14/07/2022', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (8, 'MICROONDAS', 'PANASONIC', 19800.00, 9500.00, 'HOGAR', TO_DATE('19/09/2021', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (9, 'TECLADO', 'LOGITECH', 17000.00, 13500.00, 'ELECTRONICA', TO_DATE('01/04/2023', 'DD/MM/YYYY'));
+INSERT INTO PRODUCTOS (id_producto, nombre, marca, precio, stock, linea, fecha_ingreso) VALUES (10, 'SMARTPHONE', 'APPLE', 38000.00, 26000.00, 'HOGAR', TO_DATE('18/06/2022', 'DD/MM/YYYY'));
+
+-- CONSULTA 1
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada producto.
+Muestra el nombre completo de cada producto concatenando nombre y marca en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada producto.
+Muestra el nombre rellenado con asteriscos por la izquierda hasta completar 15 caracteres.
+Muestra la marca rellenada con puntos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y marcas.
+Sustituye todas las letras "A" por "@" en el nombre de los productos.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 100.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los productos.
+Obtén la cantidad total de productos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de ingreso incrementada en tres meses.
+Muestra el último día del mes correspondiente a la fecha de ingreso.
+Calcula los meses transcurridos desde la fecha de ingreso hasta la fecha actual.
+Muestra el siguiente lunes posterior a la fecha de ingreso.
+Extrae el año y el mes de la fecha de ingreso.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del producto contenga la letra A o la letra E.
+Que pertenezcan a las lineas ELECTRONICA, LINEA_BLANCA o COMPUTO, excluyendo aquellos cuyo precio sea inferior a 2.500.
+Que el precio esté comprendido entre 2.000 y 5.000 o que el stock supere los 10.000.
+Excluir a los productos pertenecientes a la linea HOGAR y a aquellos cuya marca comience por la letra Z.
+Que hayan sido ingresados después del 01/01/2022 y antes de la fecha actual.
+Que pertenezcan a la linea ELECTRONICA y tengan un precio superior a 3.500, o que pertenezcan a la linea COMPUTO y tengan un stock superior a 12.000.
+
+Agrupar la información por linea para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las lineas con mayor volumen de stock y, en caso de empate, ordenando alfabéticamente por nombre de la linea.
+
+*/
+select id_producto, trim(nombre)||' '||trim(marca), length(nombre), lpad(nombre,15,'*'), rpad(nombre,20,'.'), 
+       replace(upper(nombre),'A','@'), translate(upper(marca),'AEIOU','12345'), round(precio,1), trunc(precio,1), mod(precio,100),
+       max(precio), min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(fecha_ingreso,3),
+       last_day(fecha_ingreso), months_between(sysdate, fecha_ingreso), next_day(fecha_ingreso,'MONDAY'), extract(year from fecha_ingreso), extract(month from fecha_ingreso), current_timestamp, systimestamp
+from productos 
+where lower(nombre) like '%a%' or lower(nombre) like '%E%'
+      and linea in ('ELECTRONICA', 'LINEA_BLANCA', 'COMPUTO') and precio > 2500
+      and precio between 2000 and 5000 or stock > 10000
+      and linea <> 'HOGAR' and marca not like '%Z%'
+      and fecha_ingreso>to_date('01/01/2022', 'dd/mm/yyyy') and fecha_ingreso<sysdate
+      and linea='ELECTRONICA' and precio > 3500 or linea='COMPUTO' and stock>12000
+group by nombre, id_producto, marca, linea, fecha_ingreso, stock, precio
+order by max(stock), nombre desc; 
+
+-- CONSULTA 2
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada producto.
+Muestra el nombre completo de cada producto concatenando nombre y marca en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada producto.
+Muestra el nombre rellenado con guiones por la izquierda hasta completar 15 caracteres.
+Muestra la marca rellenada con asteriscos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y marcas.
+Sustituye todas las letras "E" por "#" en el nombre de los productos.
+Traduce las vocales "AEIOU" por los caracteres "BCDFG".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 50.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los productos.
+Obtén la cantidad total de productos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de ingreso incrementada en un mes.
+Muestra el último día del mes correspondiente a la fecha de ingreso.
+Calcula los meses transcurridos desde la fecha de ingreso hasta la fecha actual.
+Muestra el siguiente martes posterior a la fecha de ingreso.
+Extrae el año y el mes de la fecha de ingreso.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del producto contenga la letra O o la letra I.
+Que pertenezcan a las lineas ELECTRONICA, LINEA_BLANCA o COMPUTO, excluyendo aquellos cuyo precio sea inferior a 18.000.
+Que el precio esté comprendido entre 15.000 y 30.000 o que el stock supere los 50.000.
+Excluir a los productos pertenecientes a la linea HOGAR y a aquellos cuya marca comience por la letra X.
+Que hayan sido ingresados después del 01/06/2021 y antes de la fecha actual.
+Que pertenezcan a la linea ELECTRONICA y tengan un precio superior a 22.000, o que pertenezcan a la linea COMPUTO y tengan un stock superior a 40.000.
+
+Agrupar la información por linea para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las lineas con mayor precio promedio y, en caso de empate, ordenando alfabéticamente por nombre de la linea.
+
+*/
+
+select id_producto, trim(nombre)||' '||trim(marca), length(nombre), lpad(marca,length(marca)+1,'$'), rpad(nombre, 20,'I'), 
+       replace(lower(nombre),'a','t'), translate(lower(nombre),'aeiou','12345'), round(precio,1), trunc(precio,1), mod(precio,50), max(precio), 
+       min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(fecha_ingreso,2), last_day(fecha_ingreso),
+       months_between(sysdate, fecha_ingreso), next_day(fecha_ingreso, 'THURSDAY'), extract(year from fecha_ingreso), 
+       extract(day from fecha_ingreso), current_timestamp, systimestamp 
+from productos 
+where lower(nombre) like '%o%' or lower(nombre) like '%i%'
+      and linea in ('ELECTRONICA', 'LINEA_BLANCA', 'COMPUTO') and precio > 18000
+      and precio between 15000 and 30000 or stock > 50000
+      and linea<>'HOGAR' and lower(marca) not  like 'x%'
+      and fecha_ingreso>to_date('01/06/2021','dd/mm/yyyy') and fecha_ingreso<current_date
+      and linea='ELECTONICA' and precio > 22000 or linea='COMPUTO' and stock> 40000
+group by nombre, id_producto, marca, linea, fecha_ingreso, stock, precio
+order by precio, linea desc; 
+
+-- CONSULTA 3
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada producto.
+Muestra el nombre completo de cada producto concatenando nombre y marca en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada producto.
+Muestra el nombre rellenado con la letra x por la izquierda hasta completar 15 caracteres.
+Muestra la marca rellenada con guiones bajos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y marcas.
+Sustituye todas las letras "O" por "0" en el nombre de los productos.
+Traduce las vocales "AEIOU" por las letras "XYZWV".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 200.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los productos.
+Obtén la cantidad total de productos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de ingreso incrementada en seis meses.
+Muestra el último día del mes correspondiente a la fecha de ingreso.
+Calcula los meses transcurridos desde la fecha de ingreso hasta la fecha actual.
+Muestra el siguiente miércoles posterior a la fecha de ingreso.
+Extrae el año y el mes de la fecha de ingreso.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del producto contenga la letra U o la letra A.
+Que pertenezcan a las lineas HOGAR, LINEA_BLANCA o ELECTRONICA, excluyendo aquellos cuyo precio sea inferior a 20.000.
+Que el precio esté comprendido entre 16.000 y 40.000 o que el stock supere los 25.000.
+Excluir a los productos pertenecientes a la linea COMPUTO y a aquellos cuya marca comience por la letra Y.
+Que hayan sido ingresados después del 01/01/2020 y antes de la fecha actual.
+Que pertenezcan a la linea HOGAR y tengan un precio superior a 30.000, o que pertenezcan a la linea LINEA_BLANCA y tengan un stock superior a 35.000.
+
+Agrupar la información por linea para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las lineas con menor cantidad total de productos y, en caso de empate, ordenando alfabéticamente por nombre de la linea.
+
+*/
+select id_producto, trim(nombre)||' - '||trim(marca), length(marca), lpad(marca,15,'-'), rpad(marca,20,'i'), 
+       replace(lower(marca),'e','e'), translate(lower(marca),'aeiou','98765'), round(precio,1), trunc(precio,2), mod(precio,200),
+       max(precio), min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(sysdate,3), 
+       last_day(fecha_ingreso), months_between(sysdate, fecha_ingreso), next_day(fecha_ingreso,'WEDNESDAY'), 
+       extract(year from fecha_ingreso), extract(month from fecha_ingreso), current_timestamp, systimestamp 
+from PRODUCTOS
+where lower(nombre) like '%u%' or lower(nombre) like '%a%'
+      and linea in ('HOGAR', 'LINEA_BLANCA', 'ELECTRONICA') and precio > 20000
+      and precio between 16000 and 40000 or stock > 25000
+      and linea='COMPUTO' and lower(marca) like 'y%'
+      and fecha_ingreso=to_date('01/01/2020','dd/mm/yyyy') and fecha_ingreso<sysdate
+      and linea='HOGAR' and precio>30000 or linea='LINEA_BLANCA' and stock > 35000
+group by nombre, id_producto, marca, precio, fecha_ingreso, linea, STOCK
+order by precio, nombre;
+
+
+
+-- CONSULTA 4
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada producto.
+Muestra el nombre completo de cada producto concatenando nombre y marca en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada producto.
+Muestra el nombre rellenado con ceros por la izquierda hasta completar 15 caracteres.
+Muestra la marca rellenada con signos de más por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y marcas.
+Sustituye todas las letras "I" por "1" en el nombre de los productos.
+Traduce las vocales "AEIOU" por los símbolos "hijkl".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 150.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los productos.
+Obtén la cantidad total de productos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de ingreso incrementada en doce meses.
+Muestra el último día del mes correspondiente a la fecha de ingreso.
+Calcula los meses transcurridos desde la fecha de ingreso hasta la fecha actual.
+Muestra el siguiente jueves posterior a la fecha de ingreso.
+Extrae el año y el mes de la fecha de ingreso.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del producto contenga la letra I o la letra E.
+Que pertenezcan a las lineas COMPUTO, HOGAR o ELECTRONICA, excluyendo aquellos cuyo precio sea inferior a 15.000.
+Que el precio esté comprendido entre 14.000 y 35.000 o que el stock supere los 30.000.
+Excluir a los productos pertenecientes a la linea LINEA_BLANCA y a aquellos cuya marca comience por la letra W.
+Que hayan sido ingresados después del 01/03/2021 and antes de la fecha actual.
+Que pertenezcan a la linea COMPUTO y tengan un precio superior a 19.000, o que pertenezcan a la linea HOGAR y tengan un stock superior a 20.000.
+
+Agrupar la información por linea para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las lineas con mayor suma total de precios y, en caso de empate, ordenando alfabéticamente por nombre de la linea.
+
+*/
+select id_producto, trim(nombre)||' - '||trim(marca), length(nombre), lpad(lower(nombre),15,'i'), rpad(lower(nombre),20,'u'),
+       replace(lower(nombre),'a','$'), translate(lower(nombre),'aeiou','12345'), round(precio,1), trunc(precio,1), mod(precio,150),
+       max(precio), min(precio), sum(precio), avg(precio), count(*), current_date, sysdate, add_months(fecha_ingreso, 3),
+       last_day(fecha_ingreso), months_between(sysdate, fecha_ingreso), next_day(fecha_ingreso,'THURSDAY'), 
+       extract(year from fecha_ingreso), extract(day from fecha_ingreso), current_timestamp, systimestamp 
+from productos
+where lower(nombre) like '%i%' and lower(nombre) like '%e%'
+      and  linea in ('COMPUTO','HOGAR','ELECTRONICA') and precio > 15000
+      and precio between 14000 and 35000 or stock > 30000
+      and linea<>'LINEA_BLANCA' and lower(marca) not like 'w%'
+      and fecha_ingreso>to_date('01/03/2021','dd/mm/yyyy') and fecha_ingreso<sysdate
+      and linea='COMPUTO' and precio>19000 or linea='HOGAR' and stock>20000
+group by nombre, id_producto, marca, precio, fecha_ingreso, linea, STOCK 
+order by max(precio), nombre desc;
+-- CONSULTA 5
+/*
+
+El informe deberá incluir:
+
+Muestra el identificador de cada producto.
+Muestra el nombre completo de cada producto concatenando nombre y marca en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada producto.
+Muestra el nombre rellenado con signos de número por la izquierda hasta completar 15 caracteres.
+Muestra la marca rellenada con guiones por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y marcas.
+Sustituye todas las letras "U" por "V" en el nombre de los productos.
+Traduce las vocales "AEIOU" por las letras "67890".
+Muestra el precio redondeado al entero más cercano.
+Muestra el precio truncado sin decimales.
+Calcula el resto de dividir el precio entre 250.
+Obtén el precio máximo registrado en la empresa.
+Obtén el precio mínimo registrado en la empresa.
+Calcula la suma total de los precios.
+Calcula el precio promedio de los productos.
+Obtén la cantidad total de productos registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de ingreso incrementada en dos meses.
+Muestra el último día del mes correspondiente a la fecha de ingreso.
+Calcula los meses transcurridos desde la fecha de ingreso hasta la fecha actual.
+Muestra el siguiente viernes posterior a la fecha de ingreso.
+Extrae el año y el mes de la fecha de ingreso.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
+
+Considerar únicamente los registros que cumplan con las siguientes condiciones:
+
+Que el nombre del producto contenga la letra O o la letra A.
+Que pertenezcan a las lineas HOGAR, ELECTRONICA o LINEA_BLANCA, excluyendo aquellos cuyo precio sea inferior a 25.000.
+Que el precio esté comprendido entre 22.000 y 50.000 o que el stock supere los 40.000.
+Excluir a los productos pertenecientes a la linea COMPUTO y a aquellos cuya marca comience por la letra V.
+Que hayan sido ingresados después del 15/05/2022 y antes de la fecha actual.
+Que pertenezcan a la linea HOGAR y tengan un precio superior a 32.000, o que pertenezcan a la linea ELECTRONICA y tengan un stock superior a 15.000.
+
+Agrupar la información por linea para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
+
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero las lineas con menor precio mínimo registrado y, en caso de empate, ordenando alfabéticamente por nombre de la linea.
+*/
+
+select id_producto, trim(nombre)||' - '||trim(marca), length(nombre), lpad(nombre,20,'i'), rpad(nombre,39,'$'), 
+       replace(lower(nombre),'a','r'), translate(lower(nombre),'aeiou','98765'), round(precio,2), trunc(precio,3), mod(precio,2),
+       sum(precio), max(precio), min(precio), count(precio), avg(precio), current_date, sysdate, add_months(fecha_ingreso,2),
+       last_day(fecha_ingreso), months_between(sysdate, fecha_ingreso), next_day(fecha_ingreso,'FRISDAY'), 
+       extract(year from fecha_ingreso), extract(day from fecha_ingreso), current_timestamp, systimestamp 
+from productos
+where lower(nombre) like '%o%' or lower(nombre) like '%a%'
+      and linea in ('HOGAR', 'ELECTRONICA', 'LINEA_BLANCA') and precio > 25000
+      and precio between 22000 and 50000 or stock > 40000
+      and linea <>'COMPUTO' and lower(marca) not like 'v%'
+      and fecha_ingreso=to_date('15/05/2022','dd/mm/yyyy') and fecha_ingreso<sysdate
+      and linea='HOGAR' and precio>32000 or linea='ELECTTONICA' and stock > 15000
+group by nombre, id_producto, marca, precio, fecha_ingreso, linea, stock
+order by min(precio), linea desc;
+
+
+
+

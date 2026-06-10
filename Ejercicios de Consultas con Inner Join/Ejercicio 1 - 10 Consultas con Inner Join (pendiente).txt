@@ -1,0 +1,150 @@
+-- ejercicio 1
+
+-- tablas
+
+CREATE TABLE clientes (
+id_cliente NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+email VARCHAR2(100),
+fecha_registro DATE
+);
+
+CREATE TABLE pedidos (
+id_pedido NUMBER PRIMARY KEY,
+id_cliente NUMBER,
+producto VARCHAR2(100),
+categoria VARCHAR2(50),
+precio_unitario NUMBER,
+fecha_pedido DATE,
+CONSTRAINT fk_clientes_pedidos FOREIGN KEY (id_cliente)
+REFERENCES clientes(id_cliente)
+);
+
+-- inserts
+
+-- tabla clientes
+INSERT INTO clientes VALUES (1, 'Ana', 'Lopez', 'CDMX', 'ana.lopez@mail.com', TO_DATE('2025-01-05','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (2, 'Luis', 'Hernandez', 'Guadalajara', 'luis.hernandez@mail.com', TO_DATE('2025-02-10','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (3, 'Maria', 'Gomez', 'Monterrey', 'maria.gomez@mail.com', TO_DATE('2025-03-12','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (4, 'Carlos', 'Ramirez', 'CDMX', 'carlos.ramirez@mail.com', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (5, 'Sofia', 'Torres', 'Puebla', 'sofia.torres@mail.com', TO_DATE('2025-05-22','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (6, 'Jorge', 'Diaz', 'Guadalajara', 'jorge.diaz@mail.com', TO_DATE('2025-06-02','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (7, 'Elena', 'Vargas', 'CDMX', 'elena.vargas@mail.com', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (8, 'Pedro', 'Sanchez', 'Monterrey', 'pedro.sanchez@mail.com', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (9, 'Lucia', 'Morales', 'Toluca', 'lucia.morales@mail.com', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (10, 'Diego', 'Castillo', 'CDMX', 'diego.castillo@mail.com', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla pedidos
+INSERT INTO pedidos VALUES (101, 1, 'Laptop Lenovo', 'Tecnología', 15000, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (102, 2, 'Escritorio de Oficina', 'Oficina', 3500, TO_DATE('2025-02-15','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (103, 3, 'Silla Gamer', 'Muebles', 4200, TO_DATE('2025-03-20','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (104, 4, 'Monitor 24 pulgadas', 'Tecnología', 3200, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (105, 5, 'Impresora HP', 'Oficina', 2800, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (106, 6, 'Laptop Dell', 'Tecnología', 18000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (107, 7, 'Mesa de comedor', 'Muebles', 6000, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (108, 8, 'Tablet Samsung', 'Tecnología', 7000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (109, 9, 'Silla de oficina', 'Oficina', 1500, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (110, 10, 'Smartphone Xiaomi', 'Tecnología', 8000, TO_DATE('2025-04-15','YYYY-MM-DD'));
+commit;
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del cliente, apellido, ciudad, producto adquirido, categoría del producto, precio unitario y fecha del pedido de los registros de clientes que viven en CDMX, Guadalajara o Monterrey, con precios unitarios desde 1000 pesos hasta 5000 pesos y con fechas de pedido desde 2025-01-01 hasta 2025-06-30, incluyendo únicamente productos del área de Tecnología u Oficina, y relacionando clientes con pedidos mediante la unión de ambas tablas.*/
+
+select c.nombre||' - '||c.apellido, c.ciudad, p.producto, p.precio_unitario, p.fecha_pedido
+from clientes c 
+inner join pedidos p on p.id_cliente=c.id_cliente
+where c.ciudad in ('CDMX','Gudalajara', 'Monterrey') 
+      and p.precio_unitario between 1000 and 5000
+      and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd') 
+      and p.categoria='Tecnologia' or p.categoria='Oficina';  
+
+-- consulta 2
+/*Mostrar el nombre del cliente, ciudad, producto comprado, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Puebla que hayan comprado productos cuya categoría sea Tecnología, Oficina o Muebles, con precios desde 2000 pesos hasta 10000 pesos y fechas del 2025-02-01 al 2025-05-31, relacionando clientes con pedidos mediante su identificación común.*/
+select trim(c.nombre), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p
+join clientes c on c.id_cliente=p.id_cliente 
+where c.ciudad='CDMX' or c.ciudad='Puebla' and categoria in ('Tecnología', 'oficina', 'Muebles') 
+      and p.precio_unitario between 2000 and 10000 and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and 
+      to_date('2025/05/31','yyyy/mm/dd');
+
+
+-- consulta 3
+/*Mostrar el nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Guadalajara, Monterrey o Toluca con productos que contengan la palabra Laptop o Monitor en su nombre, con precios desde 3000 pesos hasta 20000 pesos y fechas del 2025-01-01 al 2025-06-30, uniendo ambas tablas por su relación de cliente.*/
+select c.nombre, c.apellido, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+inner join pedidos p on p.id_cliente=c.ID_CLIENTE
+where c.ciudad in ('Guadalajara', 'Monterrey', 'Toluca') and (p.producto like '%Laptop%' or p.producto like '%Monitor%') 
+      and p.precio_unitario between 3000 and 20000 and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and 
+      to_date('2025/06/30','yyyy/mm/dd');
+
+
+-- consulta 4
+/*Mostrar el nombre del cliente, correo electrónico, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Guadalajara cuyos productos pertenezcan a Tecnología o Muebles, con precios desde 1500 pesos hasta 8000 pesos y fechas del 2025-03-01 al 2025-06-30, relacionando clientes con sus pedidos.*/
+select c.nombre, c.email, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido 
+from clientes c 
+join pedidos p on p.id_cliente=c.id_cliente
+where (c.ciudad='CDMX' or c.ciudad='Guadalajara') and (p.categoria='Tecnología' or p.categoria='Muebles')
+      and p.precio_unitario between 1500 and 8000 and fecha_pedido between to_date('2025/03/01','yyyy/mm/dd') and 
+      to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 5
+
+/*Mostrar nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Monterrey o Puebla con productos que contengan la palabra Silla o Mesa en el nombre, con precios desde 1000 pesos hasta 6000 pesos y fechas del 2025-01-01 al 2025-05-30, uniendo ambas tablas por su vínculo de cliente.*/
+select trim(c.nombre)||' - '||trim(c.apellido), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente 
+where c.ciudad in ('Monterrey','Puebla') and (p.producto like '%Silla%' or p.producto like '%Mesa%') and 
+      p.precio_unitario between 1000 and 6000 and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and 
+      to_date('2025/05/30','yyyy/mm/dd');
+
+-- consulta 6
+/*Mostrar el nombre del cliente, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX, Monterrey o Toluca con productos del área de Tecnología, con precios desde 5000 pesos hasta 20000 pesos y fechas del 2025-02-01 al 2025-06-30, relacionando clientes con pedidos mediante su clave común.*/
+select c.nombre, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.ID_CLIENTE
+where c.ciudad in ('CDMX', 'Monterrey', 'Toluca') 
+      and p.categoria='Tecnología' 
+      and p.precio_unitario between 5000 and 20000 
+      and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd')  and to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 7
+/*Mostrar nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Guadalajara o CDMX con productos que contengan la palabra Tablet o Smartphone en su nombre, con precios desde 6000 pesos hasta 9000 pesos y fechas del 2025-02-01 al 2025-06-30, uniendo ambas tablas por su relación.*/
+select trim(upper(c.nombre))||' - '||trim(upper(c.apellido)), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente
+where (c.ciudad='Guadalajara' or c.ciudad='CDMX') and (p.producto like '%Tablet%' or p.producto like '%Smartphone%')
+      and p.precio_unitario between 6000 and 9000 
+      and fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/*Mostrar el nombre del cliente, correo, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de Puebla, Toluca o Monterrey con productos del área de Oficina o Muebles, con precios desde 1500 pesos hasta 7000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando clientes con pedidos mediante su identificación.*/
+select trim(upper(c.nombre)), c.email, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.id_cliente
+where c.ciudad in ('Puebla', 'Toluca', 'Monterrey') and p.categoria in ('Oficina', 'Muebles')
+      and (p.precio_unitario between 1500 and 7000) 
+      and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*Mostrar nombre del cliente, apellido, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Guadalajara con productos que contengan la palabra Impresora o Escritorio en el nombre, con precios desde 2000 pesos hasta 4000 pesos y fechas del 2025-02-01 al 2025-05-31, uniendo ambas tablas por su vínculo.*/
+select trim(upper(c.nombre))||' '||trim(upper(c.apellido)), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente
+where (c.ciudad='CDMX' or c.ciudad='Guadalajara') and (p.producto like '%Impresora%' or p.producto like '%Escritorio%')
+      and (p.precio_unitario between 2000 and 4000) and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and 
+      to_date('2025/05/01','yyyy/mm/dd');
+-- consulta 10
+/*Mostrar el nombre del cliente, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de Monterrey, CDMX o Guadalajara con productos del área de Tecnología u Oficina, con precios desde 1000 pesos hasta 18000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando clientes con pedidos mediante su relación directa.*/
+select c.nombre, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.id_cliente 
+where c.ciudad in ('Monterrey', 'CDMX', 'Guadalajara') and p.categoria in ('Tecnología','Oficina')
+      and (p.precio_unitario between 1000 and 18000) 
+      and p.fecha_pedido between ('2025/01/01','yyyy/mm/yy') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+
+

@@ -1,58 +1,52 @@
-Dame 10 ejercicios de SQL.
+Genera ejercicios de SQL siguiendo estrictamente las siguientes reglas.
 
-Cada ejercicio debe contener:
+Cada ejercicio debe contener obligatoriamente:
 
-1 tablas con PRIMARY KEY 
-10 sentencias INSERT para cada tabla.
-Utilizar TO_DATE() en todos los campos de tipo fecha.
-5 consultas idénticas a la consulta ejemplo
+1. Una tabla con PRIMARY KEY.
+2. Diez sentencias INSERT para la tabla.
+3. Utilizar TO_DATE() en todos los campos de tipo DATE.
+4. Cinco consultas denominadas CONSULTA 1, CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5.
+5. Los enunciados de CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5 deben ser diferentes entre sí y diferentes de CONSULTA 1.
+6. Todas las consultas deben mantener la misma estructura, extensión, complejidad y nivel de dificultad.
+7. Todas las consultas deben utilizar el mismo conjunto de funciones, operadores y cláusulas SQL indicadas en este documento, variando únicamente el contexto, los filtros, las condiciones y los criterios de agrupación y ordenación.
+8. Cada consulta debe requerir el uso coherente de:
+   WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG, BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT y TO_DATE.
+9. Las consultas deben presentar variaciones reales en los criterios de búsqueda, filtros, rangos, departamentos, fechas, agrupaciones y ordenaciones, sin alterar el nivel de dificultad ni la estructura general del ejercicio.
+10. CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5 no podrán ser copias literales de CONSULTA 1.
 
-Únicamente mostrar la estructura solicitada como texto comentado utilizando --.
+Mostrar únicamente texto SQL.
 
-La tabla debe cumplir obligatoriamente con la siguiente estructura:
+Todos los ejercicios deben estar completamente comentados utilizando la sintaxis indicada:
 
-La tabla principal debe contener exactamente 5 columnas.
-Los nombres de las columnas deben ser coherentes con la tabla creada.
-No utilizar nombres genéricos como campo1, campo2, dato1 o columna_extra.
+* Títulos, instrucciones, tablas e inserts con comentarios de línea usando --.
+* Los enunciados de las consultas utilizando comentarios de bloque /* */.
 
-Los enunciados de CONSULTA 1, CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5 deben ser idénticos al ejemplo de la consulta 1.
+No generar:
 
-NO modificar:
+* SELECT.
+* Respuestas a las consultas.
+* Explicaciones.
+* Resultados.
+* Procedimientos.
+* Funciones.
+* Vistas.
 
-Ninguna palabra.
-Ninguna oración.
-Ningún párrafo.
-Ninguna viñeta.
-Ningún orden de los textos.
-Ningún título.
-Ninguna condición.
-Ningún filtro.
+Generar únicamente:
 
-NO:
+* CREATE TABLE.
+* INSERT INTO.
+* Enunciados de CONSULTA 1, CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5.
 
-Crear variantes.
-Parafrasear.
-Resumir.
-Adaptar el texto al tema de las tablas.
-Cambiar nombres de campos.
-Cambiar categorías.
-Cambiar condiciones.
-Cambiar ejemplos.
-Cambiar el orden del contenido.
+Reglas obligatorias para las tablas:
 
-Debe ser idéntico al ejemplo de CONSULTA 1.
-
-Además:
-
-Todos los ejercicios deben estar comentados utilizando --.
-Todas las consultas deben estar comentadas utilizando /* */.
-No utilizar líneas con símbolos como =======.
-No responder las consultas.
-No generar instrucciones SELECT.
-Solo generar:
-Tablas.
-Inserts.
-Enunciados de las consultas.
+* Los nombres de las columnas deben ser coherentes con el tema de la tabla.
+* La tabla debe contener todas las columnas necesarias para que se puedan realizar correctamente las consultas y solo ocupar una palabra para la tabla.
+* No utilizar nombres genéricos como campo1, campo2, dato1, columna1, columna_extra o similares.
+* La estructura de la tabla debe contener todas las columnas necesarias para soportar de manera coherente todas las funciones mencionadas en los enunciados de las consultas.
+* Debe existir al menos una columna numérica que permita utilizar correctamente MAX, MIN, SUM, AVG, ROUND, TRUNC, MOD y BETWEEN.
+* Deben existir suficientes columnas de texto para aplicar LENGTH, CONCAT, LIKE, LPAD, RPAD, LTRIM, RTRIM, REPLACE y TRANSLATE.
+* Deben existir suficientes columnas DATE para aplicar TO_DATE, CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, ADD_MONTHS, LAST_DAY, NEXT_DAY, MONTHS_BETWEEN y EXTRACT.
+* Las condiciones deben presentar variaciones respecto a las consultas predecesoras sin romper la estructura del ejemplo.
 
 Las consultas deben contemplar el uso de:
 
@@ -94,68 +88,80 @@ TO_DATE
 
 No utilizar INNER JOIN.
 
-Formato obligatorio de cada ejercicio:
--- EJERCICIO 1 EJEMPLO
+No modificar:
+
+* Ninguna palabra.
+* Ninguna oración.
+* Ningún párrafo.
+* Ninguna viñeta.
+* Ningún orden de los textos.
+* Ningún título.
+* Ninguna condición.
+* Ningún filtro.
+
+Formato obligatorio:
+
+-- EJERCICIO X
 
 -- REALIZAR:
 
--- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_date sin inner join)
+-- CONSULTAS: (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE sin INNER JOIN)
 
--- LA BASE DE DATOS DEBE CONTENER LAS SIGUIENTES TABLAS:
+-- CREATE TABLE
 
--- 1. TABLA LIBROS
--- id_libro
--- titulo
--- autor
--- genero
--- fecha_publicacion
+-- INSERT
 
-
--- DATOS QUE SE DEBEN INSERTAR
-
--- TABLA LIBROS
-
-insert into libros values(1,'Cien Años de Soledad','Gabriel Garcia Marquez','Novela',to_date('1967-05-30','YYYY-MM-DD'));
-insert into libros values(2,'Don Quijote de la Mancha','Miguel de Cervantes','Clásico',to_date('1605-01-16','YYYY-MM-DD'));
-insert into libros values(3,'La Odisea','Homero','Épico',to_date('0800-01-01','YYYY-MM-DD'));
-insert into libros values(4,'El Principito','Antoine de Saint-Exupéry','Fábula',to_date('1943-04-06','YYYY-MM-DD'));
-insert into libros values(5,'1984','George Orwell','Distopía',to_date('1949-06-08','YYYY-MM-DD'));
-insert into libros values(6,'Fahrenheit 451','Ray Bradbury','Ciencia Ficción',to_date('1953-10-19','YYYY-MM-DD'));
-insert into libros values(7,'Orgullo y Prejuicio','Jane Austen','Romance',to_date('1813-01-28','YYYY-MM-DD'));
-insert into libros values(8,'Moby Dick','Herman Melville','Aventura',to_date('1851-10-18','YYYY-MM-DD'));
-insert into libros values(9,'Crimen y Castigo','Fiódor Dostoyevski','Novela',to_date('1866-01-01','YYYY-MM-DD'));
-insert into libros values(10,'Rayuela','Julio Cortázar','Experimental',to_date('1963-06-28','YYYY-MM-DD'));
-
-
--- CONSULTA 1 EJEMPLO (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, lpad, rpad, rtrim, ltrim, replace, translate, round, trunc, mod, current_date, add_months, last_day, months_between, next_day, sysdate, current_timestamp, systimestamp, extract, to_date sin inner join)
-
+-- CONSULTA 1
 /*
-Mostrar el ID del libro, título, autor, género y estado del préstamo.
 
-Además:
+El informe deberá incluir:
 
-Presentar una descripción compuesta por el título del libro y el estado del préstamo en un mismo campo.
-Mostrar la cantidad de caracteres del título de cada libro.
-Generar diferentes versiones del título aplicando ajustes de espacios, sustitución de caracteres y relleno de texto.
-Realizar cálculos adicionales sobre multas, considerando redondeos, truncamientos y residuos.
-Mostrar estadísticas generales del sistema de préstamos: multa máxima, mínima, suma total, promedio y cantidad de registros.
-Incluir información de fechas como fecha actual, fecha y hora del sistema, último día del mes, fechas futuras, diferencias entre fechas y componentes específicos.
+Muestra el identificador de cada empleado.
+Muestra el nombre completo de cada empleado concatenando nombre y apellido en un único campo denominado nombre_completo.
+Muestra la longitud del nombre de cada empleado.
+Muestra el nombre rellenado con asteriscos por la izquierda hasta completar 15 caracteres.
+Muestra el apellido rellenado con puntos por la derecha hasta completar 20 caracteres.
+Elimina posibles espacios sobrantes al inicio y al final de los nombres y apellidos.
+Sustituye todas las letras "A" por "@" en el nombre de los empleados.
+Traduce las vocales "AEIOU" por los números "12345".
+Muestra el salario redondeado al entero más cercano.
+Muestra el salario truncado sin decimales.
+Calcula el resto de dividir el salario entre 100.
+Obtén el salario máximo registrado en la empresa.
+Obtén el salario mínimo registrado en la empresa.
+Calcula la suma total de los salarios.
+Calcula el salario promedio de los empleados.
+Obtén la cantidad total de empleados registrados.
+Muestra la fecha actual utilizando las funciones correspondientes del sistema.
+Muestra la fecha de contratación incrementada en tres meses.
+Muestra el último día del mes correspondiente a la fecha de contratación.
+Calcula los meses transcurridos desde la fecha de contratación hasta la fecha actual.
+Muestra el siguiente lunes posterior a la fecha de contratación.
+Extrae el año y el mes de la fecha de contratación.
+Muestra la fecha y hora actual utilizando las funciones de marca temporal disponibles.
 
 Considerar únicamente los registros que cumplan con las siguientes condiciones:
 
-Que el título del libro contenga la letra a.
-Que pertenezcan a los géneros Novela, Distopía o Aventura.
-Que la multa esté entre 0 y 15.
-Excluir libros del género Ciencia Ficción.
-Permitir combinaciones de condiciones para obtener resultados más específicos.
+Que el nombre del empleado contenga la letra A o la letra E.
+Que pertenezcan a los departamentos VENTAS, MARKETING o IT, excluyendo aquellos cuyo salario sea inferior a 2.500.
+Que el salario esté comprendido entre 2.000 y 5.000 o que las ventas superen los 10.000.
+Excluir a los empleados pertenecientes al departamento RRHH y a aquellos cuyo apellido comience por la letra Z.
+Que hayan sido contratados después del 01/01/2022 y antes de la fecha actual.
+Que pertenezcan al departamento VENTAS y tengan un salario superior a 3.500, o que pertenezcan al departamento IT y hayan realizado ventas superiores a 12.000.
 
-Agrupar la información por género para obtener estadísticas por categoría y mostrar únicamente los grupos que cumplan con los criterios establecidos.
+Agrupar la información por departamento para obtener estadísticas por área y mostrar los resultados correspondientes a cada grupo.
 
-Finalmente, ordenar los resultados por nivel de multa, mostrando primero los registros con mayor penalización.
+Finalmente, ordenar los resultados según los criterios establecidos, mostrando primero los departamentos con mayor volumen de ventas y, en caso de empate, ordenando alfabéticamente por nombre del departamento.
 
 */
 
+
 IMPORTANTE:
-Después de este ejemplo debes generar también la CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5
+
+Después de generar la CONSULTA 1 debes generar también la CONSULTA 2, CONSULTA 3, CONSULTA 4 y CONSULTA 5.
+
+Cada una deberá ser distinta de las demás, manteniendo la misma estructura, longitud aproximada, cantidad de requisitos y nivel de dificultad.
+
+Las cinco consultas deberán poder resolverse utilizando la misma tabla creada para el ejercicio.
 
 Genera únicamente el EJERCICIO 1. No generes los demás ejercicios hasta que sean solicitados explícitamente.

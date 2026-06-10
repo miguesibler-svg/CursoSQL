@@ -1,0 +1,6 @@
+selec count, max, min, lenght, count, sum, avg, mod, round, trunc, lenght, upper, lower, lpad, rpad, trim, replace, translate, current_date, sysdate, add_months, months_between, last_day, next_day, current_timestamp, systimestamp, 
+
+where and, or, not , between, like, in, inner join
+
+group by
+order by

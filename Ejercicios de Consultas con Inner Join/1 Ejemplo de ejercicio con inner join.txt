@@ -1,0 +1,133 @@
+-- INSTRUCCIÓN
+
+Crea un script SQL completo que incluya lo siguiente:
+
+1. TABLAS  
+Dos sentencias SQL para la creación de tablas.  
+Cada tabla debe contener al menos 6 columnas.  
+Las tablas deben incluir distintos tipos de datos:  
+- Numéricos  
+- Cadenas de texto  
+- Fechas (utilizando TO_DATE() para su inserción)
+
+2. INSERCIONES  
+Por cada tabla, agrega 10 sentencias INSERT con datos coherentes y relacionados entre sí.  
+Los datos deben tener relación lógica entre ambas tablas (clave foránea funcional).
+
+3. CONSULTAS  
+
+REGLAS GENERALES  
+Crea 10 consultas SQL diferentes.  
+Todas las consultas deben utilizar INNER JOIN entre las dos tablas creadas.  
+Cada consulta debe incluir condiciones en WHERE basadas en los datos de las tablas.  
+
+Es obligatorio que las consultas incluyan de forma variada los siguientes operadores:  
+- IN  
+- LIKE  
+- BETWEEN  
+- AND  
+- NOT  
+
+🔒 REGLAS OBLIGATORIAS PARA LOS ENUNCIADOS  
+
+En los enunciados de las consultas:
+
+Debes indicar exactamente qué columnas se deben mostrar, usando los nombres reales de los campos de las tablas.  
+
+Debes especificar condiciones concretas, claras y medibles, como:  
+- Ciudades específicas (ej: CDMX, Guadalajara, Monterrey)  
+- Rangos de precios definidos (ej: entre 1000 y 5000)  
+- Rangos de fechas exactos (ej: entre 2025-01-01 y 2025-06-30)  
+- Categorías específicas (ej: Tecnología, Oficina, Muebles)  
+
+No se permiten condiciones ambiguas como:  
+- “productos caros”  
+- “clientes recientes”  
+- “compras grandes”  
+
+🚫 PROHIBICIÓN LINGÜÍSTICA  
+
+En los enunciados de las consultas:
+
+Está PROHIBIDO mencionar palabras reservadas SQL:  
+- IN  
+- LIKE  
+- BETWEEN  
+- AND  
+- NOT  
+
+(ni en mayúsculas ni en minúsculas)
+
+Las condiciones deben expresarse de forma natural y descriptiva, sin sintaxis SQL.
+
+🚫 PROHIBICIÓN ADICIONAL Y OBLIGATORIA  
+
+En los enunciados de las consultas:
+
+- NO deben incluir código SQL de ningún tipo  
+- NO deben incluir SELECT, FROM, WHERE ni ninguna instrucción SQL  
+- NO deben estar resueltos ni contestados  
+- SOLO deben ser descripciones en lenguaje natural de lo que se debe consultar  
+
+📌 ESTRUCTURA OBLIGATORIA DE CADA ENUNCIADO  
+
+Cada consulta debe incluir claramente:
+
+1. Columnas a mostrar  
+Ejemplo:  
+- nombre del cliente  
+- apellido  
+- ciudad  
+- producto  
+- categoría  
+- precio unitario  
+- fecha del pedido  
+
+2. Relación entre tablas  
+Clientes con sus pedidos mediante combinación INNER JOIN  
+
+3. Condiciones claras y específicas  
+Debes incluir al menos una combinación de:  
+- Lista de ciudades específicas  
+- Rangos de fechas definidos  
+- Rangos de precios definidos  
+- Categorías específicas  
+- Filtros de texto en nombres o productos  
+
+🧠 EJEMPLO DE ENUNCIADO CORRECTO  
+
+✔ Correcto:  
+Mostrar el nombre y apellido del cliente, la ciudad, el producto comprado, la categoría y el precio unitario de los pedidos realizados por clientes que viven en CDMX, Guadalajara o Monterrey, cuyos precios unitarios estén entre 1000 y 5000 pesos y cuyas fechas de pedido estén entre enero y junio de 2025.
+
+❌ Incorrecto:  
+Mostrar información de clientes con filtros de precio y ubicación.
+
+indicación importante 
+dame en uno solo para que solo se copie y se pegue 
+
+🚀 FORMATO FINAL DEL SCRIPT (OBLIGATORIO)
+
+-- ejercicio 1
+
+-- tablas  
+(aquí van las tablas)
+
+-- inserts  
+(aquí van los inserts)
+
+-- consultas  
+
+IMPORTANTE:
+Las consultas deben incluir ÚNICAMENTE enunciados en lenguaje natural.  
+NO deben incluir código SQL (no SELECT, no FROM, no WHERE).  
+NO deben estar resueltas ni contestadas.  
+NO deben contener palabras reservadas SQL.  
+Solo se permite describir lo que se debe consultar.
+
+-- consulta 1  
+/* solo enunciado en lenguaje natural que no esté contestado ni resuelto */  
+...  
+
+-- consulta 10  
+/* solo enunciado en lenguaje natural que no esté contestado ni resuelto */  
+...
