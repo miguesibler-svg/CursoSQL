@@ -1,0 +1,68 @@
+create table alumnos(
+id_alumno number(4) primary key, 
+nombre varchar2(100) not null,
+apellido varchar2(100) not null,
+telefono number(10) not null,
+fecha_ingreso date not null
+);
+
+create table materias(
+id_materia number(4) primary key,
+nombre_materia varchar2(100) not null,
+nota1 number(3,1) not null,
+nota2 number(3,1) not null,
+nota3 number(3,1) not null, 
+calificacion_final number(3,1),
+profesor varchar2(10) not null,
+id_alumno number(4) not null, 
+constraint fk_id_alumno
+foreign key(id_alumno)
+references alumnos(id_alumno)
+);
+
+alter table alumnos
+add correo varchar2(100) not null;
+
+alter table alumnos 
+add matricula varchar2(100) not null;
+
+alter table alumnos
+drop column correo;
+
+alter table alumnos
+add correo varchar2(100) not null;
+
+alter table alumnos
+modify correo varchar2(150) ;
+
+alter table alumnos
+rename column correo to correos;
+
+alter table alumnos
+rename column correos to correo;
+
+alter table materias
+rename to maestros;
+
+alter table maestros
+rename to materias;
+
+alter table alumnos
+add constraint ck_telefono_alumno
+check (telefono>0);
+
+alter table alumnos
+add constraint unq_correo_alumno
+unique (correo);
+
+
+insert into alumnos(id_alumno, nombre, apellido, telefono, fecha_ingreso, matricula, correo) 
+    values(2,'Marco','Espinoza','5638903385',to_date('07/01/2022','dd/mm/yyyy'),243271023,'243271023@gmail.com');
+
+
+
+
+
+
+
+
