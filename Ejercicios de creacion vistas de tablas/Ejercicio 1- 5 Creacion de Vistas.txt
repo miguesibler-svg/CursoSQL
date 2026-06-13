@@ -1,0 +1,321 @@
+CREATE TABLE Clientes (
+    id_cliente NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100),
+    ciudad VARCHAR2(50),
+    telefono VARCHAR2(20)
+);
+
+CREATE TABLE Pedidos (
+    id_pedido NUMBER PRIMARY KEY,
+    id_cliente NUMBER,
+    fecha_pedido DATE,
+    total NUMBER(10,2),
+    CONSTRAINT fk_cliente
+        FOREIGN KEY (id_cliente)
+        REFERENCES Clientes(id_cliente)
+);
+
+INSERT INTO Clientes VALUES (1, 'Juan Pérez', 'Ciudad de México', '5512345678');
+INSERT INTO Clientes VALUES (2, 'María López', 'Guadalajara', '3312345678');
+INSERT INTO Clientes VALUES (3, 'Carlos Ramírez', 'Monterrey', '8112345678');
+INSERT INTO Clientes VALUES (4, 'Ana Torres', 'Puebla', '2212345678');
+INSERT INTO Clientes VALUES (5, 'Luis Hernández', 'Toluca', '7221234567');
+INSERT INTO Clientes VALUES (6, 'Sofía García', 'Querétaro', '4421234567');
+INSERT INTO Clientes VALUES (7, 'Pedro Sánchez', 'Mérida', '9991234567');
+INSERT INTO Clientes VALUES (8, 'Laura Díaz', 'León', '4771234567');
+INSERT INTO Clientes VALUES (9, 'Miguel Flores', 'Tijuana', '6641234567');
+INSERT INTO Clientes VALUES (10, 'Elena Castillo', 'Cancún', '9981234567');
+
+INSERT INTO Pedidos VALUES (101, 1, TO_DATE('10/01/2025', 'DD/MM/YYYY'), 1500.00);
+INSERT INTO Pedidos VALUES (102, 2, TO_DATE('12/01/2025', 'DD/MM/YYYY'), 850.50);
+INSERT INTO Pedidos VALUES (103, 3, TO_DATE('15/01/2025', 'DD/MM/YYYY'), 2300.75);
+INSERT INTO Pedidos VALUES (104, 4, TO_DATE('18/01/2025', 'DD/MM/YYYY'), 950.00);
+INSERT INTO Pedidos VALUES (105, 5, TO_DATE('20/01/2025', 'DD/MM/YYYY'), 1250.25);
+INSERT INTO Pedidos VALUES (106, 6, TO_DATE('22/01/2025', 'DD/MM/YYYY'), 780.00);
+INSERT INTO Pedidos VALUES (107, 7, TO_DATE('25/01/2025', 'DD/MM/YYYY'), 3100.90);
+INSERT INTO Pedidos VALUES (108, 8, TO_DATE('28/01/2025', 'DD/MM/YYYY'), 640.40);
+INSERT INTO Pedidos VALUES (109, 9, TO_DATE('30/01/2025', 'DD/MM/YYYY'), 1850.00);
+INSERT INTO Pedidos VALUES (110, 10, TO_DATE('02/02/2025', 'DD/MM/YYYY'), 2200.60);
+
+/* Crear una vista que muestre el nombre del cliente, la ciudad y el total de cada pedido realizado. */
+create view pedidos_realizados
+as
+select c.nombre, c.ciudad, p.total
+from clientes c
+inner join pedidos p on p.id_cliente=c.id_cliente;
+
+
+/* Crear una vista que contenga únicamente los clientes que pertenecen a la ciudad de Guadalajara. */
+create view pedidos_guadalajara as 
+select c.* 
+from pedidos p
+inner join clientes c on c.id_cliente=p.id_cliente
+where c.ciudad='Guadalajara';
+
+
+/* Crear una vista que muestre los pedidos cuyo importe sea mayor a 1500 pesos. */
+create view importes as 
+select *
+from pedidos 
+where total>1500;
+
+
+/* Crear una vista que presente el nombre de los clientes junto con la fecha de sus pedidos, ordenados por fecha. */
+
+create view pedidos_p as 
+select c.nombre, p.fecha_pedido
+from clientes c 
+inner join pedidos p on p.id_cliente=c.id_cliente
+order by p.fecha_pedido;
+
+/* Crear una vista que muestre el total acumulado de compras realizadas por cada cliente. */
+create view compras_t 
+as
+select  c.id_cliente, sum(p.total) sumas
+from pedidos p 
+join clientes c on c.id_cliente=p.id_cliente
+group by c.id_cliente;
+
+select * from compras_T;
+
+select * from importes;
+
+select * from pedidos_guadalajara;
+
+select * from pedidos_p;
+
+select * from pedidos_realizados;
+
+
+
+CREATE TABLE Productos (
+    id_producto NUMBER PRIMARY KEY,
+    nombre_producto VARCHAR2(100),
+    categoria VARCHAR2(50),
+    precio NUMBER(10,2)
+);
+
+CREATE TABLE Ventas (
+    id_venta NUMBER PRIMARY KEY,
+    id_producto NUMBER,
+    fecha_venta DATE,
+    cantidad NUMBER,
+    CONSTRAINT fk_producto
+        FOREIGN KEY (id_producto)
+        REFERENCES Productos(id_producto)
+);
+
+INSERT INTO Productos VALUES (1, 'Laptop Lenovo', 'Electrónica', 15000.00);
+INSERT INTO Productos VALUES (2, 'Mouse Inalámbrico', 'Accesorios', 350.00);
+INSERT INTO Productos VALUES (3, 'Teclado Mecánico', 'Accesorios', 1200.00);
+INSERT INTO Productos VALUES (4, 'Monitor Samsung', 'Electrónica', 4800.00);
+INSERT INTO Productos VALUES (5, 'Impresora HP', 'Oficina', 3200.00);
+INSERT INTO Productos VALUES (6, 'Memoria USB 64GB', 'Almacenamiento', 250.00);
+INSERT INTO Productos VALUES (7, 'Disco Duro 1TB', 'Almacenamiento', 1800.00);
+INSERT INTO Productos VALUES (8, 'Webcam Logitech', 'Accesorios', 950.00);
+INSERT INTO Productos VALUES (9, 'Bocinas Bluetooth', 'Audio', 1100.00);
+INSERT INTO Productos VALUES (10, 'Tablet Samsung', 'Electrónica', 7200.00);
+
+INSERT INTO Ventas VALUES (101, 1, TO_DATE('05/03/2025', 'DD/MM/YYYY'), 2);
+INSERT INTO Ventas VALUES (102, 2, TO_DATE('07/03/2025', 'DD/MM/YYYY'), 5);
+INSERT INTO Ventas VALUES (103, 3, TO_DATE('08/03/2025', 'DD/MM/YYYY'), 3);
+INSERT INTO Ventas VALUES (104, 4, TO_DATE('10/03/2025', 'DD/MM/YYYY'), 1);
+INSERT INTO Ventas VALUES (105, 5, TO_DATE('12/03/2025', 'DD/MM/YYYY'), 2);
+INSERT INTO Ventas VALUES (106, 6, TO_DATE('15/03/2025', 'DD/MM/YYYY'), 10);
+INSERT INTO Ventas VALUES (107, 7, TO_DATE('18/03/2025', 'DD/MM/YYYY'), 4);
+INSERT INTO Ventas VALUES (108, 8, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 3);
+INSERT INTO Ventas VALUES (109, 9, TO_DATE('22/03/2025', 'DD/MM/YYYY'), 6);
+INSERT INTO Ventas VALUES (110, 10, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 2);
+
+
+/* Crear una vista que muestre el nombre del producto y su precio. */
+create view basica as 
+select nombre_producto, precio
+from productos;
+
+/* Crear una vista que presente únicamente los productos pertenecientes a la categoría Electrónica. */
+create view productosss as 
+select *
+from productos
+where categoria='Electrónica';
+/* Crear una vista que muestre las ventas realizadas junto con el nombre del producto correspondiente. */
+create view ventass as
+select p.nombre_producto, v.*
+from productos p 
+inner join ventas v on v.id_producto=p.id_producto;
+
+/* Crear una vista que contenga las ventas efectuadas después del 15 de marzo de 2025. */
+create view venas_adectuadas as
+select *
+from ventas
+where fecha_venta=TO_DATE('15/03/2025', 'DD/MM/YYYY');
+/* Crear una vista que muestre la cantidad total vendida de cada producto. */
+
+
+select * from basica;
+select * from productosss;
+select * from venas_adectuadas;
+select * from ventass;
+
+
+
+CREATE TABLE Empleados (
+    id_empleado NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100),
+    puesto VARCHAR2(50),
+    salario NUMBER(10,2)
+);
+
+CREATE TABLE Proyectos (
+    id_proyecto NUMBER PRIMARY KEY,
+    id_empleado NUMBER,
+    nombre_proyecto VARCHAR2(100),
+    fecha_inicio DATE,
+    CONSTRAINT fk_empleado
+        FOREIGN KEY (id_empleado)
+        REFERENCES Empleados(id_empleado)
+);
+
+INSERT INTO Empleados VALUES (1, 'José Martínez', 'Analista', 18000.00);
+INSERT INTO Empleados VALUES (2, 'Laura Gómez', 'Programador', 22000.00);
+INSERT INTO Empleados VALUES (3, 'Miguel Rivera', 'Diseñador', 19500.00);
+INSERT INTO Empleados VALUES (4, 'Patricia Flores', 'Administrador', 21000.00);
+INSERT INTO Empleados VALUES (5, 'Daniel Sánchez', 'Contador', 20000.00);
+INSERT INTO Empleados VALUES (6, 'Andrea Ruiz', 'Programador', 23000.00);
+INSERT INTO Empleados VALUES (7, 'Fernando Díaz', 'Analista', 18500.00);
+INSERT INTO Empleados VALUES (8, 'Carmen Herrera', 'Gerente', 30000.00);
+INSERT INTO Empleados VALUES (9, 'Roberto Castro', 'Soporte Técnico', 17000.00);
+INSERT INTO Empleados VALUES (10, 'Verónica Pérez', 'Recursos Humanos', 20500.00);
+
+
+INSERT INTO Proyectos VALUES (101, 1, 'Sistema de Inventarios', TO_DATE('10/01/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (102, 2, 'Portal Web Corporativo', TO_DATE('15/01/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (103, 3, 'Aplicación Móvil', TO_DATE('20/01/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (104, 4, 'Sistema de Nómina', TO_DATE('25/01/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (105, 5, 'Control de Ventas', TO_DATE('01/02/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (106, 6, 'Plataforma Educativa', TO_DATE('05/02/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (107, 7, 'Gestión de Clientes', TO_DATE('10/02/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (108, 8, 'Sistema Financiero', TO_DATE('15/02/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (109, 9, 'Mesa de Ayuda', TO_DATE('20/02/2025', 'DD/MM/YYYY'));
+INSERT INTO Proyectos VALUES (110, 10, 'Reclutamiento Digital', TO_DATE('25/02/2025', 'DD/MM/YYYY'));
+
+
+/* Crear una vista que muestre el nombre de los empleados y el puesto que desempeñan. */
+create view nombress as 
+select nombre, puesto
+from empleados;
+/* Crear una vista que presente únicamente los empleados cuyo salario sea mayor a $20,000. */
+create view unicamentes as 
+select *
+from empleados
+where salario>20000;
+/* Crear una vista que muestre el nombre del empleado junto con el nombre del proyecto asignado. */
+create view junto as 
+select e.nombre, p.nombre_proyecto
+from empleados e
+inner join proyectos p on p.id_empleado=e.id_empleado;
+/* Crear una vista que contenga los proyectos iniciados durante el mes de febrero de 2025. */
+create view contenga as 
+select *
+from proyectos
+where fecha_inicio between TO_DATE('01/02/2025', 'DD/MM/YYYY') and TO_DATE('28/02/2025', 'DD/MM/YYYY');
+/* Crear una vista que muestre la cantidad de proyectos asignados a cada empleado. */
+create view muestre as
+select e.nombre, count(p.nombre_proyecto)cantidad_proyecto
+from empleados e 
+inner join proyectos p on p.id_empleado=e.id_empleado
+group by e.nombre;
+
+
+select * from contenga;
+
+select * from junto;
+
+select * from muestre;
+
+select * from nombress;
+
+select * from unicamentes;
+
+
+CREATE TABLE Libros (
+    id_libro NUMBER PRIMARY KEY,
+    titulo VARCHAR2(100),
+    autor VARCHAR2(100),
+    genero VARCHAR2(50)
+);
+
+CREATE TABLE Prestamos (
+    id_prestamo NUMBER PRIMARY KEY,
+    id_libro NUMBER,
+    fecha_prestamo DATE,
+    dias_prestamo NUMBER,
+    CONSTRAINT fk_libro
+        FOREIGN KEY (id_libro)
+        REFERENCES Libros(id_libro)
+);
+
+
+INSERT INTO Libros VALUES (1, 'Cien Años de Soledad', 'Gabriel García Márquez', 'Novela');
+INSERT INTO Libros VALUES (2, 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Clásico');
+INSERT INTO Libros VALUES (3, 'El Principito', 'Antoine de Saint-Exupéry', 'Infantil');
+INSERT INTO Libros VALUES (4, '1984', 'George Orwell', 'Ciencia Ficción');
+INSERT INTO Libros VALUES (5, 'La Odisea', 'Homero', 'Épico');
+INSERT INTO Libros VALUES (6, 'Drácula', 'Bram Stoker', 'Terror');
+INSERT INTO Libros VALUES (7, 'Rayuela', 'Julio Cortázar', 'Novela');
+INSERT INTO Libros VALUES (8, 'Hamlet', 'William Shakespeare', 'Drama');
+INSERT INTO Libros VALUES (9, 'Fahrenheit 451', 'Ray Bradbury', 'Ciencia Ficción');
+INSERT INTO Libros VALUES (10, 'El Hobbit', 'J. R. R. Tolkien', 'Fantasía');
+
+
+INSERT INTO Prestamos VALUES (101, 1, TO_DATE('05/04/2025', 'DD/MM/YYYY'), 7);
+INSERT INTO Prestamos VALUES (102, 2, TO_DATE('06/04/2025', 'DD/MM/YYYY'), 10);
+INSERT INTO Prestamos VALUES (103, 3, TO_DATE('08/04/2025', 'DD/MM/YYYY'), 5);
+INSERT INTO Prestamos VALUES (104, 4, TO_DATE('10/04/2025', 'DD/MM/YYYY'), 14);
+INSERT INTO Prestamos VALUES (105, 5, TO_DATE('12/04/2025', 'DD/MM/YYYY'), 8);
+INSERT INTO Prestamos VALUES (106, 6, TO_DATE('15/04/2025', 'DD/MM/YYYY'), 6);
+INSERT INTO Prestamos VALUES (107, 7, TO_DATE('18/04/2025', 'DD/MM/YYYY'), 9);
+INSERT INTO Prestamos VALUES (108, 8, TO_DATE('20/04/2025', 'DD/MM/YYYY'), 12);
+INSERT INTO Prestamos VALUES (109, 9, TO_DATE('22/04/2025', 'DD/MM/YYYY'), 7);
+INSERT INTO Prestamos VALUES (110, 10, TO_DATE('25/04/2025', 'DD/MM/YYYY'), 15);
+
+
+/* Crear una vista que muestre el título y el autor de todos los libros registrados. */
+create view titulo as 
+select titulo, autor
+from libros;
+/* Crear una vista que contenga únicamente los libros del género Ciencia Ficción. */
+create view vis as 
+select *
+from libros
+where genero='Ciencia Ficción';
+/* Crear una vista que muestre el título del libro junto con la fecha en que fue prestado. */
+create view nas as 
+select l.titulo, p.fecha_prestamo
+from libros l 
+inner join prestamos p on p.id_libro=l.id_libro;
+/* Crear una vista que presente los préstamos cuya duración sea mayor a 10 días. */
+create view un as 
+select l.titulo, p.fecha_prestamo
+from prestamos p 
+inner join libros l on l.id_libro=p.id_libro
+where p.dias_prestamo>10;
+/* Crear una vista que muestre la cantidad de préstamos realizados por cada libro. */
+create view ll as 
+select l.titulo, count(p.id_libro) total_libro
+from prestamos p
+inner join libros l on l.id_libro=p.id_libro
+group by l.titulo;
+
+
+select * from ll;
+select * from nas;
+select * from titulo;
+select * from un;
+select * from vis;
+
+
+
+
+
+

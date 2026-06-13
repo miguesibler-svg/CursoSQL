@@ -1,0 +1,75 @@
+procedimientos elaborados
+
+create view vista_articulos_01 as
+select a.codigo_ar, a.descripcion_ar, a.marca_ar, m.descripcion_me, c.descripcion_ca, a.stock, a.fecha_registro, a.activo
+from articulos a
+join medidas m on m.codigo_me=a.codigo_me
+join categorias c on c.codigo_ca=a.codigo_ca
+order by a.codigo_ar;
+
+
+
+create procedure actualizar_ca(pcodigo in int, pdescripciom_ca in varchar2)
+as 
+
+begin
+
+    update categorias set descripcion_ca=pdescripciom_ca
+    where codigo_ca=pcodigo;
+
+end;
+
+
+
+create procedure guardar_ar(gCODIGO_AR number, gDESCRIPCION_AR varchar2, gMARCA_AR varchar2, gSTOCK number, 
+    gFECHA_REGISTRO date, gACTIVO number, gCODIGO_ME number, gCODIGO_CA number )
+as 
+begin
+
+insert into articulos(codigo_ar, DESCRIPCION_AR, MARCA_AR, STOCK, FECHA_REGISTRO, ACTIVO, CODIGO_ME, CODIGO_CA)
+    values(gCODIGO_AR, gDESCRIPCION_AR, gMARCA_AR, gSTOCK, gFECHA_REGISTRO, gACTIVO, gCODIGO_ME, gCODIGO_CA);
+    
+    commit;
+
+end;
+
+
+
+
+
+create procedure buscar_categoria(gCODIGO_CA in number, gDESCRIPCION_CA out varchar2)
+as
+begin
+
+select DESCRIPCION_CA into gDESCRIPCION_CA  
+from categorias 
+where CODIGO_CA=gCODIGO_CA;
+
+end;
+
+
+
+
+var nDESCRIPCION_CA varchar2;
+
+execute buscar_categoria(4,:nDESCRIPCION_CA);
+
+print nDESCRIPCION_CA;
+
+
+
+
+create procedure proc_descripcion_me(p01 in varchar2, p02 out varchar2)
+as 
+begin
+    select descripcion_me into p02
+    from medidas
+    where codigo_me=p01;
+end;
+
+
+var dDescripcion varchar2;
+
+execute proc_descripcion_me(1,:dDescripcion);
+
+print dDescripcion;

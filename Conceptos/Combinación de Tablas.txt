@@ -1,0 +1,122 @@
+Combinación de Tablas
+
+INNER JOIN 
+
+- Función: Devuelve únicamente los registros que tienen coincidencias en ambas tablas.
+
+- Sintaxis:
+
+	SELECT columnas
+	FROM tabla1
+	INNER JOIN tabla2
+	ON tabla1.campo = tabla2.campo;
+
+- Ejemplo: 
+
+	SELECT Clientes.nombre, Pedidos.id_pedido
+	FROM Clientes
+	INNER JOIN Pedidos
+	ON Clientes.id_cliente = Pedidos.id_cliente;
+
+left join 
+
+- Función: Devuelve todos los registros de la tabla izquierda y las coincidencias de la tabla derecha. Si no hay 	   coincidencia, muestra NULL.
+
+- Sintaxis:
+
+	SELECT columnas
+	FROM tabla1
+	LEFT JOIN tabla2
+	ON tabla1.campo = tabla2.campo;
+
+- Ejemplo:
+
+	SELECT Clientes.nombre, Pedidos.id_pedido
+	FROM Clientes
+	LEFT JOIN Pedidos
+	ON Clientes.id_cliente = Pedidos.id_cliente;
+
+right join 
+
+- Función: Devuelve todos los registros de la tabla derecha y las coincidencias de la tabla izquierda
+
+- Sintaxis:
+
+	SELECT columnas
+	FROM tabla1
+	RIGHT JOIN tabla2
+	ON tabla1.campo = tabla2.campo;
+
+- Ejemplo:
+
+	SELECT Clientes.nombre, Pedidos.id_pedido
+	FROM Clientes
+	RIGHT JOIN Pedidos
+	ON Clientes.id_cliente = Pedidos.id_cliente;
+
+full join 
+
+- Función: Devuelve todos los registros de ambas tablas. Cuando no existe coincidencia, se muestran valores NULL.
+
+- Sintaxis:
+
+	SELECT column_name(s)
+	FROM table1
+	FULL JOIN table2 ON table1.column_name = table2.column_name
+	WHERE condition;
+
+- Ejemplo:
+
+	SELECT Clientes.nombre, Pedidos.id_pedido
+	FROM Clientes
+	FULL JOIN Pedidos ON Clientes.id_cliente = Pedidos.id_cliente;
+
+self join 
+
+- Función:Permite relacionar una tabla consigo misma.
+
+- Sintaxis:
+
+	SELECT A.columna, B.columna
+	FROM tabla A
+	JOIN tabla B
+	ON A.campo = B.campo;
+
+- Ejemplo:
+
+	SELECT E.nombre AS Empleado, J.nombre AS Jefe
+	FROM Empleados E
+	LEFT JOIN Empleados J
+	ON E.id_jefe = J.id;
+
+unión 
+
+- Función: Combina los resultados de dos consultas y elimina los registros duplicados.
+
+- Sintaxis:
+
+	SELECT columna FROM tabla1
+	UNION
+	SELECT columna FROM tabla2;
+
+- Ejemplo:
+
+	SELECT nombre FROM Clientes_A
+	UNION
+	SELECT nombre FROM Clientes_B;
+
+unión all
+
+- Función: Combina los resultados de dos consultas y conserva los registros duplicados.
+
+- Sintaxis:
+SELECT columna FROM tabla1
+UNION ALL
+SELECT columna FROM tabla2;
+
+- Ejemplo:
+
+	SELECT nombre FROM Clientes_A
+	UNION ALL
+	SELECT nombre FROM Clientes_B;
+

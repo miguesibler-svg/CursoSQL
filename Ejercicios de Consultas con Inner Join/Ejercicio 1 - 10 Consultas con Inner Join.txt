@@ -1,0 +1,1512 @@
+-- ejercicio 1
+
+-- tablas
+
+CREATE TABLE clientes (
+id_cliente NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+email VARCHAR2(100),
+fecha_registro DATE
+);
+
+CREATE TABLE pedidos (
+id_pedido NUMBER PRIMARY KEY,
+id_cliente NUMBER,
+producto VARCHAR2(100),
+categoria VARCHAR2(50),
+precio_unitario NUMBER,
+fecha_pedido DATE,
+CONSTRAINT fk_clientes_pedidos FOREIGN KEY (id_cliente)
+REFERENCES clientes(id_cliente)
+);
+
+-- inserts
+
+-- tabla clientes
+INSERT INTO clientes VALUES (1, 'Ana', 'Lopez', 'CDMX', 'ana.lopez@mail.com', TO_DATE('2025-01-05','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (2, 'Luis', 'Hernandez', 'Guadalajara', 'luis.hernandez@mail.com', TO_DATE('2025-02-10','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (3, 'Maria', 'Gomez', 'Monterrey', 'maria.gomez@mail.com', TO_DATE('2025-03-12','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (4, 'Carlos', 'Ramirez', 'CDMX', 'carlos.ramirez@mail.com', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (5, 'Sofia', 'Torres', 'Puebla', 'sofia.torres@mail.com', TO_DATE('2025-05-22','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (6, 'Jorge', 'Diaz', 'Guadalajara', 'jorge.diaz@mail.com', TO_DATE('2025-06-02','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (7, 'Elena', 'Vargas', 'CDMX', 'elena.vargas@mail.com', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (8, 'Pedro', 'Sanchez', 'Monterrey', 'pedro.sanchez@mail.com', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (9, 'Lucia', 'Morales', 'Toluca', 'lucia.morales@mail.com', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO clientes VALUES (10, 'Diego', 'Castillo', 'CDMX', 'diego.castillo@mail.com', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla pedidos
+INSERT INTO pedidos VALUES (101, 1, 'Laptop Lenovo', 'Tecnología', 15000, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (102, 2, 'Escritorio de Oficina', 'Oficina', 3500, TO_DATE('2025-02-15','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (103, 3, 'Silla Gamer', 'Muebles', 4200, TO_DATE('2025-03-20','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (104, 4, 'Monitor 24 pulgadas', 'Tecnología', 3200, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (105, 5, 'Impresora HP', 'Oficina', 2800, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (106, 6, 'Laptop Dell', 'Tecnología', 18000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (107, 7, 'Mesa de comedor', 'Muebles', 6000, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (108, 8, 'Tablet Samsung', 'Tecnología', 7000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (109, 9, 'Silla de oficina', 'Oficina', 1500, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO pedidos VALUES (110, 10, 'Smartphone Xiaomi', 'Tecnología', 8000, TO_DATE('2025-04-15','YYYY-MM-DD'));
+commit;
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del cliente, apellido, ciudad, producto adquirido, categoría del producto, precio unitario y fecha del pedido de los registros de clientes que viven en CDMX, Guadalajara o Monterrey, con precios unitarios desde 1000 pesos hasta 5000 pesos y con fechas de pedido desde 2025-01-01 hasta 2025-06-30, incluyendo únicamente productos del área de Tecnología u Oficina, y relacionando clientes con pedidos mediante la unión de ambas tablas.*/
+
+select c.nombre||' - '||c.apellido, c.ciudad, p.producto, p.precio_unitario, p.fecha_pedido
+from clientes c 
+inner join pedidos p on p.id_cliente=c.id_cliente
+where c.ciudad in ('CDMX','Gudalajara', 'Monterrey') 
+      and p.precio_unitario between 1000 and 5000
+      and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd') 
+      and p.categoria='Tecnologia' or p.categoria='Oficina';  
+
+-- consulta 2
+/*Mostrar el nombre del cliente, ciudad, producto comprado, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Puebla que hayan comprado productos cuya categoría sea Tecnología, Oficina o Muebles, con precios desde 2000 pesos hasta 10000 pesos y fechas del 2025-02-01 al 2025-05-31, relacionando clientes con pedidos mediante su identificación común.*/
+select trim(c.nombre), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p
+join clientes c on c.id_cliente=p.id_cliente 
+where c.ciudad='CDMX' or c.ciudad='Puebla' and categoria in ('Tecnología', 'oficina', 'Muebles') 
+      and p.precio_unitario between 2000 and 10000 and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and 
+      to_date('2025/05/31','yyyy/mm/dd');
+
+
+-- consulta 3
+/*Mostrar el nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Guadalajara, Monterrey o Toluca con productos que contengan la palabra Laptop o Monitor en su nombre, con precios desde 3000 pesos hasta 20000 pesos y fechas del 2025-01-01 al 2025-06-30, uniendo ambas tablas por su relación de cliente.*/
+select c.nombre, c.apellido, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+inner join pedidos p on p.id_cliente=c.ID_CLIENTE
+where c.ciudad in ('Guadalajara', 'Monterrey', 'Toluca') and (p.producto like '%Laptop%' or p.producto like '%Monitor%') 
+      and p.precio_unitario between 3000 and 20000 and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and 
+      to_date('2025/06/30','yyyy/mm/dd');
+
+
+-- consulta 4
+/*Mostrar el nombre del cliente, correo electrónico, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Guadalajara cuyos productos pertenezcan a Tecnología o Muebles, con precios desde 1500 pesos hasta 8000 pesos y fechas del 2025-03-01 al 2025-06-30, relacionando clientes con sus pedidos.*/
+select c.nombre, c.email, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido 
+from clientes c 
+join pedidos p on p.id_cliente=c.id_cliente
+where (c.ciudad='CDMX' or c.ciudad='Guadalajara') and (p.categoria='Tecnología' or p.categoria='Muebles')
+      and p.precio_unitario between 1500 and 8000 and fecha_pedido between to_date('2025/03/01','yyyy/mm/dd') and 
+      to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 5
+
+/*Mostrar nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Monterrey o Puebla con productos que contengan la palabra Silla o Mesa en el nombre, con precios desde 1000 pesos hasta 6000 pesos y fechas del 2025-01-01 al 2025-05-30, uniendo ambas tablas por su vínculo de cliente.*/
+select trim(c.nombre)||' - '||trim(c.apellido), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente 
+where c.ciudad in ('Monterrey','Puebla') and (p.producto like '%Silla%' or p.producto like '%Mesa%') and 
+      p.precio_unitario between 1000 and 6000 and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and 
+      to_date('2025/05/30','yyyy/mm/dd');
+
+-- consulta 6
+/*Mostrar el nombre del cliente, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX, Monterrey o Toluca con productos del área de Tecnología, con precios desde 5000 pesos hasta 20000 pesos y fechas del 2025-02-01 al 2025-06-30, relacionando clientes con pedidos mediante su clave común.*/
+select c.nombre, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.ID_CLIENTE
+where c.ciudad in ('CDMX', 'Monterrey', 'Toluca') 
+      and p.categoria='Tecnología' 
+      and p.precio_unitario between 5000 and 20000 
+      and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd')  and to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 7
+/*Mostrar nombre, apellido, ciudad del cliente, producto, categoría, precio unitario y fecha del pedido de los clientes de Guadalajara o CDMX con productos que contengan la palabra Tablet o Smartphone en su nombre, con precios desde 6000 pesos hasta 9000 pesos y fechas del 2025-02-01 al 2025-06-30, uniendo ambas tablas por su relación.*/
+select trim(upper(c.nombre))||' - '||trim(upper(c.apellido)), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente
+where (c.ciudad='Guadalajara' or c.ciudad='CDMX') and (p.producto like '%Tablet%' or p.producto like '%Smartphone%')
+      and p.precio_unitario between 6000 and 9000 
+      and fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/*Mostrar el nombre del cliente, correo, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de Puebla, Toluca o Monterrey con productos del área de Oficina o Muebles, con precios desde 1500 pesos hasta 7000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando clientes con pedidos mediante su identificación.*/
+select trim(upper(c.nombre)), c.email, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.id_cliente
+where c.ciudad in ('Puebla', 'Toluca', 'Monterrey') and p.categoria in ('Oficina', 'Muebles')
+      and (p.precio_unitario between 1500 and 7000) 
+      and p.fecha_pedido between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*Mostrar nombre del cliente, apellido, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de CDMX o Guadalajara con productos que contengan la palabra Impresora o Escritorio en el nombre, con precios desde 2000 pesos hasta 4000 pesos y fechas del 2025-02-01 al 2025-05-31, uniendo ambas tablas por su vínculo.*/
+select trim(upper(c.nombre))||' '||trim(upper(c.apellido)), c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from pedidos p 
+inner join clientes c on c.id_cliente = p.id_cliente
+where (c.ciudad='CDMX' or c.ciudad='Guadalajara') and (p.producto like '%Impresora%' or p.producto like '%Escritorio%')
+      and (p.precio_unitario between 2000 and 4000) and p.fecha_pedido between to_date('2025/02/01','yyyy/mm/dd') and 
+      to_date('2025/05/01','yyyy/mm/dd');
+-- consulta 10
+/*Mostrar el nombre del cliente, ciudad, producto, categoría, precio unitario y fecha del pedido de los clientes de Monterrey, CDMX o Guadalajara con productos del área de Tecnología u Oficina, con precios desde 1000 pesos hasta 18000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando clientes con pedidos mediante su relación directa.*/
+select c.nombre, c.ciudad, p.producto, p.categoria, p.precio_unitario, p.fecha_pedido
+from clientes c 
+join pedidos p on p.id_cliente = c.id_cliente 
+where c.ciudad in ('Monterrey', 'CDMX', 'Guadalajara') and p.categoria in ('Tecnología','Oficina')
+      and (p.precio_unitario between 1000 and 18000) 
+      and p.fecha_pedido between ('2025/01/01','yyyy/mm/yy') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+-- ejercicio 2
+
+-- tablas
+
+CREATE TABLE estudiantes (
+id_estudiante NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+correo VARCHAR2(100),
+fecha_registro DATE
+);
+
+CREATE TABLE cursos (
+id_curso NUMBER PRIMARY KEY,
+id_estudiante NUMBER,
+nombre_curso VARCHAR2(100),
+categoria VARCHAR2(50),
+costo NUMBER,
+fecha_inicio DATE,
+CONSTRAINT fk_estudiantes_cursos FOREIGN KEY (id_estudiante)
+REFERENCES estudiantes(id_estudiante)
+);
+
+-- inserts
+
+-- tabla estudiantes
+INSERT INTO estudiantes VALUES (1, 'Ana', 'Martinez', 'CDMX', 'ana.martinez@mail.com', TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (2, 'Luis', 'Garcia', 'Guadalajara', 'luis.garcia@mail.com', TO_DATE('2025-02-14','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (3, 'Maria', 'Hernandez', 'Monterrey', 'maria.hernandez@mail.com', TO_DATE('2025-03-18','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (4, 'Carlos', 'Lopez', 'CDMX', 'carlos.lopez@mail.com', TO_DATE('2025-04-22','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (5, 'Sofia', 'Ramirez', 'Puebla', 'sofia.ramirez@mail.com', TO_DATE('2025-05-05','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (6, 'Jorge', 'Torres', 'Guadalajara', 'jorge.torres@mail.com', TO_DATE('2025-06-09','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (7, 'Elena', 'Diaz', 'CDMX', 'elena.diaz@mail.com', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (8, 'Pedro', 'Sanchez', 'Toluca', 'pedro.sanchez@mail.com', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (9, 'Lucia', 'Morales', 'Monterrey', 'lucia.morales@mail.com', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO estudiantes VALUES (10, 'Diego', 'Castillo', 'CDMX', 'diego.castillo@mail.com', TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- tabla cursos
+INSERT INTO cursos VALUES (201, 1, 'Python Basico', 'Tecnologia', 2500, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (202, 2, 'Excel Avanzado', 'Ofimatica', 1800, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (203, 3, 'Diseño Grafico', 'Arte', 3200, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (204, 4, 'Bases de Datos', 'Tecnologia', 4000, TO_DATE('2025-04-28','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (205, 5, 'Marketing Digital', 'Negocios', 3500, TO_DATE('2025-05-10','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (206, 6, 'Java Intermedio', 'Tecnologia', 5000, TO_DATE('2025-06-12','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (207, 7, 'Fotografia', 'Arte', 2200, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (208, 8, 'Administracion', 'Negocios', 2800, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (209, 9, 'React JS', 'Tecnologia', 4500, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO cursos VALUES (210, 10, 'Contabilidad Basica', 'Finanzas', 3000, TO_DATE('2025-04-20','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del estudiante, apellido, ciudad, nombre del curso, categoria, costo del curso y fecha de inicio de los registros de estudiantes que viven en CDMX, Guadalajara o Monterrey, cuyos costos se encuentren desde 2000 pesos hasta 5000 pesos y cuyas fechas de inicio estén desde 2025-01-01 hasta 2025-06-30, incluyendo únicamente cursos del area de Tecnologia o Negocios, relacionando estudiantes con sus cursos mediante su identificador común.*/
+select trim(lower(e.nombre))|| ' '||trim(lower(e.apellido)) nombre, e.ciudad, c.nombre_curso, c.categoria, c.fecha_inicio
+from estudiantes e 
+inner join cursos c on c.id_estudiante = e.id_estudiante
+where e.ciudad in ('CDMX', 'Guadalajara', 'Monterrey') 
+      and (c.costo between 2000 and 5000) 
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/01','yyyy/mm/dd')
+      and (c.categoria='Tecnologia' or c.categoria='Negocios');
+-- consulta 2
+/*
+Mostrar el nombre del estudiante, ciudad, correo, nombre del curso, categoria, costo del curso y fecha de inicio de los estudiantes de CDMX o Puebla, con cursos del area de Arte, Ofimatica o Finanzas, cuyos costos se encuentren desde 1800 pesos hasta 3500 pesos y fechas de inicio del 2025-02-01 al 2025-05-31, uniendo estudiantes con cursos por su relacion directa.*/
+select trim(lower(e.nombre)), e.ciudad, e.correo, c.nombre_curso, c.costo, c.fecha_inicio
+from cursos c
+join estudiantes e on e.id_estudiante = c.id_estudiante
+where (e.ciudad='CDMX' or e.ciudad='Puebla')
+      and  c.categoria in ('Arte', 'Ofimatica', 'Finanzas')
+      and c.costo between 1800 and 3500
+      and fecha_inicio between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/*
+Mostrar nombre y apellido del estudiante, ciudad, nombre del curso, categoria, costo y fecha de inicio de estudiantes de Guadalajara, Monterrey o Toluca con cursos cuyo nombre incluya la palabra Python o Java, con costos desde 2000 pesos hasta 6000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando ambas tablas por su identificador.*/
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, c.nombre_curso, c.categoria, c.fecha_inicio
+from estudiantes e 
+inner join cursos c on c.id_estudiante = e.ID_ESTUDIANTE
+where e.ciudad='Monterrey' or e.ciudad='Toluca'
+      and c.nombre_curso like '%Python%' or  c.nombre_curso like '%Java%'
+      and c.costo>2000 and c.costo<6000
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/*
+Mostrar nombre del estudiante, correo, ciudad, nombre del curso, categoria, costo y fecha de inicio de estudiantes de CDMX o Guadalajara con cursos del area de Tecnologia o Arte, con costos desde 2000 pesos hasta 4500 pesos y fechas del 2025-03-01 al 2025-06-30, vinculando estudiantes con cursos mediante su relacion.*/
+select e.nombre, e.correo, e.ciudad, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from estudiantes e 
+join cursos c on c.id_estudiante = e.id_estudiante 
+where e.ciudad in ('CDMX','Guadalajara')
+      and c.categoria in ('Tecnología', 'Arte')
+      and c.costo between 2000 and 4500
+      and c.fecha_inicio between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/*
+Mostrar nombre, apellido, ciudad del estudiante, nombre del curso, categoria, costo y fecha de inicio de estudiantes de Monterrey o Puebla con cursos cuyo nombre incluya Marketing o Administracion, con costos desde 2500 pesos hasta 4000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando ambas tablas.*/
+select trim(upper(e.nombre))||' '||trim(upper(e.apellido)), e.ciudad, c.nombre_curso, c.categoria, c.fecha_inicio
+from cursos c 
+inner join estudiantes e on e.id_estudiante = c.id_estudiante 
+where e.ciudad in ('Monterrey', 'Puebla') and c.nombre_curso like '%Marketing%' or c.nombre_curso like '%Administracion%'
+      and c.costo between 2500 and 4000
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/*
+Mostrar nombre del estudiante, ciudad, nombre del curso, categoria, costo y fecha de inicio de estudiantes de CDMX, Monterrey o Toluca con cursos del area de Tecnologia, con costos desde 3000 pesos hasta 5000 pesos y fechas del 2025-02-01 al 2025-06-30, uniendo estudiantes con cursos por su clave.*/
+select e.nombre, e.ciudad, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from estudiantes e 
+inner join cursos c on c.id_estudiante = e.id_estudiante 
+where e.ciudad='Monterrey' or e.ciudad='Toluca'
+      and c.categoria='Tecnologia' and c.costo between 3000 and 5000 
+      and fecha_inicio between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/*
+Mostrar nombre y apellido del estudiante, ciudad, correo, nombre del curso, categoria, costo y fecha de inicio de estudiantes de Guadalajara o CDMX con cursos cuyo nombre incluya Excel o React, con costos desde 1800 pesos hasta 5000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando ambas tablas.*/
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, e.correo, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from estudiantes e 
+join cursos c on c.id_estudiante = e.ID_ESTUDIANTE
+where e.ciudad in ('Guadalajara','CDMX') 
+      and c.nombre_curso like '%Excel%' or c.nombre_curso like '%React%'
+      and c.costo between 1800 and 5000
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/*
+Mostrar nombre del estudiante, ciudad, nombre del curso, categoria, costo y fecha de inicio de estudiantes de Puebla, Toluca o Monterrey con cursos del area de Negocios o Finanzas, con costos desde 2000 pesos hasta 3500 pesos y fechas del 2025-01-01 al 2025-06-30, vinculando estudiantes con cursos.*/
+select e.nombre, e.ciudad, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from cursos c 
+inner join estudiantes e on e.id_estudiante = c.id_estudiante 
+where e.ciudad in ('Puebla','Toluca','Monterrey')
+      and c.categoria in ('Negocios','Finanzas')
+      and c.costo between 2000 and 3500
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*
+Mostrar nombre, apellido, ciudad del estudiante, nombre del curso, categoria, costo y fecha de inicio de estudiantes de CDMX o Monterrey con cursos cuyo nombre incluya Fotografia o Diseño, con costos desde 2000 pesos hasta 3500 pesos y fechas del 2025-01-01 al 2025-05-31, relacionando ambas tablas.*/
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from cursos c 
+join estudiantes e on e.id_estudiante = c.id_estudiante 
+where e.ciudad in ('CDMX','Monterrey')
+      and c.nombre_curso like '%Fotografia%' and c.nombre_curso like '%Diseño%'
+      and c.costo between 2000 and 35000 
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/*
+Mostrar nombre del estudiante, ciudad, correo, nombre del curso, categoria, costo y fecha de inicio de estudiantes de CDMX, Guadalajara o Monterrey con cursos del area de Tecnologia o Ofimatica, con costos desde 1500 pesos hasta 5000 pesos y fechas de inicio desde 2025-01-01 hasta 2025-06-30, uniendo estudiantes con cursos mediante su relacion directa.*/
+select e.nombre, e.ciudad, e.correo, c.nombre_curso, c.categoria, c.costo, c.fecha_inicio
+from estudiantes e 
+inner join cursos c on c.id_estudiante = e.id_estudiante
+where e.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and c.categoria='Tecnologia' or c.categoria='Ofimatica'
+      and c.costo between 1500 and 5000
+      and c.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+CREATE TABLE empleados (
+id_empleado NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+departamento VARCHAR2(50),
+salario NUMBER,
+fecha_ingreso DATE
+);
+
+CREATE TABLE ventas (
+id_venta NUMBER PRIMARY KEY,
+id_empleado NUMBER,
+producto VARCHAR2(100),
+categoria VARCHAR2(50),
+cantidad NUMBER,
+precio_unitario NUMBER,
+fecha_venta DATE,
+CONSTRAINT fk_empleados_ventas FOREIGN KEY (id_empleado)
+REFERENCES empleados(id_empleado)
+);
+
+-- inserts
+
+-- tabla empleados
+INSERT INTO empleados VALUES (1, 'Ana', 'Lopez', 'CDMX', 'Tecnologia', 18000, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (2, 'Luis', 'Hernandez', 'Guadalajara', 'Ventas', 15000, TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (3, 'Maria', 'Gomez', 'Monterrey', 'Marketing', 17000, TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (4, 'Carlos', 'Ramirez', 'CDMX', 'Finanzas', 20000, TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (5, 'Sofia', 'Torres', 'Puebla', 'Tecnologia', 22000, TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (6, 'Jorge', 'Diaz', 'Toluca', 'Ventas', 16000, TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (7, 'Elena', 'Vargas', 'CDMX', 'Marketing', 17500, TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (8, 'Pedro', 'Sanchez', 'Monterrey', 'Tecnologia', 21000, TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (9, 'Lucia', 'Morales', 'Guadalajara', 'Finanzas', 19000, TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO empleados VALUES (10, 'Diego', 'Castillo', 'CDMX', 'Ventas', 15500, TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla ventas
+INSERT INTO ventas VALUES (301, 1, 'Laptop HP', 'Tecnologia', 2, 15000, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (302, 2, 'Mouse Logitech', 'Accesorios', 5, 500, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (303, 3, 'Campaña Digital', 'Marketing', 1, 8000, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (304, 4, 'Software Contable', 'Finanzas', 3, 12000, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (305, 5, 'Servidor Dell', 'Tecnologia', 1, 25000, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (306, 6, 'Curso Ventas', 'Ventas', 4, 3000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (307, 7, 'Publicidad Facebook', 'Marketing', 2, 7000, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (308, 8, 'Tablet Samsung', 'Tecnologia', 3, 9000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (309, 9, 'Consultoria Financiera', 'Finanzas', 1, 15000, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO ventas VALUES (310, 10, 'CRM Software', 'Tecnologia', 2, 18000, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del empleado, apellido, ciudad, departamento, producto vendido, categoria del producto, cantidad vendida, precio unitario y fecha de venta de los empleados que trabajan en CDMX, Guadalajara o Monterrey, con precios unitarios entre 1000 y 20000 pesos y fechas de venta entre 2025-01-01 y 2025-06-30, incluyendo únicamente productos del area de Tecnologia o Marketing, relacionando empleados con ventas mediante su identificador.*/
+select trim(upper(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, e.departamento, v.producto, v.categoria, v.precio_unitario, 
+       v.fecha_venta
+from empleados e 
+inner join ventas v on v.id_empleado= e.id_empleado 
+where e.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and v.precio_unitario between 1000 and 20000 
+      and fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 2
+/*
+Mostrar el nombre del empleado, ciudad, departamento, producto vendido, categoria, cantidad vendida, precio unitario y fecha de venta de los empleados de CDMX o Puebla, con productos del area de Tecnologia, Ventas o Finanzas, con precios entre 3000 y 25000 pesos y fechas del 2025-02-01 al 2025-05-31, uniendo empleados con ventas por su relacion directa.*/
+select e.nombre, e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad , v.precio_unitario
+from ventas v 
+inner join empleados e on e.id_empleado = v.ID_EMPLEADO
+where e.ciudad='CDMX' or e.ciudad='Puebla'
+      and v.categoria in ('Tecnologia','Ventas','Finanzas')
+      and v.precio_unitario between 3000 and 25000
+      and v.fecha_venta between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+
+-- consulta 3
+/*
+Mostrar nombre y apellido del empleado, ciudad, departamento, producto vendido, categoria, cantidad y fecha de venta de empleados de Guadalajara, Monterrey o Toluca con productos cuyo nombre incluya Laptop o Software, con precios entre 8000 y 25000 pesos y fechas entre 2025-01-01 y 2025-06-30, relacionando ambas tablas por su identificador común.*/
+select trim(lower(e.nombre))||' '||trim(upper(e.apellido)), e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from ventas v 
+join empleados e on e.id_empleado=v.id_empleado
+where e.ciudad in ('Guadalajara','Monterrey','Toluca')
+      and v.producto like '%Laptop%' or v.producto like '%Software%'
+      and v.precio_unitario between 8000 and 25000
+      and v.fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'); 
+-- consulta 4
+/*
+Mostrar nombre del empleado, ciudad, departamento, producto vendido, categoria, cantidad vendida y fecha de venta de empleados de CDMX o Guadalajara con productos del area de Marketing o Finanzas, con precios entre 7000 y 20000 pesos y fechas del 2025-03-01 al 2025-06-30, vinculando empleados con ventas mediante su relación.*/
+select trim(lower(e.nombre)), e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from empleados e 
+inner join ventas v on v.id_empleado = e.ID_EMPLEADO
+where e.ciudad='CDMX' or e.ciudad='Guadalajara'
+      and v.producto='Marketing' or v.producto='Finanzas'
+      and v.precio_unitario between 7000 and 20000
+      and fecha_venta between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 5
+/*
+Mostrar nombre, apellido, ciudad del empleado, producto vendido, categoria, cantidad y fecha de venta de empleados de Monterrey o Puebla con productos cuyo nombre incluya Tablet o Servidor, con precios entre 9000 y 25000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando ambas tablas.*/
+select trim(lower(e.nombre))||' '||trim(upper(e.apellido)), e.ciudad, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from ventas v 
+join empleados e on e.id_empleado = v.ID_EMPLEADO
+where e.ciudad='Monterrey' or e.ciudad='Puebla'
+      and v.producto like '%Tablet%' or v.producto like '%Servidor%'
+      and v.precio_unitario between 9000 and 25000 
+      and v.fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/*
+Mostrar nombre del empleado, ciudad, departamento, producto vendido, categoria, cantidad y fecha de venta de empleados de CDMX, Monterrey o Toluca con productos del area de Tecnologia, con precios entre 9000 y 25000 pesos y fechas del 2025-02-01 al 2025-06-30, uniendo empleados con ventas por su clave.*/
+select e.nombre, e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from ventas v 
+inner join empleados e on e.id_empleado = v.ID_EMPLEADO
+where e.ciudad in ('CDMX','Monterrey','Toluca')
+      and v.categoria='Tecnologia'
+      and v.precio_unitario between 9000 and 25000
+      and v.fecha_venta between to_date('2025/02/01','yyyy/mm/ss') and to_date('2025/06/20','yyyy/mm/dd');
+-- consulta 7
+/*
+Mostrar nombre y apellido del empleado, ciudad, departamento, producto vendido, categoria, cantidad y fecha de venta de empleados de Guadalajara o CDMX con productos cuyo nombre incluya Mouse o CRM, con precios entre 500 y 20000 pesos y fechas del 2025-01-01 al 2025-06-30, relacionando ambas tablas.*/
+select trim(upper(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from empleados e
+inner join ventas v on v.id_empleado = e.id_empleado
+where e.ciudad='Guadalajara' or e.ciudad='CDMX'
+      and v.producto like '%Mouse%' or v.producto like '%CRM%'
+      and v.precio_unitario between 500 and 20000
+      and fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 8
+/*
+Mostrar nombre del empleado, ciudad, departamento, producto vendido, categoria, cantidad y fecha de venta de empleados de Puebla, Toluca o Monterrey con productos del area de Ventas o Finanzas, con precios entre 3000 y 20000 pesos y fechas del 2025-01-01 al 2025-06-30, vinculando empleados con ventas.*/
+select e.nombre, e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta 
+from empleados e 
+inner join ventas v on v.id_empleado = e.id_empleado
+where e.ciudad in ('Puebla','Toluca','Monterrey')
+      and v.categoria='Ventas' or v.categoria='Finanzas'
+      and v.precio_unitario between 3000 and 20000
+      and v.fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*
+Mostrar nombre, apellido, ciudad del empleado, producto vendido, categoria, cantidad y fecha de venta de empleados de CDMX o Monterrey con productos cuyo nombre incluya Publicidad o Consultoria, con precios entre 7000 y 20000 pesos y fechas del 2025-01-01 al 2025-05-31, relacionando ambas tablas.*/
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), e.ciudad, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from empleados e 
+inner join ventas v on v.id_empleado = e.id_empleado
+where e.ciudad='CDMX' or e.ciudad='Monterrey'
+      and v.producto like '%Publicidad%' or v.producto like '%Consultoria%'
+      and v.precio_unitario between 7000 and 20000
+      and v.fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/*
+Mostrar nombre del empleado, ciudad, departamento, producto vendido, categoria, cantidad y fecha de venta de empleados de CDMX, Guadalajara o Monterrey con productos del area de Tecnologia o Ventas, con precios entre 1000 y 25000 pesos y fechas entre 2025-01-01 y 2025-06-30, uniendo empleados con ventas mediante su relación directa.*/
+select e.nombre, e.ciudad, e.departamento, v.producto, v.categoria, v.cantidad, v.fecha_venta
+from ventas v 
+join empleados e on e.id_empleado = v.ID_EMPLEADO
+where e.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and v.categoria='Tecnologia' or v.categoria='Ventas'
+      and v.precio_unitario between 1000 and 25000
+      and v.fecha_venta between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'); 
+
+
+ -- ejercicio 4
+
+-- tablas
+
+CREATE TABLE usuarios (
+id_usuario NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+telefono VARCHAR2(20),
+fecha_registro DATE
+);
+
+CREATE TABLE prestamos (
+id_prestamo NUMBER PRIMARY KEY,
+id_usuario NUMBER,
+titulo_libro VARCHAR2(100),
+categoria VARCHAR2(50),
+dias_prestamo NUMBER,
+multa NUMBER,
+fecha_prestamo DATE,
+CONSTRAINT fk_usuarios_prestamos FOREIGN KEY (id_usuario)
+REFERENCES usuarios(id_usuario)
+);
+
+-- inserts
+
+-- tabla usuarios
+INSERT INTO usuarios VALUES (1, 'Ana', 'Lopez', 'CDMX', '5512345678', TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (2, 'Luis', 'Garcia', 'Guadalajara', '3312345678', TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (3, 'Maria', 'Hernandez', 'Monterrey', '8112345678', TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (4, 'Carlos', 'Ramirez', 'CDMX', '5598765432', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (5, 'Sofia', 'Torres', 'Puebla', '2212345678', TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (6, 'Jorge', 'Diaz', 'Toluca', '7221234567', TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (7, 'Elena', 'Vargas', 'CDMX', '5587654321', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (8, 'Pedro', 'Sanchez', 'Monterrey', '8187654321', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (9, 'Lucia', 'Morales', 'Guadalajara', '3323456789', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO usuarios VALUES (10, 'Diego', 'Castillo', 'CDMX', '5511122233', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla prestamos
+INSERT INTO prestamos VALUES (401, 1, 'El Principito', 'Literatura', 7, 0, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (402, 2, 'Base de Datos Oracle', 'Tecnologia', 15, 50, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (403, 3, 'Cien Años de Soledad', 'Literatura', 10, 20, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (404, 4, 'Algoritmos Avanzados', 'Tecnologia', 20, 100, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (405, 5, 'Historia de Mexico', 'Historia', 12, 0, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (406, 6, 'Matematicas Discretas', 'Educacion', 18, 30, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (407, 7, 'Harry Potter', 'Literatura', 8, 0, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (408, 8, 'Redes de Computadoras', 'Tecnologia', 14, 60, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (409, 9, 'El Arte de la Guerra', 'Historia', 9, 10, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO prestamos VALUES (410, 10, 'Programacion en Java', 'Tecnologia', 16, 80, TO_DATE('2025-04-15','YYYY-MM-DD'));
+commit;
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del usuario, apellido, ciudad, titulo del libro prestado, categoria del libro, dias de prestamo, multa aplicada y fecha de prestamo de los usuarios que viven en CDMX, Guadalajara o Monterrey, con multas desde 0 pesos hasta 100 pesos y fechas de prestamo desde 2025-01-01 hasta 2025-06-30, incluyendo libros de categorias Tecnologia o Literatura, relacionando usuarios con prestamos mediante su identificador.*/
+select u.nombre, u.apellido, u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.multa, p.fecha_prestamo
+from usuarios u 
+inner join prestamos p on p.id_usuario = u.id_usuario 
+where u.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and p.multa between 0 and 100 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd')
+      and p.categoria='Tecnologia' or p.categoria='Literatura';
+
+-- consulta 2
+/*
+Mostrar el nombre del usuario, ciudad, telefono, titulo del libro, categoria, dias de prestamo, multa y fecha de prestamo de usuarios de CDMX o Puebla con libros de categoria Historia, Educacion o Tecnologia, con dias de prestamo desde 10 hasta 20 y fechas entre 2025-02-01 y 2025-05-31, uniendo usuarios con prestamos por su relacion directa.*/
+select u.nombre, u.ciudad, u.telefono, p.titulo_libro, p.categoria, p.multa, p.fecha_prestamo 
+from usuarios u 
+join prestamos p on p.id_usuario = u.ID_USUARIO
+where u.ciudad='CDMX' or u.ciudad='Puebla'
+      and p.categoria  in ('Historia','Educacion','Tecnologia')
+      and p.dias_prestamo between 10 and 20 
+      and p.fecha_prestamo between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/*
+Mostrar nombre y apellido del usuario, ciudad, titulo del libro, categoria, dias de prestamo y fecha de prestamo de usuarios de Guadalajara, Monterrey o Toluca con libros cuyo titulo contenga la palabra Base o Programacion, con multas desde 30 hasta 100 y fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas por su identificador común.*/
+select trim(lower(u.nombre))||' '||trim(lower(u.apellido)), u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.fecha_prestamo 
+from prestamos p 
+inner join usuarios u on u.id_usuario = p.id_usuario 
+where u.ciudad in ('Guadalajara','Monterrey','Toluca')
+      and p.titulo_libro like '%Base%' or p.titulo_libro like '%Programacion%'
+      and p.multa between 30 and 100 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/*
+Mostrar nombre del usuario, ciudad, telefono, titulo del libro, categoria, dias de prestamo y fecha de prestamo de usuarios de CDMX o Guadalajara con libros de categoria Literatura o Tecnologia, con dias de prestamo desde 7 hasta 18 y fechas entre 2025-03-01 y 2025-06-30, vinculando usuarios con prestamos mediante su relacion.*/
+select u.nombre, u.ciudad, u.telefono, p.titulo_libro, p.categoria,p.dias_prestamo, p.fecha_prestamo 
+from usuarios u 
+join prestamos p on p.id_usuario = u.ID_USUARIO 
+where u.ciudad='CDMX' or u.ciudad='Guadalajara'
+      and p.categoria='Literatura' and p.categoria='Tecnologia'
+      and p.dias_prestamo between 7 and 18
+      and p.fecha_prestamo between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/*
+Mostrar nombre, apellido, ciudad del usuario, titulo del libro, categoria, dias de prestamo y multa de usuarios de Monterrey o Puebla con libros cuyo titulo contenga la palabra Historia o Harry, con multas desde 0 hasta 50 y fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas.*/
+select trim(lower(u.nombre))||' '||trim(lower(u.apellido)), u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.multa 
+from  usuarios u
+inner join prestamos p on p.id_usuario = u.id_usuario
+where u.ciudad in ('Monterrey','Puebla')
+      and p.titulo_libro like '%Historia%' or p.titulo_libro like '%Harry%'
+      and p.multa between 0 and 50 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/*
+Mostrar nombre del usuario, ciudad, titulo del libro, categoria, dias de prestamo y multa de usuarios de CDMX, Monterrey o Toluca con libros de categoria Tecnologia, con multas desde 50 hasta 100 y fechas desde 2025-02-01 hasta 2025-06-30, uniendo usuarios con prestamos por su clave.*/
+select u.nombre, u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.multa
+from prestamos p 
+join usuarios u on u.id_usuario = p.id_usuario 
+where u.ciudad in ('CDMX','Monterrey','Toluca')
+      and p.categoria='Tecnologia'
+      and p.multa between 50 and 100 
+      and p.fecha_prestamo between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/*
+Mostrar nombre y apellido del usuario, ciudad, telefono, titulo del libro, categoria, dias de prestamo y fecha de prestamo de usuarios de Guadalajara o CDMX con libros cuyo titulo contenga la palabra Algoritmos o Redes, con multas desde 50 hasta 100 y fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas.*/
+select trim(lower(u.nombre))||' '||trim(lower(u.apellido)), u.ciudad, u.telefono, p.titulo_libro, p.categoria, p.dias_prestamo, 
+       p.fecha_prestamo 
+from usuarios u 
+inner join prestamos p on p.id_usuario = u.id_usuario 
+where u.ciudad='Guadalajara' or u.ciudad='CDMX'
+      and p.titulo_libro like '%Algoritmo%' or p.titulo_libro like '%Redes%'
+      and p.multa between 50 and 100 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'); 
+-- consulta 8
+/*
+Mostrar nombre del usuario, ciudad, titulo del libro, categoria, dias de prestamo y multa de usuarios de Puebla, Toluca o Monterrey con libros de categoria Educacion o Historia, con multas desde 0 hasta 60 y fechas desde 2025-01-01 hasta 2025-06-30, vinculando usuarios con prestamos. */
+select u.nombre, u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.multa 
+from usuarios u 
+join prestamos p on p.id_usuario=u.id_usuario 
+where u.ciudad in ('Puebla','Toluca','Monterrey')
+      and p.categoria='Educacion' or p.categoria='Historia'
+      and p.multa between 0 and 60 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*
+Mostrar nombre, apellido, ciudad del usuario, titulo del libro, categoria, dias de prestamo y multa de usuarios de CDMX o Monterrey con libros cuyo titulo contenga la palabra Arte o Soledad, con multas desde 0 hasta 20 y fechas desde 2025-01-01 hasta 2025-05-31, relacionando ambas tablas.*/
+select trim(lower(u.nombre))||' '||trim(lower(u.apellido)), u.ciudad, p.titulo_libro, p.categoria, p.dias_prestamo, p.multa 
+from prestamos p 
+inner join usuarios u on u.id_usuario = p.id_usuario 
+where u.ciudad='CDMX' or u.ciudad='Monterrey' 
+      and p.titulo_libro like '%Arte%' or p.titulo_libro like '%Soledad%'
+      and p.multa between 0 and 20 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/*
+Mostrar nombre del usuario, ciudad, telefono, titulo del libro, categoria, dias de prestamo y fecha de prestamo de usuarios de CDMX, Guadalajara o Monterrey con libros de categoria Tecnologia o Literatura, con multas desde 0 hasta 100 y fechas desde 2025-01-01 hasta 2025-06-30, uniendo usuarios con prestamos mediante su relacion directa.*/
+select u.nombre, u.ciudad, u.telefono, p.titulo_libro, p.categoria, p.dias_prestamo, p.fecha_prestamo 
+from prestamos p 
+inner join usuarios u on u.id_usuario = p.id_usuario 
+where u.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and p.categoria='Tecnologia' or p.categoria='Literatura'
+      and p.multa between 0 and 100 
+      and p.fecha_prestamo between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+-- ejercicio 5
+
+-- tablas
+
+CREATE TABLE hoteles (
+id_hotel NUMBER PRIMARY KEY,
+nombre_hotel VARCHAR2(80),
+ciudad VARCHAR2(50),
+categoria VARCHAR2(50),
+telefono VARCHAR2(20),
+fecha_registro DATE
+);
+
+CREATE TABLE reservas (
+id_reserva NUMBER PRIMARY KEY,
+id_hotel NUMBER,
+nombre_huesped VARCHAR2(80),
+ciudad_huesped VARCHAR2(50),
+tipo_habitacion VARCHAR2(50),
+precio_noche NUMBER,
+fecha_entrada DATE,
+CONSTRAINT fk_hoteles_reservas FOREIGN KEY (id_hotel)
+REFERENCES hoteles(id_hotel)
+);
+
+-- inserts
+
+-- tabla hoteles
+INSERT INTO hoteles VALUES (1, 'Hotel Azteca', 'CDMX', 'Lujo', '5551112233', TO_DATE('2025-01-05','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (2, 'Hotel Guadalajara Plaza', 'Guadalajara', 'Negocios', '3312233445', TO_DATE('2025-02-10','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (3, 'Hotel Monterrey Inn', 'Monterrey', 'Lujo', '8189988776', TO_DATE('2025-03-12','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (4, 'Hotel Puebla Centro', 'Puebla', 'Economico', '2223344556', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (5, 'Hotel Toluca Suites', 'Toluca', 'Negocios', '7224455667', TO_DATE('2025-05-22','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (6, 'Hotel Reforma', 'CDMX', 'Lujo', '5557788990', TO_DATE('2025-06-02','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (7, 'Hotel Jalisco Express', 'Guadalajara', 'Economico', '3319988776', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (8, 'Hotel Nuevo Leon', 'Monterrey', 'Negocios', '8181122334', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (9, 'Hotel Angelopolis', 'Puebla', 'Lujo', '2228899001', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO hoteles VALUES (10, 'Hotel Central Toluca', 'Toluca', 'Economico', '7226677889', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla reservas
+INSERT INTO reservas VALUES (501, 1, 'Ana Lopez', 'CDMX', 'Suite', 2500, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (502, 2, 'Luis Garcia', 'Guadalajara', 'Doble', 1800, TO_DATE('2025-02-15','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (503, 3, 'Maria Hernandez', 'Monterrey', 'Suite', 3200, TO_DATE('2025-03-20','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (504, 4, 'Carlos Ramirez', 'CDMX', 'Sencilla', 900, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (505, 5, 'Sofia Torres', 'Puebla', 'Doble', 1500, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (506, 6, 'Jorge Diaz', 'CDMX', 'Suite', 4000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (507, 7, 'Elena Vargas', 'Guadalajara', 'Sencilla', 800, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (508, 8, 'Pedro Sanchez', 'Monterrey', 'Doble', 2000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (509, 9, 'Lucia Morales', 'Puebla', 'Suite', 3500, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO reservas VALUES (510, 10, 'Diego Castillo', 'Toluca', 'Sencilla', 1000, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del hotel, ciudad del hotel, categoria del hotel, nombre del huésped, ciudad del huésped, tipo de habitación, precio por noche y fecha de entrada de reservas realizadas en hoteles ubicados en CDMX, Guadalajara o Monterrey, con precios por noche desde 1000 hasta 3500 pesos y fechas de entrada entre 2025-01-01 y 2025-06-30, incluyendo únicamente hoteles de categoría Lujo o Negocios, relacionando hoteles con reservas mediante su identificador.*/
+select h.nombre_hotel, h.ciudad, h.categoria, r.nombre_huesped, r.ciudad_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+inner join reservas r on r.id_hotel = h.id_hotel
+where h.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and r.precio_noche between 1000 and 3500 
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd')
+      and h.categoria like '%Lujo%' or h.categoria like '%Negocios%';
+
+-- consulta 2
+/*
+Mostrar el nombre del hotel, ciudad, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de huéspedes provenientes de CDMX o Puebla, con habitaciones tipo Suite o Doble, con precios desde 1500 hasta 4000 pesos y fechas entre 2025-02-01 y 2025-05-31, uniendo hoteles con reservas por su relación directa.*/
+select h.nombre_hotel, h.ciudad, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from reservas r 
+inner join hoteles h on h.id_hotel = r.id_hotel 
+where r.ciudad_huesped='CDMX' or r.ciudad_huesped='Puebla'
+      and r.tipo_habitacion='Suite' or r.tipo_habitacion='Doble'
+      and r.precio_noche between 1500 and 4000
+      and r.fecha_entrada between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/*
+Mostrar nombre del hotel, ciudad, categoria, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles ubicados en Guadalajara, Monterrey o Toluca con nombres de huésped que contengan la palabra Ana o Maria, con precios desde 800 hasta 3500 pesos y fechas entre 2025-01-01 y 2025-06-30, relacionando ambas tablas por su identificador común.*/
+select h.nombre_hotel, h.ciudad, h.categoria, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+inner join reservas r on r.id_hotel = h.id_hotel 
+where h.ciudad in ('Guadalajara','Monterrey','Toluca') 
+      and r.nombre_huesped like '%Ana%' or r.nombre_huesped like '%Maria%'
+      and r.precio_noche between 800 and 3500 
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/*
+Mostrar nombre del hotel, ciudad, categoria, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en CDMX o Guadalajara con categorías Lujo o Economico, con precios desde 900 hasta 4000 pesos y fechas entre 2025-03-01 y 2025-06-30, vinculando hoteles con reservas mediante su relación.*/
+select h.nombre_hotel, h.ciudad, h.categoria, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from reservas r 
+inner join hoteles h on h.id_hotel = r.id_hotel 
+where h.ciudad='CDMX' or h.ciudad='Guadalajara' 
+      and h.categoria='Lujo' or h.categoria='Economico'
+      and r.precio_noche between 900 and 4000 
+      and r.fecha_entrada between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/*
+Mostrar nombre del hotel, ciudad, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles ubicados en Monterrey o Puebla con habitaciones tipo Suite o Sencilla, con precios desde 1000 hasta 3500 pesos y fechas entre 2025-01-01 y 2025-06-30, relacionando ambas tablas.*/
+select h.nombre_hotel, h.ciudad, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+inner join reservas r on r.id_hotel = r.id_hotel
+where h.ciudad='Monterrey' or h.ciudad='Puebla'
+      and h.categoria='Suite' or h.categoria='Sencilla'
+      and r.precio_noche between 1000 and 3500 
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/*
+Mostrar nombre del hotel, ciudad, categoria, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en CDMX, Monterrey o Toluca con categorías Negocios o Lujo, con precios desde 1500 hasta 4000 pesos y fechas entre 2025-02-01 y 2025-06-30, uniendo hoteles con reservas por su clave.*/
+select h.nombre_hotel, h.ciudad, h.categoria, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from reservas r 
+join hoteles h on h.id_hotel = r.id_hotel 
+where h.ciudad in ('CDMX','Monterrey','Toluca')
+      and h.categoria='Negocios' or h.categoria='Lujo'
+      and r.precio_noche between 1500 and 4000 
+      and r.fecha_entrada between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'); 
+
+-- consulta 7
+/*
+Mostrar nombre del hotel, ciudad, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en Guadalajara o CDMX con nombres de huésped que contengan la palabra Luis o Carlos, con precios desde 800 hasta 3000 pesos y fechas entre 2025-01-01 y 2025-06-30, relacionando ambas tablas.*/
+select h.nombre_hotel, h.ciudad, r.nombre_huesped, r.tipo_habitacion, r.precio_noche , r.fecha_entrada 
+from hoteles h 
+join reservas r on r.id_hotel = h.id_hotel 
+where h.ciudad='Guadalajara' or h.ciudad='CDMX'
+      and r.nombre_huesped like '%Luis%' or r.nombre_huesped like '%Carlos%'
+      and r.precio_noche between 800 and 3000 
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/*
+Mostrar nombre del hotel, ciudad, categoria, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en Puebla, Toluca o Monterrey con categorías Economico o Negocios, con precios desde 800 hasta 2500 pesos y fechas entre 2025-01-01 y 2025-06-30, vinculando hoteles con reservas.*/
+select h.nombre_hotel, h.ciudad, h.categoria, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+inner join reservas r on r.id_hotel = h.ID_HOTEL
+where h.ciudad in ('Puebla','Toluca','Monterrey')
+      and h.categoria='Economico' or h.categoria='Negocios'
+      and r.precio_noche between 800 and 2500 
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*
+Mostrar nombre del hotel, ciudad, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en CDMX o Monterrey con nombres de huésped que contengan la palabra Sofia o Diego, con precios desde 1500 hasta 4000 pesos y fechas entre 2025-01-01 y 2025-05-31, relacionando ambas tablas.*/
+select h.nombre_hotel, h.ciudad, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+inner join reservas r on r.id_hotel = r.id_hotel 
+where (h.ciudad='CDMX' or h.ciudad='Monterrey')
+      and (r.nombre_huesped like '%Sofia%' or r.nombre_huesped like '%Diego%')
+      and (r.precio_noche between 1500 and 4000 )
+      and (r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd'));
+-- consulta 10
+/*
+Mostrar nombre del hotel, ciudad, categoria, nombre del huésped, tipo de habitación, precio por noche y fecha de entrada de hoteles en CDMX, Guadalajara o Monterrey con categorías Lujo o Negocios, con precios desde 800 hasta 4000 pesos y fechas entre 2025-01-01 y 2025-06-30, uniendo hoteles con reservas mediante su relación directa.*/
+select h.nombre_hotel, h.categoria, r.nombre_huesped, r.tipo_habitacion, r.precio_noche, r.fecha_entrada 
+from hoteles h 
+join reservas r on r.id_hotel = h.id_hotel 
+where (h.ciudad in ('CDMX','Guaalajara','Monterrey'))
+      and (h.categoria='Lujo' or h.categoria='Negocios')
+      and (r.precio_noche between 800 and 4000)
+      and r.fecha_entrada between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+-- ejercicio 6
+
+-- tablas
+
+CREATE TABLE pacientes (
+id_paciente NUMBER PRIMARY KEY,
+nombre VARCHAR2(50),
+apellido VARCHAR2(50),
+ciudad VARCHAR2(50),
+edad NUMBER,
+fecha_registro DATE
+);
+
+CREATE TABLE citas_medicas (
+id_cita NUMBER PRIMARY KEY,
+id_paciente NUMBER,
+especialidad VARCHAR2(50),
+medico VARCHAR2(80),
+costo NUMBER,
+fecha_cita DATE,
+estado VARCHAR2(30),
+CONSTRAINT fk_pacientes_citas FOREIGN KEY (id_paciente)
+REFERENCES pacientes(id_paciente)
+);
+
+-- inserts
+
+-- tabla pacientes
+INSERT INTO pacientes VALUES (1, 'Ana', 'Lopez', 'CDMX', 28, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (2, 'Luis', 'Garcia', 'Guadalajara', 35, TO_DATE('2025-02-14','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (3, 'Maria', 'Hernandez', 'Monterrey', 40, TO_DATE('2025-03-18','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (4, 'Carlos', 'Ramirez', 'CDMX', 31, TO_DATE('2025-04-22','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (5, 'Sofia', 'Torres', 'Puebla', 26, TO_DATE('2025-05-05','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (6, 'Jorge', 'Diaz', 'Toluca', 45, TO_DATE('2025-06-09','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (7, 'Elena', 'Vargas', 'CDMX', 29, TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (8, 'Pedro', 'Sanchez', 'Monterrey', 38, TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (9, 'Lucia', 'Morales', 'Guadalajara', 33, TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO pacientes VALUES (10, 'Diego', 'Castillo', 'CDMX', 41, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- tabla citas_medicas
+INSERT INTO citas_medicas VALUES (601, 1, 'Cardiologia', 'Dr. Perez', 1200, TO_DATE('2025-01-15','YYYY-MM-DD'), 'Completada');
+INSERT INTO citas_medicas VALUES (602, 2, 'Dermatologia', 'Dra. Ruiz', 800, TO_DATE('2025-02-18','YYYY-MM-DD'), 'Pendiente');
+INSERT INTO citas_medicas VALUES (603, 3, 'Neurologia', 'Dr. Gomez', 1500, TO_DATE('2025-03-22','YYYY-MM-DD'), 'Completada');
+INSERT INTO citas_medicas VALUES (604, 4, 'Pediatria', 'Dra. Lopez', 700, TO_DATE('2025-04-25','YYYY-MM-DD'), 'Cancelada');
+INSERT INTO citas_medicas VALUES (605, 5, 'Ortopedia', 'Dr. Martinez', 1100, TO_DATE('2025-05-28','YYYY-MM-DD'), 'Completada');
+INSERT INTO citas_medicas VALUES (606, 6, 'Cardiologia', 'Dr. Perez', 2000, TO_DATE('2025-06-05','YYYY-MM-DD'), 'Pendiente');
+INSERT INTO citas_medicas VALUES (607, 7, 'Oftalmologia', 'Dra. Ruiz', 900, TO_DATE('2025-01-30','YYYY-MM-DD'), 'Completada');
+INSERT INTO citas_medicas VALUES (608, 8, 'Dermatologia', 'Dr. Gomez', 1000, TO_DATE('2025-02-20','YYYY-MM-DD'), 'Completada');
+INSERT INTO citas_medicas VALUES (609, 9, 'Neurologia', 'Dra. Lopez', 1600, TO_DATE('2025-03-25','YYYY-MM-DD'), 'Pendiente');
+INSERT INTO citas_medicas VALUES (610, 10, 'Ortopedia', 'Dr. Martinez', 1300, TO_DATE('2025-04-15','YYYY-MM-DD'), 'Completada');
+commit;
+-- consultas
+
+-- consulta 1
+/*
+Mostrar el nombre del paciente, apellido, ciudad, edad, especialidad médica, nombre del doctor, costo de la consulta y fecha de la cita de pacientes que viven en CDMX, Guadalajara o Monterrey, con costos desde 800 hasta 1500 pesos, con fechas de cita desde 2025-01-01 hasta 2025-06-30, incluyendo especialidades Cardiologia o Dermatologia, relacionando pacientes con citas mediante su identificador.*/
+select p.nombre, p.apellido, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+inner join citas_medicas c on c.id_paciente=p.id_paciente 
+where (p.ciudad in ('CDMX','Guadalajara','Monterrey'))
+      and (c.costo between 800 and 1500 )
+      and (c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'))
+      and (c.especialidad like '%Cardiologia%' or c.especialidad like '%Dermatologia%');
+-- consulta 2
+/*
+Mostrar el nombre del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de CDMX o Puebla con especialidades Neurologia, Ortopedia o Oftalmologia, con costos desde 700 hasta 1600 pesos, con fechas de 2025-02-01 hasta 2025-05-31, uniendo pacientes con citas mediante su relacion.*/
+select p.nombre, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from citas_medicas c
+inner join pacientes p on p.id_paciente = c.id_paciente 
+where (p.ciudad='CDMX' or p.ciudad='Puebla')
+      and (c.especialidad in ('Neurologia','Ortopedia','Oftalmologia'))
+      and (c.costo between 700 and 1600 )
+      and (c.fecha_cita between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd'));
+-- consulta 3
+/*
+Mostrar nombre y apellido del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de Guadalajara, Monterrey o Toluca con nombres de doctor que incluyan Perez o Ruiz, con costos desde 800 hasta 2000 pesos, con fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas por su identificador.*/
+select p.nombre, p.apellido, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from citas_medicas c 
+inner join pacientes p on p.id_paciente = c.id_paciente 
+where (p.ciudad in ('Guadalajara','Monterrey','Toluca'))
+      and (c.medico like '%Perez%' or c.medico like '%Ruiz%')
+      and (c.costo between 800 and 2000)
+      and (c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 4
+/*
+Mostrar nombre del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de CDMX o Guadalajara con especialidades Cardiologia o Neurologia, con costos desde 900 hasta 2000 pesos, con fechas desde 2025-03-01 hasta 2025-06-30, vinculando pacientes con citas mediante su relación.*/
+select p.nombre, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+inner join citas_medicas c on c.id_paciente = p.id_paciente 
+where (p.ciudad='CDMX' or p.ciudad='Guadalajara')
+      and (c.especialidad='Cardiologia' or c.especialidad='Neurologia')
+      and (c.costo between 900 and 2000) 
+      and c.fecha_cita between to_date('2025/01/10','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/*
+Mostrar nombre, apellido, ciudad del paciente, especialidad médica, doctor, costo y fecha de la cita de pacientes de Monterrey o Puebla con estados Completada o Pendiente, con costos desde 700 hasta 1500 pesos, con fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas.*/
+select trim(lower(p.nombre))||' '||trim(lower(p.apellido)), p.ciudad, p.ciudad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+inner join citas_medicas c on c.id_paciente = p.id_paciente 
+where p.ciudad='Monterrey' or p.ciudad='Puebla'
+      and c.estado='Completada' or c.estado='Pendiente'
+      and c.costo between 700 and 1500 
+      and c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+-- consulta 6
+/*
+Mostrar nombre del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de CDMX, Monterrey o Toluca con especialidades Dermatologia o Ortopedia, con costos desde 800 hasta 2000 pesos, con fechas desde 2025-02-01 hasta 2025-06-30, uniendo pacientes con citas mediante su clave.*/
+select p.nombre, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+join citas_medicas c on c.id_paciente = p.id_paciente 
+where p.ciudad in ('CDMX','Monterrey','Toluca')
+      and c.especialidad='Dermatologia' or c.especialidad='Ortopedia'
+      and c.costo between 800 and 2000 
+      and c.fecha_cita between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/*
+Mostrar nombre y apellido del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de Guadalajara o CDMX con nombres de paciente que incluyan Ana o Diego, con costos desde 700 hasta 1600 pesos, con fechas desde 2025-01-01 hasta 2025-06-30, relacionando ambas tablas.*/
+select p.nombre, p.apellido, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+inner join citas_medicas c on c.id_paciente=p.ID_PACIENTE 
+where p.ciudad='Guadalajara' or p.ciudad='CDMX'
+      and p.nombre like '%Ana%' or p.nombre like '%Diego%'
+      and c.costo between 700 and 1600 
+      and c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/*
+Mostrar nombre del paciente, ciudad, especialidad médica, doctor, costo y fecha de la cita de pacientes de Puebla, Toluca o Monterrey con especialidades Cardiologia o Oftalmologia, con costos desde 800 hasta 1600 pesos, con fechas desde 2025-01-01 hasta 2025-06-30, vinculando pacientes con citas.*/
+select p.nombre, p.ciudad, c.especialidad, c.medico, c.costo, c.fecha_cita
+from citas_medicas c 
+join pacientes p on p.id_paciente=c.id_paciente 
+where p.ciudad in ('Puebla','Toluca','Monterrey')
+      and c.especialidad='Cardiologia' or c.especialidad='Oftalmologia'
+      and c.costo between 800 and 1600 
+      and c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/*
+Mostrar nombre, apellido, ciudad del paciente, especialidad médica, doctor, costo y fecha de la cita de pacientes de CDMX o Monterrey con estados Pendiente o Cancelada, con costos desde 700 hasta 2000 pesos, con fechas desde 2025-01-01 hasta 2025-05-31, relacionando ambas tablas.*/
+select p.nombre, p.apellido, p.ciudad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+inner join citas_medicas c on c.id_paciente=p.id_paciente 
+where (p.ciudad='CDMX' or p.ciudad='Monterrey')
+      and (c.estado='Pendiente' or c.estado='Cancelada')
+      and (c.costo between 700 and 2000 )
+      and (c.fecha_cita between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd'));
+-- consulta 10
+/*
+Mostrar nombre del paciente, ciudad, edad, especialidad médica, doctor, costo y fecha de la cita de pacientes de CDMX, Guadalajara o Monterrey con especialidades Cardiologia o Neurologia, con costos desde 700 hasta 2000 pesos, con fechas desde 2025-01-01 hasta 2025-06-30, uniendo pacientes con citas mediante su relación directa.*/
+select p.nombre, p.ciudad, p.edad, c.especialidad, c.medico, c.costo, c.fecha_cita 
+from pacientes p 
+join citas_medicas c on c.id_paciente = p.id_paciente 
+where (p.ciudad in ('CDMX','Guadalajara','Monterrey'))
+      and (c.especialidad='Cardiologia' or c.especialidad='Neurologia')
+      and (c.costo between 700 and 2000 )
+      and (c.fecha_cita between to_date('2025/01/01','yyyy/dd/mm') and to_date('2025/06/30','yyyy/mm/dd'));
+
+
+
+-- ejercicio 7
+
+-- tablas
+
+CREATE TABLE proveedores (
+    id_proveedor NUMBER PRIMARY KEY,
+    nombre_proveedor VARCHAR2(80),
+    ciudad VARCHAR2(50),
+    telefono VARCHAR2(20),
+    correo VARCHAR2(100),
+    fecha_registro DATE
+);
+
+CREATE TABLE suministros (
+    id_suministro NUMBER PRIMARY KEY,
+    id_proveedor NUMBER,
+    producto VARCHAR2(100),
+    categoria VARCHAR2(50),
+    cantidad NUMBER,
+    precio_unitario NUMBER,
+    fecha_entrega DATE,
+    CONSTRAINT fk_proveedores_suministros FOREIGN KEY (id_proveedor)
+    REFERENCES proveedores(id_proveedor)
+);
+
+-- inserts
+
+-- tabla proveedores
+INSERT INTO proveedores VALUES (1, 'TecnoMex', 'CDMX', '5512345678', 'contacto@tecnomex.com', TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (2, 'OfiPlus', 'Guadalajara', '3312345678', 'ventas@ofiplus.com', TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (3, 'Muebles Regios', 'Monterrey', '8112345678', 'info@mueblesregios.com', TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (4, 'CompuCenter', 'CDMX', '5598765432', 'soporte@compucenter.com', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (5, 'Papelera Puebla', 'Puebla', '2212345678', 'ventas@papelerapuebla.com', TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (6, 'Distribuciones Toluca', 'Toluca', '7221234567', 'contacto@distoluca.com', TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (7, 'Electronica Jalisco', 'Guadalajara', '3319876543', 'info@ejalisco.com', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (8, 'ServiTech', 'Monterrey', '8187654321', 'ventas@servitech.com', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (9, 'Office Master', 'CDMX', '5556677889', 'info@officemaster.com', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (10, 'Mundo Digital', 'Guadalajara', '3323456789', 'contacto@mundodigital.com', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla suministros
+INSERT INTO suministros VALUES (701, 1, 'Laptop HP', 'Tecnologia', 5, 14000, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (702, 2, 'Escritorio Ejecutivo', 'Oficina', 8, 3500, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (703, 3, 'Silla Ergonomica', 'Muebles', 12, 2800, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (704, 4, 'Monitor Samsung', 'Tecnologia', 6, 4200, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (705, 5, 'Impresora Epson', 'Oficina', 4, 3100, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (706, 6, 'Mesa de Reuniones', 'Muebles', 2, 6000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (707, 7, 'Tablet Lenovo', 'Tecnologia', 7, 7500, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (708, 8, 'Archivero Metalico', 'Oficina', 10, 2200, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (709, 9, 'Servidor Dell', 'Tecnologia', 1, 25000, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO suministros VALUES (710, 10, 'Sillon Ejecutivo', 'Muebles', 3, 5500, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/* Mostrar el nombre del proveedor, ciudad, correo, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de los proveedores ubicados en CDMX, Guadalajara o Monterrey, con precios unitarios desde 2000 hasta 8000 pesos y fechas de entrega desde 2025-01-01 hasta 2025-06-30, incluyendo productos de las categorias Tecnologia u Oficina, relacionando proveedores con suministros mediante la unión de ambas tablas. */
+select p.nombre_proveedor, p.ciudad, p.ciudad, p.correo, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor = p.id_proveedor 
+where (p.ciudad in ('Guadalajara','CDMX','Monterrey'))
+      and (s.precio_unitario between 2000 and 8000 )
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'))
+      and (s.categoria='Tecnologia' or s.categoria='Oficina');
+
+-- consulta 2
+/* Mostrar el nombre del proveedor, ciudad, telefono, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en CDMX o Puebla con productos pertenecientes a Tecnologia, Oficina o Muebles, con precios desde 2500 hasta 10000 pesos y fechas comprendidas entre 2025-02-01 y 2025-05-31, relacionando proveedores con suministros mediante su identificador común. */
+select p.nombre_proveedor, p.ciudad, p.telefono, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from suministros s 
+inner join proveedores p on p.id_proveedor=s.id_proveedor 
+where (p.ciudad='CDMX' or p.ciudad='Puebla')
+      and s.categoria in ('Tecnologia','Oficina','Muebles')
+      and s.precio_unitario between 2500 and 10000
+      and s.fecha_entrega between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/* Mostrar el nombre del proveedor, ciudad, correo, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en Guadalajara, Monterrey o Toluca con productos cuyos nombres contengan las palabras Laptop o Tablet, con precios desde 5000 hasta 15000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas mediante la relación entre proveedor y suministro. */
+select p.nombre_proveedor, p.ciudad, p.correo, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor=p.id_proveedor 
+where (p.ciudad in ('Guadalajara','Monterrey','Toluca'))
+      and (s.producto like '%Laptop%' or s.producto like '%Tablet%')
+      and (s.precio_unitario between 5000 and 15000 )
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 4
+/* Mostrar el nombre del proveedor, ciudad, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en CDMX o Guadalajara con productos de las categorias Oficina o Muebles, con precios desde 2000 hasta 6000 pesos y fechas desde 2025-03-01 hasta 2025-06-30, relacionando proveedores con suministros por medio de sus claves correspondientes. */
+select p.nombre_proveedor, p.ciudad, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor=p.ID_PROVEEDOR
+where (p.ciudad='CDMX' or p.ciudad='Guadalajara')
+      and (s.categoria='Oficina' or s.categoria='Muebles')
+      and (s.precio_unitario between 2000 and 6000 )
+      and (s.fecha_entrega between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 5
+/* Mostrar el nombre del proveedor, ciudad, telefono, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en Monterrey o Puebla con productos cuyos nombres contengan las palabras Impresora o Monitor, con precios desde 3000 hasta 5000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando ambas tablas mediante su relación. */
+select p.nombre_proveedor, p.ciudad, p.telefono, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from suministros s 
+inner join proveedores p on p.id_proveedor=s.id_proveedor 
+where (p.ciudad='Monterrey' or p.ciudad='Puebla')
+      and (s.producto like '%Impresora%' or s.producto like '%Monitor%')
+      and (s.precio_unitario between 3000 and 5000 )
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 6
+/* Mostrar el nombre del proveedor, ciudad, correo, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en CDMX, Monterrey o Toluca con productos pertenecientes a la categoria Tecnologia, con precios desde 4000 hasta 25000 pesos y fechas desde 2025-02-01 hasta 2025-06-30, relacionando proveedores con suministros mediante sus identificadores. */
+select p.nombre_proveedor, p.ciudad, p.correo, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor= p.id_proveedor 
+where (p.ciudad in ('CDMX','Monterrey','Toluca'))
+      and (s.categoria='Tecnologia')
+      and (s.precio_unitario between 4000 and 25000) 
+      and (s.fecha_entrega between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 7
+/* Mostrar el nombre del proveedor, ciudad, telefono, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en Guadalajara o CDMX con productos cuyos nombres contengan las palabras Escritorio o Archivero, con precios desde 2000 hasta 4000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas mediante la relación entre proveedor y suministro. */
+select p.nombre_proveedor, p.ciudad, p.telefono, s.producto, s.categoria, s.cantidad, s.precio_unitario , s.fecha_entrega 
+from suministros s 
+inner join proveedores p on p.id_proveedor = s.id_proveedor 
+where (p.ciudad='Guadalajara' or p.ciudad='CDMX' )
+      and (s.producto like '%Escritorio%' or s.producto like '%Archivero%')
+      and (s.precio_unitario between 2000 and 4000) 
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 8
+/* Mostrar el nombre del proveedor, ciudad, correo, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en Puebla, Toluca o Monterrey con productos pertenecientes a las categorias Oficina o Muebles, con precios desde 2000 hasta 7000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando proveedores con suministros mediante su relación. */
+select p.nombre_proveedor, p.ciudad, p.correo, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor=p.id_proveedor
+where (p.ciudad in ('Puebla','Toluca','Monterrey'))
+      and (s.categoria='Oficina' or s.categoria='Muebles')
+      and (s.precio_unitario between 2000 and 7000 )
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 9
+/* Mostrar el nombre del proveedor, ciudad, telefono, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en CDMX o Monterrey con productos cuyos nombres contengan las palabras Servidor o Sillon, con precios desde 5000 hasta 25000 pesos y fechas desde 2025-01-01 hasta 2025-05-31, relacionando ambas tablas por medio de sus claves. */
+select p.nombre_proveedor, p.ciudad, p.telefono, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+inner join suministros s on s.id_proveedor = s.id_proveedor 
+where (p.ciudad='CDMX' or p.ciudad='Monterrey')
+      and (s.producto like '%Sillon%' or s.producto like '%Servidor')
+      and (s.precio_unitario between 5000 and 25000 )
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd'));
+
+-- consulta 10
+/* Mostrar el nombre del proveedor, ciudad, correo, producto suministrado, categoria, cantidad, precio unitario y fecha de entrega de proveedores ubicados en CDMX, Guadalajara o Monterrey con productos pertenecientes a las categorias Tecnologia u Oficina, con precios desde 2000 hasta 25000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo proveedores con suministros mediante la relación existente entre ambas tablas. */
+
+select p.nombre_proveedor, p.ciudad, p.correo, s.producto, s.categoria, s.cantidad, s.precio_unitario, s.fecha_entrega 
+from proveedores p 
+join suministros s on s.id_proveedor=s.id_proveedor 
+where (p.ciudad in ('CDMX','Guadalajara','Monterrey'))
+      and (s.categoria='Tecnologia' or s.categoria='Oficina')
+      and (s.precio_unitario between 2000 and 25000)
+      and (s.fecha_entrega between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+
+
+
+-- ejercicio 8
+
+-- tablas
+
+CREATE TABLE autores (
+    id_autor NUMBER PRIMARY KEY,
+    nombre VARCHAR2(50),
+    apellido VARCHAR2(50),
+    pais VARCHAR2(50),
+    correo VARCHAR2(100),
+    fecha_registro DATE
+);
+
+CREATE TABLE libros (
+    id_libro NUMBER PRIMARY KEY,
+    id_autor NUMBER,
+    titulo VARCHAR2(100),
+    genero VARCHAR2(50),
+    precio NUMBER,
+    fecha_publicacion DATE,
+    CONSTRAINT fk_autores_libros FOREIGN KEY (id_autor)
+    REFERENCES autores(id_autor)
+);
+
+-- inserts
+
+-- tabla autores
+INSERT INTO autores VALUES (1, 'Gabriel', 'Garcia Marquez', 'Colombia', 'gabriel@mail.com', TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO autores VALUES (2, 'Isabel', 'Allende', 'Chile', 'isabel@mail.com', TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO autores VALUES (3, 'Mario', 'Vargas Llosa', 'Peru', 'mario@mail.com', TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO autores VALUES (4, 'Laura', 'Esquivel', 'Mexico', 'laura@mail.com', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO autores VALUES (5, 'Jorge', 'Bucay', 'Argentina', 'jorge@mail.com', TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO autores VALUES (6, 'Paulo', 'Coelho', 'Brasil', 'paulo@mail.com', TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO autores VALUES (7, 'Julio', 'Cortazar', 'Argentina', 'julio@mail.com', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO autores VALUES (8, 'Carlos', 'Ruiz Zafon', 'España', 'carlos@mail.com', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO autores VALUES (9, 'Rosa', 'Montero', 'España', 'rosa@mail.com', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO autores VALUES (10, 'Eduardo', 'Sacheri', 'Argentina', 'eduardo@mail.com', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla libros
+INSERT INTO libros VALUES (801, 1, 'Cien Años de Soledad', 'Novela', 450, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO libros VALUES (802, 2, 'La Casa de los Espiritus', 'Drama', 380, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO libros VALUES (803, 3, 'La Ciudad y los Perros', 'Novela', 420, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO libros VALUES (804, 4, 'Como Agua para Chocolate', 'Romance', 350, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO libros VALUES (805, 5, 'El Camino de las Lagrimas', 'Autoayuda', 300, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO libros VALUES (806, 6, 'El Alquimista', 'Ficcion', 280, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO libros VALUES (807, 7, 'Rayuela', 'Novela', 500, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO libros VALUES (808, 8, 'La Sombra del Viento', 'Suspenso', 550, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO libros VALUES (809, 9, 'La Ridicula Idea de no Volver a Verte', 'Drama', 400, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO libros VALUES (810, 10, 'La Pregunta de sus Ojos', 'Suspenso', 480, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/* Mostrar el nombre y apellido del autor, país, título del libro, género, precio y fecha de publicación de autores de Argentina, España o México, con precios desde 300 hasta 500 pesos y fechas de publicación desde 2025-01-01 hasta 2025-06-30, incluyendo libros de género Novela o Suspenso, relacionando autores con libros mediante la unión de ambas tablas. */
+select a.nombre, a.apellido, a.pais, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+inner join libros l on l.id_autor=a.ID_AUTOR
+where (a.pais in ('Argentina','España','México'))
+      and (l.precio between 300 and 500 )
+      and (l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/01/01','yyyy/mm/dd'))
+      and (l.genero='Novela' or l.genero='Suspenso');
+-- consulta 2
+/* Mostrar el nombre del autor, país, correo, título del libro, género, precio y fecha de publicación de autores de Colombia o Chile con libros de género Drama, Romance o Autoayuda, con precios desde 280 hasta 450 pesos y fechas comprendidas entre 2025-02-01 y 2025-05-31, vinculando autores con libros por medio de su identificador común. */
+select a.nombre, a.apellido, a.pais, a.correo, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+inner join libros l on l.id_autor = a.id_autor 
+where a.pais='Colombia' or a.pais='Chile'
+      and l.genero in ('Drama','Romance','Autoayuda')
+      and l.precio between  280 and 450 
+      and l.fecha_publicacion between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/* Mostrar el nombre y apellido del autor, país, título del libro, género, precio y fecha de publicación de autores de Perú, Brasil o España con libros cuyos títulos contengan las palabras Ciudad o Alquimista, con precios desde 250 hasta 450 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas mediante su relación correspondiente. */
+select a.nombre, a.apellido, a.pais, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from libros l 
+inner join autores a on a.id_autor=l.id_autor
+where a.pais in ('Perú','Brasil','España')
+      and l.titulo like '%Ciudad%' or l.titulo like '%Alquimista%'
+      and l.precio between 250 and 450 
+      and l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/* Mostrar el nombre del autor, país, correo, título del libro, género, precio y fecha de publicación de autores de México o Argentina con libros de género Novela o Drama, con precios desde 300 hasta 550 pesos y fechas desde 2025-03-01 hasta 2025-06-30, relacionando autores con libros por medio de sus claves. */
+select a.nombre, a.pais, a.correo, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a
+inner join libros l on  l.id_autor=a.id_autor 
+where a.pais='México' or a.pais='Argentina'
+      and l.genero='Novela' or l.genero='Drama'
+      and l.precio between 300 and 550 
+      and l.fecha_publicacion between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/* Mostrar el nombre y apellido del autor, país, título del libro, género, precio y fecha de publicación de autores de España o Argentina con libros cuyos títulos contengan las palabras Sombra o Pregunta, con precios desde 400 hasta 550 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando ambas tablas mediante la relación entre autor y libro. */
+select a.nombre, a.apellido, a.pais, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+join libros l on l.id_autor=l.ID_AUTOR
+where (a.pais='España' or a.pais='Argentina')
+      and (l.titulo like '%Sombra%' or l.titulo like '%Pregunta%')
+      and (l.precio between 400 and 550 )
+      and (l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd')); 
+-- consulta 6
+/* Mostrar el nombre del autor, país, correo, título del libro, género, precio y fecha de publicación de autores de Colombia, Perú o Brasil con libros de género Novela, Ficcion o Suspenso, con precios desde 280 hasta 550 pesos y fechas desde 2025-02-01 hasta 2025-06-30, relacionando autores con libros mediante sus identificadores. */
+select a.nombre, a.pais, a.correo, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+join libros l on l.id_autor=a.id_autor 
+where a.pais in ('Colombia','Perú','Brasil')
+      and l.genero in ('Novela','Ficcion','Suspenso')
+      and l.precio between 280 and 550 
+      and l.fecha_publicacion between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/* Mostrar el nombre y apellido del autor, país, título del libro, género, precio y fecha de publicación de autores de Chile o México con libros cuyos títulos contengan las palabras Casa o Chocolate, con precios desde 300 hasta 400 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas por medio de su relación. */
+select a.nombre, a.apellido, a.pais, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a
+inner join libros l on l.id_autor=l.id_autor 
+where a.pais='Chile' or a.pais='México'
+      and l.genero like '%Casa%' or l.genero like '%Chocolate%'
+      and l.precio between 300 and 400 
+      and l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/* Mostrar el nombre del autor, país, correo, título del libro, género, precio y fecha de publicación de autores de Argentina, Brasil o España con libros de género Autoayuda, Ficcion o Suspenso, con precios desde 280 hasta 550 pesos y fechas desde 2025-01-01 hasta 2025-06-30, relacionando autores con libros mediante su vínculo. */
+select a.nombre, a.pais, a.correo, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+inner join libros l on l.id_autor=a.id_autor 
+where a.pais in ('Argentina','Brasil','España')
+      and l.genero in ('Autoayuda','Ficcion','Suspenso')
+      and l.precio between 280 and 550 
+      and l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/* Mostrar el nombre y apellido del autor, país, título del libro, género, precio y fecha de publicación de autores de Colombia o España con libros cuyos títulos contengan las palabras Soledad o Viento, con precios desde 400 hasta 550 pesos y fechas desde 2025-01-01 hasta 2025-05-31, vinculando ambas tablas por medio de sus claves correspondientes. */
+select a.nombre, a.apellido, a.pais, l.titulo, l.genero, l.precio, l.fecha_publicacion 
+from autores a 
+inner join libros l on l.id_autor=a.id_autor 
+where a.pais='Colombia' or a.pais='España'
+      and l.titulo like '%Soledad%' and l.titulo='%Viento%'
+      and l.precio between 400 and 550 
+      and l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/* Mostrar el nombre del autor, país, correo, título del libro, género, precio y fecha de publicación de autores de Argentina, México o España con libros de género Novela o Suspenso, con precios desde 300 hasta 550 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo autores con libros mediante la relación existente entre ambas tablas. */
+
+select a.nombre, a.pais, a.correo, l.titulo, l.genero, l.precio , l.fecha_publicacion 
+from autores a 
+join libros l on l.id_autor = a.id_autor 
+where a.pais in ('Argentina','México','España')
+      and l.genero='Novela' or l.genero='Suspenso'
+      and l.precio between 300 and 550 
+      and l.fecha_publicacion between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+-- ejercicio 9
+
+-- tablas
+
+CREATE TABLE sucursales (
+    id_sucursal NUMBER PRIMARY KEY,
+    nombre_sucursal VARCHAR2(80),
+    ciudad VARCHAR2(50),
+    gerente VARCHAR2(80),
+    telefono VARCHAR2(20),
+    fecha_apertura DATE
+);
+
+CREATE TABLE inventario (
+    id_producto NUMBER PRIMARY KEY,
+    id_sucursal NUMBER,
+    nombre_producto VARCHAR2(100),
+    categoria VARCHAR2(50),
+    existencias NUMBER,
+    precio NUMBER,
+    fecha_ingreso DATE,
+    CONSTRAINT fk_sucursales_inventario FOREIGN KEY (id_sucursal)
+    REFERENCES sucursales(id_sucursal)
+);
+
+-- inserts
+
+-- tabla sucursales
+INSERT INTO sucursales VALUES (1, 'Sucursal Centro', 'CDMX', 'Ana Lopez', '5512345678', TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (2, 'Sucursal Norte', 'Guadalajara', 'Luis Garcia', '3312345678', TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (3, 'Sucursal Sur', 'Monterrey', 'Maria Hernandez', '8112345678', TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (4, 'Sucursal Oriente', 'Puebla', 'Carlos Ramirez', '2212345678', TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (5, 'Sucursal Poniente', 'Toluca', 'Sofia Torres', '7221234567', TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (6, 'Sucursal Reforma', 'CDMX', 'Jorge Diaz', '5587654321', TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (7, 'Sucursal Zapopan', 'Guadalajara', 'Elena Vargas', '3323456789', TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (8, 'Sucursal Cumbres', 'Monterrey', 'Pedro Sanchez', '8187654321', TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (9, 'Sucursal Angelopolis', 'Puebla', 'Lucia Morales', '2229988776', TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (10, 'Sucursal Metepec', 'Toluca', 'Diego Castillo', '7229876543', TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla inventario
+INSERT INTO inventario VALUES (901, 1, 'Laptop Lenovo', 'Tecnologia', 8, 16000, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (902, 2, 'Escritorio Ejecutivo', 'Oficina', 10, 3500, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (903, 3, 'Silla Ergonomica', 'Muebles', 15, 2800, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (904, 4, 'Monitor LG', 'Tecnologia', 6, 4200, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (905, 5, 'Impresora Canon', 'Oficina', 5, 3000, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (906, 6, 'Tablet Samsung', 'Tecnologia', 9, 7500, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (907, 7, 'Mesa de Juntas', 'Muebles', 3, 6200, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (908, 8, 'Servidor Dell', 'Tecnologia', 2, 25000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (909, 9, 'Archivero Metalico', 'Oficina', 12, 2100, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO inventario VALUES (910, 10, 'Sillon Ejecutivo', 'Muebles', 4, 5500, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de productos registrados en sucursales ubicadas en CDMX, Guadalajara o Monterrey, con precios desde 2000 hasta 8000 pesos y fechas de ingreso desde 2025-01-01 hasta 2025-06-30, incluyendo productos de las categorias Tecnologia u Oficina, relacionando sucursales con inventario mediante la unión de ambas tablas. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+join inventario i on i.id_sucursal=s.id_sucursal
+where s.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and i.precio between 2000 and 8000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 2
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en CDMX o Puebla con productos pertenecientes a las categorias Oficina, Muebles o Tecnologia, con precios desde 2500 hasta 7000 pesos y fechas desde 2025-02-01 hasta 2025-05-31, relacionando ambas tablas por medio de su identificador común. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=s.id_sucursal 
+where s.ciudad='CDMX' or s.ciudad='Puebla'
+      and i.categoria in ('Oficina','Muebles','Tecnologia')
+      and i.precio between 2500 and 7000
+      and i.fecha_ingreso between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 3
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en Guadalajara, Monterrey o Toluca con productos cuyos nombres contengan las palabras Laptop o Tablet, con precios desde 7000 hasta 20000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando sucursales con inventario mediante su relación correspondiente. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from inventario i 
+inner join sucursales s on s.id_sucursal=i.id_sucursal 
+where s.ciudad in ('Guadalajara','Monterrey','Toluca') 
+      and i.nombre_producto like '%Laptop%' or i.nombre_producto like '%Tablet%'
+      and i.precio between 7000 and 20000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en CDMX o Guadalajara con productos de las categorias Muebles o Oficina, con precios desde 2000 hasta 6500 pesos y fechas desde 2025-03-01 hasta 2025-06-30, relacionando ambas tablas mediante sus claves. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=s.id_sucursal
+where s.ciudad='CDMX' or s.ciudad='Guadalajara' 
+      and i.categoria='Muebles' or i.categoria='Oficina'
+      and i.precio between 2000 and 6500 
+      and i.fecha_ingreso between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 5
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en Monterrey o Puebla con productos cuyos nombres contengan las palabras Monitor o Archivero, con precios desde 2000 hasta 5000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando sucursales con inventario mediante la relación existente entre ambas tablas. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso
+from sucursales s 
+join inventario i on i.id_sucursal=s.id_sucursal 
+where s.ciudad='Monterrey' or s.ciudad='Puebla'
+      and i.nombre_producto like '%Monitor%' or i.nombre_producto like '%Archivero%'
+      and i.precio between 2000 and 5000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en CDMX, Monterrey o Toluca con productos pertenecientes a la categoria Tecnologia, con precios desde 4000 hasta 25000 pesos y fechas desde 2025-02-01 hasta 2025-06-30, relacionando ambas tablas por medio de sus identificadores. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=s.id_sucursal
+where s.ciudad in ('CDMX','Monterrey','Toluca') 
+      and i.categoria='Tecnologia' 
+      and i.precio between 4000 and 25000 
+      and i.fecha_ingreso between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en Guadalajara o CDMX con productos cuyos nombres contengan las palabras Escritorio o Impresora, con precios desde 2500 hasta 4000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas mediante la relación entre sucursal y producto. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=i.id_sucursal 
+where s.ciudad='Guadalajara' and  s.ciudad='CDMX'
+      and i.nombre_producto like '%Escritorio%' or i.nombre_producto like '%Impresora%'
+      and i.precio between 2500 and 4000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en Puebla, Toluca o Monterrey con productos pertenecientes a las categorias Oficina o Muebles, con precios desde 2000 hasta 6500 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando ambas tablas mediante su relación. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=s.id_sucursal 
+where s.ciudad in ('Puebla','Toluca','Monterrey') 
+      and i.categoria='Oficina' or i.categoria='Muebles'
+      and i.precio between 2000 and 6500 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en CDMX o Monterrey con productos cuyos nombres contengan las palabras Servidor o Sillon, con precios desde 5000 hasta 25000 pesos y fechas desde 2025-01-01 hasta 2025-05-31, relacionando ambas tablas por medio de sus claves correspondientes. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.categoria, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal = s.id_sucursal 
+where s.ciudad='CDMX' or s.ciudad='Monterrey'
+      and i.nombre_producto like '%Servidor%' or i.nombre_producto like '%Sillon%'
+      and i.precio between 5000 and 25000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/* Mostrar el nombre de la sucursal, ciudad, gerente, nombre del producto, categoria, existencias, precio y fecha de ingreso de sucursales ubicadas en CDMX, Guadalajara o Monterrey con productos pertenecientes a las categorias Tecnologia u Oficina, con precios desde 2000 hasta 25000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo sucursales con inventario mediante la relación existente entre ambas tablas. */
+select s.nombre_sucursal, s.ciudad, s.gerente, i.nombre_producto, i.existencias, i.precio, i.fecha_ingreso 
+from sucursales s 
+inner join inventario i on i.id_sucursal=s.id_sucursal 
+where s.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and i.categoria='Tecnologia' and i.categoria='Oficina'
+      and i.precio between 2000 and 25000 
+      and i.fecha_ingreso between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+
+
+
+
+-- ejercicio 10
+
+-- tablas
+
+CREATE TABLE departamentos (
+    id_departamento NUMBER PRIMARY KEY,
+    nombre_departamento VARCHAR2(80),
+    ciudad VARCHAR2(50),
+    jefe_departamento VARCHAR2(80),
+    presupuesto NUMBER,
+    fecha_creacion DATE
+);
+
+CREATE TABLE proyectos (
+    id_proyecto NUMBER PRIMARY KEY,
+    id_departamento NUMBER,
+    nombre_proyecto VARCHAR2(100),
+    categoria VARCHAR2(50),
+    costo NUMBER,
+    fecha_inicio DATE,
+    CONSTRAINT fk_departamentos_proyectos FOREIGN KEY (id_departamento)
+    REFERENCES departamentos(id_departamento)
+);
+
+-- inserts
+
+-- tabla departamentos
+INSERT INTO departamentos VALUES (1, 'Desarrollo de Software', 'CDMX', 'Ana Lopez', 500000, TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (2, 'Recursos Humanos', 'Guadalajara', 'Luis Garcia', 200000, TO_DATE('2025-02-12','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (3, 'Marketing Digital', 'Monterrey', 'Maria Hernandez', 300000, TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (4, 'Finanzas', 'Puebla', 'Carlos Ramirez', 250000, TO_DATE('2025-04-18','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (5, 'Logistica', 'Toluca', 'Sofia Torres', 180000, TO_DATE('2025-05-20','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (6, 'Infraestructura', 'CDMX', 'Jorge Diaz', 450000, TO_DATE('2025-06-01','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (7, 'Ventas', 'Guadalajara', 'Elena Vargas', 280000, TO_DATE('2025-01-25','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (8, 'Investigacion', 'Monterrey', 'Pedro Sanchez', 600000, TO_DATE('2025-02-28','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (9, 'Calidad', 'Puebla', 'Lucia Morales', 220000, TO_DATE('2025-03-30','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (10, 'Administracion', 'Toluca', 'Diego Castillo', 190000, TO_DATE('2025-04-10','YYYY-MM-DD'));
+
+-- tabla proyectos
+INSERT INTO proyectos VALUES (1001, 1, 'Sistema ERP', 'Tecnologia', 150000, TO_DATE('2025-01-15','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1002, 2, 'Capacitacion Interna', 'Recursos Humanos', 50000, TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1003, 3, 'Campaña Redes Sociales', 'Marketing', 80000, TO_DATE('2025-03-22','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1004, 4, 'Auditoria Financiera', 'Finanzas', 120000, TO_DATE('2025-04-25','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1005, 5, 'Optimización de Rutas', 'Logistica', 70000, TO_DATE('2025-05-28','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1006, 6, 'Centro de Datos', 'Tecnologia', 200000, TO_DATE('2025-06-05','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1007, 7, 'Expansión Comercial', 'Ventas', 90000, TO_DATE('2025-01-30','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1008, 8, 'Inteligencia Artificial', 'Investigacion', 250000, TO_DATE('2025-02-20','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1009, 9, 'Certificación ISO', 'Calidad', 60000, TO_DATE('2025-03-25','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (1010, 10, 'Modernización Administrativa', 'Administracion', 85000, TO_DATE('2025-04-15','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de proyectos desarrollados por departamentos ubicados en CDMX, Guadalajara o Monterrey, con costos desde 50000 hasta 200000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, incluyendo proyectos de las categorias Tecnologia o Marketing, relacionando departamentos con proyectos mediante la unión de ambas tablas. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio 
+from departamentos d 
+inner join proyectos p on p.id_departamento=d.id_departamento
+where (d.ciudad in ('CDMX','Guadalajara','Monterrey') )
+      and (p.costo between 50000 and 200000 )
+      and (p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'))
+      and (p.categoria='Tecnologia' or p.categoria='Marketing');
+-- consulta 2
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en CDMX o Puebla con proyectos pertenecientes a las categorias Finanzas, Calidad o Tecnologia, con costos desde 60000 hasta 200000 pesos y fechas desde 2025-02-01 hasta 2025-05-31, vinculando ambas tablas por medio de su identificador común. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = d.id_departamento 
+where (d.ciudad='CDMX' or d.ciudad='Puebla')
+      and (p.categoria in ('Finanzas','Calidad','Tecnologia'))
+      and (p.costo between 60000 and 200000 )
+      and (p.fecha_inicio between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd'));
+-- consulta 3
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en Guadalajara, Monterrey o Toluca con proyectos cuyos nombres contengan las palabras Centro o Inteligencia, con costos desde 80000 hasta 250000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, relacionando departamentos con proyectos mediante su vínculo correspondiente. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from proyectos p 
+inner join departamentos d on d.id_departamento=p.id_departamento 
+where d.ciudad in ('Guadalajara','Monterrey','Toluca')
+      and p.costo between 80000 and 250000
+      and p.nombre_proyecto like '%Centro%' or p.nombre_proyecto like '%Inteligencia%'
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 4
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en CDMX o Guadalajara con proyectos de las categorias Recursos Humanos o Ventas, con costos desde 50000 hasta 100000 pesos y fechas desde 2025-03-01 hasta 2025-06-30, uniendo ambas tablas mediante sus claves. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = d.id_departamento
+where (d.ciudad='CDMX' or d.ciudad='Guadalajara')
+      and (p.categoria='Recursos Humanos' or p.categoria='Ventas')
+      and (p.costo between 50000 and 100000 )
+      and (p.fecha_inicio between to_date('2025/03/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd'));
+-- consulta 5
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en Monterrey o Puebla con proyectos cuyos nombres contengan las palabras Campaña o Certificación, con costos desde 60000 hasta 90000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando departamentos con proyectos mediante la relación existente entre ambas tablas. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = d.id_departamento 
+where d.ciudad='Monterrey' or d.ciudad='Puebla'
+      and p.nombre_proyecto like '%Campaña%' or p.nombre_proyecto like '%Certificacion%'
+      and p.costo between 60000 and 90000 
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 6
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en CDMX, Monterrey o Toluca con proyectos pertenecientes a las categorias Tecnologia o Investigacion, con costos desde 85000 hasta 250000 pesos y fechas desde 2025-02-01 hasta 2025-06-30, relacionando ambas tablas por medio de sus identificadores. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento=d.id_departamento 
+where d.ciudad in ('CDMX','Monterrey','Toluca')
+      and p.categoria='Tecnologia' or p.categoria='Investigacion'
+      and p.costo between 85000 and 250000 
+      and p.fecha_inicio between to_date('2025/02/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 7
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en Guadalajara o CDMX con proyectos cuyos nombres contengan las palabras Sistema o Expansión, con costos desde 90000 hasta 150000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo ambas tablas mediante la relación entre departamento y proyecto. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento=d.id_departamento 
+where d.ciudad='Guadalajara' or d.ciudad='CDMX'
+      and p.nombre_proyecto like '%Sistema%' or p.nombre_proyecto like '%Expansión'
+      and p.costo between 90000 and 150000 
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 8
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en Puebla, Toluca o Monterrey con proyectos pertenecientes a las categorias Administracion, Calidad o Logistica, con costos desde 60000 hasta 85000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, vinculando ambas tablas mediante su relación. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = p.id_departamento 
+where d.ciudad in ('Puebla','Toluca','Monterrey')
+      and p.categoria in ('Administracion','Calidad','Logistica')
+      and p.costo between 60000 and 85000 
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+-- consulta 9
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en CDMX o Monterrey con proyectos cuyos nombres contengan las palabras Datos o Redes, con costos desde 80000 hasta 250000 pesos y fechas desde 2025-01-01 hasta 2025-05-31, relacionando ambas tablas por medio de sus claves correspondientes. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = d.id_departamento 
+where d.ciudad='CDMX' or d.ciudad='Monterrey'
+      and p.nombre_proyecto like '%Datos%' or p.nombre_proyecto like '%Redes%'
+      and p.costo between 80000 and 250000 
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/05/31','yyyy/mm/dd');
+-- consulta 10
+/* Mostrar el nombre del departamento, ciudad, jefe del departamento, nombre del proyecto, categoria, costo y fecha de inicio de departamentos ubicados en CDMX, Guadalajara o Monterrey con proyectos pertenecientes a las categorias Tecnologia o Marketing, con costos desde 50000 hasta 250000 pesos y fechas desde 2025-01-01 hasta 2025-06-30, uniendo departamentos con proyectos mediante la relación existente entre ambas tablas. */
+select d.nombre_departamento, d.ciudad, d.jefe_departamento, p.nombre_proyecto, p.categoria, p.costo, p.fecha_inicio
+from departamentos d 
+inner join proyectos p on p.id_departamento = d.id_departamento 
+where d.ciudad in ('CDMX','Guadalajara','Monterrey')
+      and p.categoria='Tecnologia' or p.categoria='Marketing'
+      and p.costo between 50000 and 250000 
+      and p.fecha_inicio between to_date('2025/01/01','yyyy/mm/dd') and to_date('2025/06/30','yyyy/mm/dd');
+

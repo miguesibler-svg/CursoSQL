@@ -1,0 +1,742 @@
+-- ejercicio 1
+
+-- tablas
+
+CREATE TABLE departamentos (
+    id_departamento NUMBER PRIMARY KEY,
+    nombre_departamento VARCHAR2(50),
+    ciudad VARCHAR2(50),
+    categoria VARCHAR2(30),
+    presupuesto NUMBER(10,2),
+    fecha_creacion DATE
+);
+
+CREATE TABLE empleados (
+    id_empleado NUMBER PRIMARY KEY,
+    id_departamento NUMBER,
+    nombre VARCHAR2(50),
+    apellido VARCHAR2(50),
+    puesto VARCHAR2(50),
+    salario NUMBER(10,2),
+    fecha_ingreso DATE,
+    correo VARCHAR2(80),
+    CONSTRAINT fk_departamento
+        FOREIGN KEY (id_departamento)
+        REFERENCES departamentos(id_departamento)
+);
+
+-- inserts
+
+INSERT INTO departamentos VALUES (1,'Tecnología','CDMX','Tecnología',500000,TO_DATE('2023-01-15','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (2,'Administración','Guadalajara','Oficina',250000,TO_DATE('2022-05-10','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (3,'Ventas','Monterrey','Servicios',300000,TO_DATE('2021-08-20','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (4,'Recursos Humanos','Puebla','Oficina',180000,TO_DATE('2020-11-05','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (5,'Logística','CDMX','Muebles',220000,TO_DATE('2024-02-12','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (6,'Soporte','Guadalajara','Tecnología',210000,TO_DATE('2023-06-18','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (7,'Marketing','Monterrey','Servicios',270000,TO_DATE('2022-09-25','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (8,'Finanzas','Puebla','Oficina',320000,TO_DATE('2021-04-30','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (9,'Compras','CDMX','Muebles',160000,TO_DATE('2020-12-08','YYYY-MM-DD'));
+INSERT INTO departamentos VALUES (10,'Innovación','Guadalajara','Tecnología',450000,TO_DATE('2024-03-22','YYYY-MM-DD'));
+
+INSERT INTO empleados VALUES (101,1,'Alberto','Ramírez','Desarrollador',32000,TO_DATE('2024-01-10','YYYY-MM-DD'),'alberto@empresa.com');
+INSERT INTO empleados VALUES (102,1,'Andrea','López','Analista',28000,TO_DATE('2023-09-18','YYYY-MM-DD'),'andrea@empresa.com');
+INSERT INTO empleados VALUES (103,2,'Carlos','Martínez','Contador',25000,TO_DATE('2022-04-12','YYYY-MM-DD'),'carlos@empresa.com');
+INSERT INTO empleados VALUES (104,3,'Daniela','Santos','Vendedor',22000,TO_DATE('2021-07-09','YYYY-MM-DD'),'daniela@empresa.com');
+INSERT INTO empleados VALUES (105,4,'Eduardo','Pérez','Reclutador',21000,TO_DATE('2023-02-14','YYYY-MM-DD'),'eduardo@empresa.com');
+INSERT INTO empleados VALUES (106,5,'Fernanda','Torres','Supervisor',26000,TO_DATE('2024-03-20','YYYY-MM-DD'),'fernanda@empresa.com');
+INSERT INTO empleados VALUES (107,6,'Gabriel','Flores','Soporte Técnico',24000,TO_DATE('2022-08-16','YYYY-MM-DD'),'gabriel@empresa.com');
+INSERT INTO empleados VALUES (108,7,'Héctor','Vega','Coordinador',27000,TO_DATE('2021-11-28','YYYY-MM-DD'),'hector@empresa.com');
+INSERT INTO empleados VALUES (109,8,'Isabel','Castillo','Auditor',30000,TO_DATE('2020-10-05','YYYY-MM-DD'),'isabel@empresa.com');
+INSERT INTO empleados VALUES (110,10,'Alejandro','Navarro','Ingeniero',35000,TO_DATE('2024-05-08','YYYY-MM-DD'),'alejandro@empresa.com');
+
+-- consultas
+
+-- consulta 1
+/* 
+El informe deberá incluir la información correspondiente a los departamentos y sus empleados relacionados mediante una combinación INNER JOIN entre ambas tablas. 
+
+mostrando las columnas nombre, apellido, nombre_departamento, ciudad y puesto. 
+Además, se deberá presentar el nombre y apellido concatenados, eliminando espacios sobrantes por la izquierda y por la derecha, así como mostrar la longitud del nombre del empleado. También se deberá mostrar el id_empleado rellenado por la izquierda hasta completar 15 caracteres con el símbolo '*', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el símbolo '*'.
+
+Asimismo, se deberá reemplazar la letra 'A' por 'X' en la columna ciudad y transformar las vocales 'AEIOU' del campo nombre por los caracteres '12345'. Se deberán mostrar los valores de salario redondeados a dos decimales y truncados a dos posiciones, así como calcular el residuo de dividir entre 100 el id_empleado.
+
+El informe deberá obtener el salario máximo, mínimo, la suma total y el promedio de salario, además de la cantidad total de empleados registrados. También se deberá mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP. Igualmente, se deberá presentar la fecha_ingreso incrementada en dos meses, el último día del mes correspondiente a fecha_ingreso, la cantidad de meses transcurridos entre fecha_ingreso y la fecha actual, y el siguiente lunes posterior a fecha_ingreso. Además, se deberá extraer el año, mes y día de SYSDATE.
+
+Finalmente, solo se considerarán los empleados cuyos nombres comiencen con la letra 'A', pertenecientes a departamentos con categoría 'Tecnología', 'Oficina' o 'Muebles', cuyos salarios estén entre 20000 y 40000 y cuyos departamentos se encuentren en CDMX, Guadalajara o Monterrey. También se deberán excluir aquellos pertenecientes a la categoría 'Servicios' o incluir los procedentes de Puebla. Posteriormente, la información deberá agruparse por categoria y presentarse ordenada de forma descendente según salario.
+*/
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), d.nombre_departamento, length(e.nombre),
+    lpad(e.id_empleado,15,'*'), rpad(d.ciudad,20,'*'), replace(upper(d.ciudad),'A','X'), 
+    translate(upper(d.ciudad),'AEIOU','12345'), round(e.salario,2), trunc(e.salario,2), 
+    mod(e.id_empleado,100), max(e.salario), min(e.salario), sum(e.salario), avg(e.salario), 
+    count(e.id_empleado), current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(e.fecha_ingreso,2),last_day(e.fecha_ingreso), months_between(sysdate, e.fecha_ingreso), 
+    next_day(e.fecha_ingreso,'MONDAY'), extract(year from sysdate), extract(month from sysdate),
+    extract(day from sysdate)
+from departamentos d
+inner join empleados e on e.id_departamento = d.id_departamento  
+where upper(e.nombre) like '%A%' and d.categoria in ('Tecnología','Oficina','Muebles')
+    and e.salario between 20000 and 40000 
+    and d.nombre_departamento in ('CDMX','Guadalajara','Monterrey') 
+    and d.categoria <> 'Servicios' or d.ciudad='Puebla'
+group by e.nombre, e.apellido, d.nombre_departamento, d.ciudad, e.salario, d.categoria, e.id_empleado,
+e.fecha_ingreso
+order by salario desc; 
+
+
+-- consulta 2
+/*
+El informe deberá incluir la información correspondiente a los departamentos y sus empleados relacionados mediante una combinación LEFT JOIN entre ambas tablas, mostrando las columnas nombre_departamento, categoria, nombre, apellido, salario y fecha_ingreso.
+
+
+Además, se deberá mostrar el nombre completo concatenado del empleado, eliminar espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de apellido, rellenar por la izquierda el id_departamento hasta completar 12 caracteres con '#', y rellenar por la derecha la columna categoria hasta completar 18 caracteres con '#'.
+
+Asimismo, se deberá reemplazar la letra 'O' por 'Z' en nombre_departamento y transformar las vocales del campo apellido mediante TRANSLATE. También se deberán presentar los salarios utilizando ROUND y TRUNC, así como obtener el residuo de dividir entre 100 el id_departamento.
+
+El informe deberá calcular el salario máximo, mínimo, promedio, suma total y cantidad de empleados. Igualmente, se deberá mostrar CURRENT_DATE, la fecha del sistema, la fecha_ingreso incrementada en tres meses, el último día del mes correspondiente a fecha_ingreso, los meses transcurridos entre fecha_ingreso y la fecha actual y el siguiente viernes posterior a fecha_ingreso. También se deberá extraer el año y mes de la fecha del sistema y mostrar las marcas de tiempo actuales.
+
+Solo se deberán considerar registros correspondientes a las ciudades CDMX, Guadalajara y Monterrey, con salarios entre 21000 y 35000, cuyos puestos contengan la palabra 'or' y que no pertenezcan a la categoría Servicios o bien que correspondan a departamentos ubicados en Puebla. Finalmente, la información deberá agruparse por ciudad y ordenarse ascendentemente por nombre_departamento.
+*/
+select trim(upper(e.nombre))||' '||trim(upper(e.apellido)) nombre, length(e.nombre), 
+    replace(upper(d.id_departamento),'A','D'), translate(upper(d.categoria),'AEIOU',09876),
+    lpad(d.nombre_departamento,20,'#'), rpad(d.nombre_departamento,20,'#'), round(e.salario,2),
+    trunc(e.salario,2), mod(e.id_departamento,300), max(e.salario), min(e.salario), sum(e.salario), 
+    avg(e.salario), count(e.id_empleado), current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(e.fecha_ingreso,2), last_day(sysdate), months_between(sysdate,e.fecha_ingreso), 
+    next_day(fecha_ingreso,'FRISDAY'), extract(year from sysdate), extract(month from sysdate), 
+    extract(day from sysdate)
+from empleados e 
+left join departamentos d on d.id_departamento = e.id_departamento 
+where (d.ciudad in ('CDMX','Guadalajara','Monterrey')  and e.salario between 21000 and 35000 )
+    and (e.puesto like '%or%' and (d.categoria <> 'Servicios' or d.ciudad='Puebla'))
+group by d.ciudad, e.nombre, e.apellido, d.id_departamento, d.categoria, d.nombre_departamento, e.salario, 
+    e.fecha_ingreso, e.id_empleado, e.puesto, d.ciudad, e.id_departamento
+order by d.nombre_departamento;
+
+
+-- consulta 3
+/*
+El informe deberá incluir la información correspondiente a los departamentos y sus empleados relacionados mediante una combinación RIGHT JOIN entre ambas tablas, mostrando las columnas nombre, apellido, puesto, nombre_departamento y presupuesto.
+
+Además, se deberá mostrar el nombre completo concatenado, eliminar espacios sobrantes, calcular la longitud de puesto, rellenar por la izquierda el id_empleado hasta completar 18 caracteres con '$' y rellenar por la derecha nombre_departamento hasta completar 25 caracteres con '$'.
+
+También se deberá reemplazar la letra 'E' por 'Y' en nombre_departamento y transformar las vocales del nombre mediante TRANSLATE. Los valores de salario deberán mostrarse redondeados y truncados a dos decimales, además de obtener el residuo de dividir entre 100 el identificador del empleado.
+
+El informe deberá obtener los valores máximo y mínimo del presupuesto, así como la suma y promedio de salario y la cantidad total de empleados. Asimismo, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en cuatro meses, obtener el último día del mes, calcular los meses transcurridos entre fecha_ingreso y la fecha actual y determinar el siguiente martes posterior a fecha_ingreso. También se deberá extraer el año, mes y día de SYSDATE.
+
+Se deberán considerar únicamente empleados cuyos apellidos comiencen con la letra 'M', pertenecientes a categorías 'Tecnología', 'Oficina' o 'Muebles', con salarios entre 22000 y 35000 y departamentos localizados en CDMX, Guadalajara o Monterrey. Los resultados deberán agruparse por nombre_departamento y ordenarse de manera descendente según presupuesto.
+*/
+
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), length(e.puesto), lpad(e.id_empleado,18,'$'),
+    rpad(d.nombre_departamento,25,'$'), replace(lower(d.nombre_departamento),'e','y'), 
+    translate(lower(d.nombre_departamento),'aeiou','mnbvc'), round(e.salario,2), trunc(e.salario,2),
+    mod(e.id_empleado,100), max(e.salario), min(e.salario), sum(e.salario), avg(e.salario), 
+    count(e.id_empleado), current_date, sysdate, systimestamp, current_timestamp, 
+    add_months(e.fecha_ingreso,4), last_day(e.fecha_ingreso), months_between(sysdate, e.fecha_ingreso), 
+    next_day(sysdate, 'TUESDAY'), extract(year from sysdate), extract(month from sysdate)
+from departamentos d 
+right join empleados e on e.id_departamento = d.id_departamento
+where e.apellido like 'M%' and d.categoria in ('Tecnología','Oficina','Muebles')
+    and e.salario between 22000 and 35000  and d.ciudad in ('CDMX','Guadalajara','Monterrey')
+group by d.nombre_departamento, e.nombre, e.apellido, e.puesto,e.id_empleado, d.nombre_departamento, 
+    e.fecha_ingreso, e.salario, d.presupuesto
+order by d.presupuesto;
+
+-- consulta 4
+/*
+El informe deberá incluir la información correspondiente a los departamentos y sus empleados relacionados mediante una combinación INNER JOIN entre ambas tablas, mostrando las columnas ciudad, categoria, nombre, apellido, correo y fecha_ingreso.
+
+Además, se deberá mostrar el nombre completo concatenado, eliminar espacios sobrantes, obtener la longitud del correo electrónico, rellenar por la izquierda el id_empleado hasta completar 16 caracteres con '@' y rellenar por la derecha la ciudad hasta completar 20 caracteres con '@'.
+
+Igualmente, se deberá reemplazar la letra 'I' por 'W' en la ciudad y transformar las vocales del apellido mediante TRANSLATE. Los salarios deberán presentarse utilizando ROUND y TRUNC y se deberá calcular MOD sobre el identificador del empleado.
+
+El informe deberá obtener el salario máximo, mínimo, suma total, promedio y cantidad total de empleados. También se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, la fecha_ingreso incrementada en seis meses, el último día del mes correspondiente a fecha_ingreso, los meses transcurridos entre fecha_ingreso y la fecha actual y el siguiente jueves posterior a fecha_ingreso. Además, se deberá extraer el año y el día de la fecha del sistema.
+
+Solo deberán incluirse registros de empleados cuyos nombres contengan la letra 'a', pertenecientes a categorías Tecnología, Oficina y Muebles, con salarios entre 20000 y 35000 y ubicados en CDMX o Puebla. La información deberá agruparse por ciudad y ordenarse por salario de forma descendente.
+*/
+select trim(upper(e.nombre))||' '||trim(upper(e.apellido)) nombre, length(e.correo), 
+    lpad(upper(e.id_empleado),16,'@'), rpad(upper(d.ciudad),20,'@'), replace(upper(d.ciudad),'I','W'),
+    translate(upper(e.apellido),'AEIOU','12345'), round(e.salario,2), trunc(e.salario,2), mod(e.salario,5),
+    max(e.salario), min(e.salario), sum(e.salario), avg(e.salario), count(d.id_departamento), current_date,
+    sysdate, current_timestamp, systimestamp, add_months(e.fecha_ingreso,6), last_day(e.fecha_ingreso),
+    months_between(sysdate, e.fecha_ingreso), next_day(sysdate,'THURSDAY'), extract(year from sysdate),
+    extract(month from sysdate), extract(day from sysdate)
+from empleados e
+join departamentos d on d.id_departamento=e.id_departamento
+where (e.nombre like '%a%' and d.categoria in ('Tecnología','Oficina','Muebles') )
+    and (e.salario between 20000 and 35000 and (d.ciudad='CDMX' or d.ciudad='Puebla'))
+group by d.ciudad, e.nombre, e.apellido, e.correo, e.id_empleado, e.salario, d.id_departamento,
+    e.fecha_ingreso, d.categoria
+order by e.salario desc;
+-- consulta 5
+/*
+El informe deberá incluir la información correspondiente a los departamentos y sus empleados relacionados mediante una combinación LEFT JOIN entre ambas tablas, mostrando las columnas nombre_departamento, ciudad, nombre, apellido, salario y presupuesto.
+
+Además, se deberá mostrar los campos nombre y apellido concatenados, eliminar espacios sobrantes, calcular la longitud del nombre_departamento, rellenar por la izquierda el id_departamento hasta completar 14 caracteres con '%', y rellenar por la derecha la columna ciudad hasta completar 18 caracteres con '%'.
+
+También se deberá reemplazar la letra 'R' por 'Q' en nombre_departamento y transformar las vocales del campo nombre mediante TRANSLATE. Se deberán mostrar los salarios utilizando ROUND y TRUNC y calcular el residuo de dividir entre 100 el id_departamento.
+
+El informe deberá obtener el presupuesto máximo, mínimo, suma total de salarios, promedio de salarios y cantidad de empleados registrados. Además, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en cinco meses, obtener el último día del mes correspondiente, calcular MONTHS_BETWEEN entre fecha_ingreso y la fecha actual y determinar el siguiente miércoles posterior a fecha_ingreso. También se deberá extraer el año, mes y día de SYSDATE y considerar fechas convertidas mediante TO_DATE.
+
+Finalmente, se deberán considerar departamentos de las ciudades CDMX, Guadalajara y Monterrey, con presupuestos entre 100000 y 500000, categorías Tecnología, Oficina y Muebles, excluyendo la categoría Servicios o incluyendo los departamentos de Puebla. Los resultados deberán agruparse por categoria y ordenarse de forma descendente según presupuesto.
+*/
+
+select trim(lower(e.nombre))||' '||trim(lower(e.apellido)), length(d.nombre_departamento), 
+    lpad(d.id_departamento, 14, '%'), rpad(d.id_departamento,18,'%'), 
+    replace(lower(d.nombre_departamento),'r','q'), translate(lower(d.nombre_departamento),'aeiou','12345'),
+    round(e.salario,2), trunc(e.salario,2), mod(d.id_departamento,100), max(e.salario), min(e.salario),
+    sum(e.salario), avg(e.salario), count(e.id_empleado), current_date, sysdate, current_timestamp,
+    systimestamp, add_months(sysdate,5), last_day(sysdate), months_between(sysdate, e.fecha_ingreso),
+    next_day(sysdate, 'WEDNESDAY'), extract(year from sysdate), extract(month from sysdate),
+    extract(day from sysdate) 
+from departamentos d 
+inner join empleados e on e.id_departamento=d.id_departamento
+where d.ciudad in ('CDMX','Guadalajara','Monterrey')
+    and d.presupuesto between 100000 and 500000 
+    and d.categoria in ('Tecnología','Oficina','Muebles')
+    and (d.categoria <> 'Servicios' or d.ciudad='Puebla')
+group by d.categoria, e.nombre, e.apellido, d.nombre_departamento, d.id_departamento, e.salario, 
+    e.fecha_ingreso,d.presupuesto, e.id_empleado
+order by d.presupuesto desc;
+
+
+
+-- ejercicio 2
+
+-- tablas
+
+CREATE TABLE proveedores (
+    id_proveedor NUMBER PRIMARY KEY,
+    nombre_proveedor VARCHAR2(60),
+    ciudad VARCHAR2(50),
+    categoria VARCHAR2(30),
+    telefono VARCHAR2(20),
+    fecha_registro DATE
+);
+
+CREATE TABLE productos (
+    id_producto NUMBER PRIMARY KEY,
+    id_proveedor NUMBER,
+    nombre_producto VARCHAR2(60),
+    marca VARCHAR2(40),
+    precio_unitario NUMBER(10,2),
+    existencia NUMBER,
+    fecha_ingreso DATE,
+    CONSTRAINT fk_proveedor
+        FOREIGN KEY (id_proveedor)
+        REFERENCES proveedores(id_proveedor)
+);
+
+-- inserts
+
+INSERT INTO proveedores VALUES (1,'Tech Solutions','CDMX','Tecnología','5512345678',TO_DATE('2023-01-15','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (2,'Oficentro','Guadalajara','Oficina','3312345678',TO_DATE('2022-05-10','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (3,'Muebles del Norte','Monterrey','Muebles','8112345678',TO_DATE('2021-08-20','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (4,'Digital Store','Puebla','Tecnología','2212345678',TO_DATE('2024-02-14','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (5,'Comercial Azteca','CDMX','Servicios','5518765432',TO_DATE('2020-10-05','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (6,'Global Office','Guadalajara','Oficina','3322222222',TO_DATE('2021-11-30','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (7,'Innovatek','Monterrey','Tecnología','8188888888',TO_DATE('2023-07-25','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (8,'Hogar Ideal','Puebla','Muebles','2223334444',TO_DATE('2022-03-08','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (9,'Central Market','CDMX','Servicios','5555555555',TO_DATE('2020-12-12','YYYY-MM-DD'));
+INSERT INTO proveedores VALUES (10,'TecnoMax','Guadalajara','Tecnología','3344444444',TO_DATE('2024-04-22','YYYY-MM-DD'));
+
+INSERT INTO productos VALUES (101,1,'Laptop HP','HP',18500.50,15,TO_DATE('2025-01-10','YYYY-MM-DD'));
+INSERT INTO productos VALUES (102,1,'Monitor LG','LG',5200.75,30,TO_DATE('2025-02-05','YYYY-MM-DD'));
+INSERT INTO productos VALUES (103,2,'Escritorio Ejecutivo','OfficePro',4300.00,20,TO_DATE('2025-01-20','YYYY-MM-DD'));
+INSERT INTO productos VALUES (104,3,'Silla Ergonómica','Comfort',2800.90,40,TO_DATE('2025-03-15','YYYY-MM-DD'));
+INSERT INTO productos VALUES (105,4,'Impresora Epson','Epson',6500.60,18,TO_DATE('2025-04-12','YYYY-MM-DD'));
+INSERT INTO productos VALUES (106,5,'Archivero Metálico','MetalBox',3200.40,25,TO_DATE('2025-02-18','YYYY-MM-DD'));
+INSERT INTO productos VALUES (107,6,'Calculadora Científica','Casio',950.80,60,TO_DATE('2025-03-01','YYYY-MM-DD'));
+INSERT INTO productos VALUES (108,7,'Tablet Samsung','Samsung',8900.50,22,TO_DATE('2025-05-05','YYYY-MM-DD'));
+INSERT INTO productos VALUES (109,8,'Librero Modular','HomeLine',4700.25,14,TO_DATE('2025-01-28','YYYY-MM-DD'));
+INSERT INTO productos VALUES (110,10,'Servidor Dell','Dell',45500.90,8,TO_DATE('2025-06-02','YYYY-MM-DD'));
+
+-- consultas
+
+-- consulta 1
+/*
+El informe deberá incluir la información correspondiente a los proveedores y sus productos mediante la relación entre ambas tablas utilizando una combinación INNER JOIN, mostrando las columnas nombre_proveedor, ciudad, categoria, nombre_producto, marca y precio_unitario.
+
+Además, se deberá mostrar el nombre del proveedor concatenado con la ciudad, eliminando espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_producto, presentar el id_proveedor rellenado por la izquierda hasta completar 15 caracteres con '*', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'A' por 'X' en ciudad y transformar las vocales 'AEIOU' del nombre_proveedor por los caracteres '12345'. También se deberán mostrar los valores de precio_unitario redondeados y truncados a dos decimales, así como obtener el residuo de dividir entre 100 el id_producto.
+
+El informe deberá calcular el precio máximo, mínimo, suma total, promedio y cantidad total de productos registrados. Igualmente, deberá mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, la fecha_ingreso incrementada en dos meses, el último día del mes correspondiente a fecha_ingreso, los meses transcurridos entre fecha_ingreso y la fecha actual y el siguiente lunes posterior a fecha_ingreso, además de extraer el año, mes y día de la fecha del sistema.
+
+Finalmente, solo se considerarán proveedores de las ciudades CDMX, Guadalajara y Monterrey, pertenecientes a las categorías Tecnología, Oficina o Muebles, cuyos precios_unitarios se encuentren entre 1000 y 50000. La información deberá agruparse por categoria y ordenarse de forma descendente según precio_unitario.
+*/
+select trim(upper(p.nombre_proveedor))||' '||trim(upper(p.ciudad)), length(m.nombre_producto), 
+    lpad(p.id_proveedor,15,'*'), rpad(p.ciudad,20,'*'), replace(upper(p.ciudad),'a','x'),
+    translate(upper(p.nombre_proveedor),'AEIOU','12345'), round(m.precio_unitario,1), 
+    trunc(m.precio_unitario,2), mod(m.id_producto,100), max(m.precio_unitario), min(m.precio_unitario),
+    sum(m.precio_unitario), avg(m.precio_unitario), count(m.id_producto), current_date, sysdate,
+    current_timestamp, systimestamp, add_months(sysdate,2), last_day(sysdate), 
+    months_between(sysdate, m.fecha_ingreso ), next_day(sysdate, 'MONDAY'), extract(year from sysdate),
+    extract(month from sysdate)
+from proveedores p
+inner join productos m on m.id_proveedor=p.id_proveedor
+where p.ciudad in ('CDMX','Monterrey','Guadalajara')
+    and p.categoria in ('Tecnología','Oficina','Muebles')
+    and m.precio_unitario between 1000 and 50000
+group by p.categoria, p.nombre_proveedor, p.ciudad, p.id_proveedor, m.precio_unitario, m.id_producto, 
+    m.precio_unitario,m.nombre_producto, m.fecha_ingreso
+order by m.precio_unitario;
+-- consulta 2
+/*
+El informe deberá incluir la información correspondiente a los proveedores y sus productos mediante una combinación LEFT JOIN, mostrando las columnas nombre_proveedor, categoria, nombre_producto, marca, existencia y fecha_ingreso.
+
+Además, se deberá concatenar nombre_proveedor con categoria, eliminar espacios sobrantes, calcular la longitud de marca, rellenar por la izquierda el id_producto hasta completar 18 caracteres con '#', y rellenar por la derecha la categoria hasta completar 20 caracteres con '#'.
+
+También se deberá reemplazar la letra 'O' por 'Z' en nombre_producto y transformar las vocales del nombre_proveedor mediante TRANSLATE. Los valores de precio_unitario deberán mostrarse utilizando ROUND y TRUNC y se deberá obtener el residuo de dividir entre 100 el id_producto.
+
+El informe deberá obtener el precio máximo, mínimo, suma total, promedio y cantidad de productos. Además, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en tres meses, obtener el último día del mes, calcular MONTHS_BETWEEN entre fecha_ingreso y la fecha actual y determinar el siguiente viernes posterior a fecha_ingreso.
+
+Solo se deberán considerar registros pertenecientes a las categorías Tecnología, Oficina y Muebles, con precios_unitarios entre 1000 y 20000, cuyos nombres de producto contengan la cadena 'or', y que correspondan a proveedores ubicados en CDMX, Guadalajara o Puebla. La información deberá agruparse por ciudad y ordenarse ascendentemente por nombre_producto.
+*/
+select trim(lower(p.nombre_producto))||' '||trim(lower(m.categoria)), length(p.marca), 
+    lpad(p.id_producto,18,'#'), rpad(p.id_producto,20,'#'), replace(lower(p.nombre_producto),'o','x'),
+    translate(lower(p.nombre_producto),'aeiou','12345'), round(p.precio_unitario,1),
+    trunc(p.precio_unitario), mod(p.precio_unitario,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_producto), current_date, sysdate, 
+    current_timestamp, systimestamp, add_months(p.fecha_ingreso,3), last_day(p.fecha_ingreso), 
+    months_between(sysdate, p.fecha_ingreso), next_day(p.fecha_ingreso,'FRISDAY'), 
+    extract(year from sysdate), extract(month from sysdate), extract(day from sysdate)
+from productos p
+left join proveedores m on p.id_proveedor=m.id_proveedor
+where m.categoria in ('Tecnología','Oficina','Muebles')
+    and p.precio_unitario between 1000 and 20000 
+    and p.nombre_producto like '%or%' 
+    and m.ciudad in ('CDMX','Guadalajara','Puebla')
+group by m.ciudad, p.nombre_producto, m.categoria, p.marca, p.id_producto, p.precio_unitario, p.id_producto, 
+    p.fecha_ingreso
+order by p.nombre_producto;
+
+-- consulta 3
+/*
+El informe deberá incluir la información correspondiente a los proveedores y sus productos mediante una combinación RIGHT JOIN, mostrando las columnas nombre_proveedor, ciudad, nombre_producto, marca y precio_unitario.
+
+Además, se deberá mostrar nombre_proveedor concatenado con nombre_producto, eliminar espacios sobrantes, calcular la longitud de nombre_proveedor, rellenar por la izquierda el id_proveedor hasta completar 14 caracteres con '$', y rellenar por la derecha ciudad hasta completar 20 caracteres con '$'.
+
+Asimismo, se deberá reemplazar la letra 'E' por 'Y' en ciudad y transformar las vocales del campo nombre_producto mediante TRANSLATE. También se deberán aplicar ROUND y TRUNC sobre precio_unitario y calcular MOD sobre id_producto.
+
+El informe deberá obtener los valores máximo, mínimo, suma y promedio de precio_unitario, además de la cantidad total de productos. Igualmente, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en cuatro meses, obtener el último día del mes y el siguiente martes posterior a fecha_ingreso, así como extraer el año y el mes de la fecha del sistema.
+
+Solo deberán incluirse productos con precios_unitarios entre 2000 y 10000, pertenecientes a categorías Tecnología, Oficina o Muebles y proveedores ubicados en CDMX, Guadalajara y Monterrey. Los resultados deberán agruparse por categoria y ordenarse de forma descendente según precio_unitario.
+*/
+select trim(upper(m.nombre_proveedor))||' '||trim(upper(p.nombre_producto)), length(m.nombre_proveedor),
+    lpad(m.id_proveedor,14,'$'), rpad(m.ciudad,20,'$'), replace(upper(m.ciudad),'E','Y'), 
+    translate(upper(p.nombre_producto),'AEIOU','12345'), round(p.precio_unitario,2), 
+    trunc(p.precio_unitario,2), mod(p.precio_unitario,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_producto), current_date, sysdate,
+    current_timestamp, systimestamp, add_months(p.fecha_ingreso,4), last_day(p.fecha_ingreso),
+    next_day(p.fecha_ingreso,'TUESDAY'), extract(year from sysdate), extract(month from sysdate)
+from proveedores m 
+right join productos p on p.id_proveedor=m.id_proveedor 
+where p.precio_unitario between 2000 and 10000 
+    and m.categoria in ('Tecnología','Oficina','Muebles')
+    and m.ciudad in ('CDMX','Guadalajara','Monterrey')
+group by m.categoria, m.nombre_proveedor, p.nombre_producto, m.id_proveedor, m.ciudad, p.precio_unitario,
+    p.id_producto,p.fecha_ingreso
+order by p.precio_unitario desc; 
+
+-- consulta 4
+/*
+El informe deberá incluir la información correspondiente a los proveedores y sus productos relacionados mediante una combinación INNER JOIN, mostrando las columnas ciudad, categoria, nombre_producto, marca, existencia y fecha_ingreso.
+
+Además, se deberá mostrar nombre_proveedor y nombre_producto concatenados, eliminar espacios sobrantes, calcular la longitud de marca, rellenar por la izquierda el id_producto hasta completar 16 caracteres con '@', y rellenar por la derecha ciudad hasta completar 18 caracteres con '@'.
+
+También se deberá reemplazar la letra 'I' por 'W' en ciudad y transformar las vocales del nombre_producto mediante TRANSLATE. Los valores de precio_unitario deberán presentarse con ROUND y TRUNC, además de calcular MOD sobre el identificador del producto.
+
+El informe deberá calcular el precio máximo, mínimo, suma total, promedio y cantidad de productos, mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en cinco meses, obtener el último día del mes correspondiente y calcular MONTHS_BETWEEN entre fecha_ingreso y la fecha actual.
+
+Solo deberán considerarse productos cuyos nombres comiencen con la letra 'L', con precios_unitarios entre 1000 y 50000, pertenecientes a categorías Tecnología, Oficina o Muebles y ubicados en CDMX o Puebla. La información deberá agruparse por ciudad y ordenarse descendentemente por precio_unitario.
+*/
+select trim(lower(m.nombre_proveedor))||' '||trim(lower(p.nombre_producto)), length(p.marca), 
+    lpad(p.id_producto,16,'@'), rpad(m.ciudad,18,'@'), replace(lower(m.ciudad),'i','w'), 
+    translate(lower(p.nombre_producto),'aeiou','12345'), round(p.precio_unitario,2),
+    trunc(p.precio_unitario,2),mod(p.precio_unitario,130), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_producto), current_date, sysdate, 
+    current_timestamp, systimestamp, add_months(p.fecha_ingreso,5), last_day(sysdate), 
+    months_between(sysdate,p.fecha_ingreso)
+from productos p 
+join proveedores m on m.id_proveedor=p.id_proveedor 
+where p.nombre_producto like 'L%' 
+    and p.precio_unitario between 1000 and 50000 
+    and m.categoria in ('Tecnología','Oficina','Muebles')
+    and (m.ciudad='CDMX' or m.ciudad='Puebla') 
+group by m.ciudad, m.nombre_proveedor, p.nombre_producto, p.marca, p.id_producto, p.precio_unitario,
+    p.fecha_ingreso 
+order by precio_unitario desc;
+
+
+-- consulta 5
+/*
+El informe deberá incluir la información correspondiente a los proveedores y sus productos mediante una combinación LEFT JOIN, mostrando las columnas nombre_proveedor, ciudad, nombre_producto, precio_unitario y fecha_registro.
+
+Además, se deberá mostrar el nombre del proveedor concatenado con el nombre del producto, eliminar espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_proveedor, rellenar por la izquierda el id_proveedor hasta completar 15 caracteres con '%', y rellenar por la derecha ciudad hasta completar 20 caracteres con '%'.
+
+Asimismo, se deberá reemplazar la letra 'R' por 'Q' en nombre_proveedor y transformar las vocales del nombre_producto mediante TRANSLATE. También se deberán presentar los valores de precio_unitario utilizando ROUND y TRUNC, además de calcular el residuo de dividir entre 100 el id_producto.
+
+El informe deberá obtener el precio máximo, mínimo, suma total, promedio y cantidad total de productos, mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_ingreso en seis meses, obtener LAST_DAY correspondiente a fecha_ingreso, calcular MONTHS_BETWEEN con la fecha actual, determinar el siguiente miércoles posterior a fecha_ingreso y extraer el año, mes y día de la fecha del sistema.
+
+Finalmente, se deberán considerar únicamente los registros correspondientes a proveedores ubicados en CDMX, Guadalajara y Monterrey, cuyos precios_unitarios estén entre 1000 y 50000, excluyendo la categoría Servicios o incluyendo los registros procedentes de Puebla. Posteriormente, la información deberá agruparse por categoria y presentarse ordenada de forma descendente según precio_unitario.
+*/
+select trim(upper(m.nombre_proveedor))||' '||trim(upper(p.nombre_producto)), length(m.nombre_proveedor),
+    lpad(m.id_proveedor,15,'%'), rpad(m.ciudad,20,'%'), replace(upper(m.nombre_proveedor),'R','Q'),
+    translate(upper(p.nombre_producto),'AEIOU','12345'), round(p.precio_unitario,2), 
+    trunc(p.precio_unitario,2), mod(p.precio_unitario,54), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_producto), current_date, sysdate, 
+    current_timestamp, systimestamp, add_months(p.fecha_ingreso,6), last_day(p.fecha_ingreso),
+    months_between(sysdate,p.fecha_ingreso), next_day(p.fecha_ingreso,'WEDNESDAY'), 
+    extract(year from sysdate), extract(month from sysdate), extract(day from sysdate) 
+from productos p 
+join proveedores m on m.id_proveedor=p.id_proveedor 
+where m.ciudad in ('CDMX','Guadalajara','Monterrey')
+    and p.precio_unitario between 1000 and 50000
+    and (m.categoria<>'Servicios' or m.ciudad='Puebla')
+group by m.categoria, m.nombre_proveedor,p.nombre_producto,m.id_proveedor, m.ciudad,p.precio_unitario, 
+    p.id_producto, p.fecha_ingreso
+order by p.precio_unitario;
+
+
+
+
+-- ejercicio 3
+
+-- tablas
+
+CREATE TABLE sucursales (
+    id_sucursal NUMBER PRIMARY KEY,
+    nombre_sucursal VARCHAR2(50),
+    ciudad VARCHAR2(50),
+    region VARCHAR2(30),
+    presupuesto NUMBER(12,2),
+    fecha_apertura DATE
+);
+
+CREATE TABLE pedidos (
+    id_pedido NUMBER PRIMARY KEY,
+    id_sucursal NUMBER,
+    nombre_producto VARCHAR2(60),
+    categoria_producto VARCHAR2(30),
+    precio_unitario NUMBER(10,2),
+    cantidad NUMBER,
+    fecha_pedido DATE,
+    estado_pedido VARCHAR2(20),
+    CONSTRAINT fk_sucursal
+        FOREIGN KEY (id_sucursal)
+        REFERENCES sucursales(id_sucursal)
+);
+
+-- inserts
+
+INSERT INTO sucursales VALUES (1,'Sucursal Centro','CDMX','Centro',500000.00,TO_DATE('2022-01-15','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (2,'Sucursal Norte','Monterrey','Norte',420000.00,TO_DATE('2021-05-10','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (3,'Sucursal Occidente','Guadalajara','Occidente',390000.00,TO_DATE('2020-08-18','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (4,'Sucursal Puebla','Puebla','Centro',310000.00,TO_DATE('2023-02-20','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (5,'Sucursal Bajío','León','Bajío',280000.00,TO_DATE('2022-11-25','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (6,'Sucursal Sureste','Mérida','Sureste',340000.00,TO_DATE('2021-07-12','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (7,'Sucursal Pacífico','Mazatlán','Pacífico',360000.00,TO_DATE('2023-06-14','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (8,'Sucursal Golfo','Veracruz','Golfo',295000.00,TO_DATE('2020-03-08','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (9,'Sucursal Altiplano','San Luis Potosí','Centro',325000.00,TO_DATE('2022-09-30','YYYY-MM-DD'));
+INSERT INTO sucursales VALUES (10,'Sucursal Riviera','Cancún','Sureste',450000.00,TO_DATE('2024-01-22','YYYY-MM-DD'));
+
+INSERT INTO pedidos VALUES (101,1,'Laptop HP','Tecnología',18500.50,3,TO_DATE('2025-01-10','YYYY-MM-DD'),'Entregado');
+INSERT INTO pedidos VALUES (102,1,'Monitor LG','Tecnología',5200.80,5,TO_DATE('2025-02-04','YYYY-MM-DD'),'Pendiente');
+INSERT INTO pedidos VALUES (103,2,'Escritorio Ejecutivo','Oficina',4300.20,4,TO_DATE('2025-01-18','YYYY-MM-DD'),'Entregado');
+INSERT INTO pedidos VALUES (104,3,'Silla Ergonómica','Muebles',2800.90,8,TO_DATE('2025-03-15','YYYY-MM-DD'),'En proceso');
+INSERT INTO pedidos VALUES (105,4,'Impresora Epson','Tecnología',6500.60,2,TO_DATE('2025-04-11','YYYY-MM-DD'),'Entregado');
+INSERT INTO pedidos VALUES (106,5,'Archivero Metálico','Oficina',3200.40,6,TO_DATE('2025-02-20','YYYY-MM-DD'),'Pendiente');
+INSERT INTO pedidos VALUES (107,6,'Tablet Samsung','Tecnología',8900.30,2,TO_DATE('2025-05-06','YYYY-MM-DD'),'Entregado');
+INSERT INTO pedidos VALUES (108,7,'Librero Modular','Muebles',4700.10,3,TO_DATE('2025-03-28','YYYY-MM-DD'),'En proceso');
+INSERT INTO pedidos VALUES (109,8,'Calculadora Científica','Oficina',950.75,15,TO_DATE('2025-04-22','YYYY-MM-DD'),'Entregado');
+INSERT INTO pedidos VALUES (110,10,'Servidor Dell','Tecnología',45500.90,1,TO_DATE('2025-06-03','YYYY-MM-DD'),'Pendiente');
+
+-- consultas
+
+-- consulta 1
+/*
+El informe deberá incluir la información correspondiente a las sucursales y sus pedidos relacionados mediante una combinación INNER JOIN entre ambas tablas, mostrando las columnas nombre_sucursal, ciudad, region, nombre_producto, categoria_producto, precio_unitario y cantidad.
+
+Además, se deberá mostrar el nombre de la sucursal concatenado con la ciudad, eliminando los espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_producto, presentar el id_sucursal rellenado por la izquierda hasta completar 15 caracteres con '*', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'A' por 'X' en la columna ciudad y transformar las vocales 'AEIOU' del nombre_sucursal por los caracteres '12345'. También se deberán mostrar los valores de precio_unitario redondeados y truncados a dos decimales, así como calcular el residuo de dividir entre 100 el id_pedido.
+
+El informe deberá obtener el precio máximo, mínimo, la suma total y el promedio de los precios unitarios, además de la cantidad total de pedidos registrados. Igualmente, deberá mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, la fecha_pedido incrementada en dos meses, el último día del mes correspondiente a fecha_pedido, la cantidad de meses transcurridos entre fecha_pedido y la fecha actual, y el siguiente lunes posterior a fecha_pedido. También se deberá extraer el año, el mes y el día de la fecha del sistema.
+
+Finalmente, solo se considerarán registros correspondientes a las ciudades CDMX, Guadalajara y Monterrey, con precios_unitarios entre 1000 y 50000, pertenecientes a las categorías Tecnología, Oficina y Muebles. Además, se excluirán aquellos asociados a la categoría Servicios o se incluirán los procedentes de Puebla. Posteriormente, la información deberá agruparse por categoria_producto y presentarse ordenada de forma descendente según precio_unitario.
+*/
+select trim(lower(p.nombre_producto))||' '||trim(upper(s.ciudad)), length(p.nombre_producto), lpad(s.id_sucursal,15,'*'), 
+    rpad(s.id_sucursal,15,'*'), replace(lower(s.ciudad),'A','X'), translate(lower(s.nombre_sucursal),'aeiou','12345'),
+    round(p.precio_unitario,1), trunc(p.precio_unitario), mod(p.id_pedido,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), count(p.id_pedido), current_date, sysdate, current_timestamp, systimestamp, add_months(p.fecha_pedido,2),
+    last_day(p.fecha_pedido), months_between(sysdate, p.fecha_pedido), next_day(sysdate, 'MONDAY'), extract(year from p.fecha_pedido),
+    extract(month from p.fecha_pedido), extract(day from p.fecha_pedido)
+from sucursales s 
+inner join pedidos p on p.id_sucursal=s.id_sucursal
+where s.ciudad in ('CDMX','Guadalajara','Monterrey') and p.precio_unitario between 1000 and 50000
+    and p.categoria_producto in ('Tecnología','Oficina','Muebles')
+    and (p.categoria_producto<>'Servicios' or s.ciudad='Puebla')
+group by p.categoria_producto, p.nombre_producto, s.ciudad, s.id_sucursal, s.ciudad, s.nombre_sucursal, p.precio_unitario, p.id_pedido,
+    p.fecha_pedido
+order by p.precio_unitario desc;
+
+
+-- consulta 2
+/*
+El informe deberá incluir la información correspondiente a las sucursales y sus pedidos relacionados mediante una combinación LEFT JOIN, mostrando las columnas nombre_sucursal, region, nombre_producto, estado_pedido, precio_unitario y fecha_pedido.
+
+Además, se deberá concatenar nombre_sucursal con region, eliminar espacios sobrantes, calcular la longitud de estado_pedido, rellenar por la izquierda el id_pedido hasta completar 18 caracteres con '#', y rellenar por la derecha region hasta completar 20 caracteres con '#'.
+
+Asimismo, se deberá reemplazar la letra 'O' por 'Z' en nombre_producto y transformar las vocales del nombre_sucursal mediante TRANSLATE. También se deberán mostrar los valores de precio_unitario utilizando ROUND y TRUNC y obtener el residuo de dividir entre 100 el id_pedido.
+
+El informe deberá calcular los valores máximo, mínimo, suma, promedio y cantidad total de pedidos. Además, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_pedido en tres meses, obtener LAST_DAY correspondiente a fecha_pedido, calcular MONTHS_BETWEEN con la fecha actual y determinar el siguiente viernes posterior a fecha_pedido.
+
+Solo deberán considerarse pedidos cuyos nombres de producto contengan la cadena 'or', con precios_unitarios entre 2000 y 20000 y correspondientes a las ciudades CDMX, Guadalajara y Puebla. La información deberá agruparse por ciudad y ordenarse ascendentemente por nombre_producto.
+*/
+select trim(upper(s.nombre_sucursal))||' '||trim(upper(s.region)), length(p.estado_pedido), lpad(p.id_pedido,18,'#'), 
+    rpad(p.id_pedido,20,'#'), replace(upper(p.nombre_producto),'O','Z'), translate(upper(s.nombre_sucursal),'AEIOU','98765'),
+    round(p.precio_unitario,2), trunc(p.precio_unitario,1), mod(p.precio_unitario,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_pedido), current_date, sysdate, current_timestamp, systimestamp,
+    add_months(p.fecha_pedido,3), last_day(p.fecha_pedido), months_between(sysdate,p.fecha_pedido), next_day(p.fecha_pedido,'FRISDAY')
+from sucursales s 
+left join pedidos p on p.id_sucursal=s.id_sucursal 
+where p.nombre_producto like '%or%' and p.precio_unitario between 2000 and 20000
+    and s.ciudad in ('CDMX','Guadalajara','Puebla')
+group by s.ciudad, s.nombre_sucursal, s.region, p.estado_pedido, p.id_pedido, p.nombre_producto, p.precio_unitario, p.fecha_pedido
+order by p.nombre_producto ;
+
+
+-- consulta 3
+/*
+El informe deberá incluir la información correspondiente a las sucursales y sus pedidos relacionados mediante una combinación RIGHT JOIN entre ambas tablas, mostrando las columnas nombre_sucursal, ciudad, nombre_producto, categoria_producto, precio_unitario y estado_pedido.
+
+Además, se deberá mostrar el nombre de la sucursal concatenado con nombre_producto, eliminar espacios sobrantes, calcular la longitud de categoria_producto, rellenar por la izquierda el id_sucursal hasta completar 14 caracteres con '$', y rellenar por la derecha ciudad hasta completar 20 caracteres con '$'.
+
+También se deberá reemplazar la letra 'E' por 'Y' en nombre_producto y transformar las vocales del nombre_sucursal mediante TRANSLATE. Los precios deberán presentarse utilizando ROUND y TRUNC, además de calcular MOD sobre el identificador del pedido.
+
+El informe deberá obtener el precio máximo, mínimo, suma total, promedio y cantidad total de pedidos. Igualmente, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_pedido en cuatro meses, obtener el último día del mes correspondiente, calcular los meses transcurridos entre fecha_pedido y la fecha actual y determinar el siguiente martes posterior a fecha_pedido.
+
+Solo se deberán considerar registros pertenecientes a las categorías Tecnología, Oficina y Muebles, con precios_unitarios entre 1000 y 50000 y correspondientes a las ciudades CDMX, Monterrey y Guadalajara. Finalmente, la información deberá agruparse por region y ordenarse descendentemente por precio_unitario.
+*/
+select trim(lower(p.nombre_producto))||' '||trim(lower(s.nombre_sucursal)), length(p.categoria_producto), lpad(s.id_sucursal,15,'$'),
+    rpad(s.id_sucursal,20,'$'), replace(lower(p.nombre_producto),'e','y'), translate(lower(s.nombre_sucursal),'aeiou','98765'),
+    round(p.precio_unitario,1), trunc(p.precio_unitario,1), mod(p.precio_unitario,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_pedido), current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(p.fecha_pedido,4), last_day(p.fecha_pedido), months_between(sysdate,p.fecha_pedido), next_day(sysdate,'TUESDAY')
+from pedidos p 
+right join sucursales s on s.id_sucursal=p.id_sucursal
+where p.categoria_producto in ('Tecnología','Oficina','Muebles') and p.precio_unitario between 1000 and 50000
+    and s.ciudad in ('CDMX','Monterrey','Guadalajara') 
+group by s.region, p.nombre_producto,s.nombre_sucursal,p.categoria_producto, s.id_sucursal,p.precio_unitario,p.id_pedido, p.fecha_pedido
+order by p.precio_unitario desc;
+
+
+-- consulta 4
+/*
+El informe deberá incluir la información correspondiente a las sucursales y sus pedidos relacionados mediante una combinación INNER JOIN, mostrando las columnas nombre_sucursal, ciudad, nombre_producto, cantidad, fecha_pedido y estado_pedido.
+
+Además, se deberá concatenar nombre_sucursal con nombre_producto, eliminar espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_sucursal, rellenar por la izquierda el id_pedido hasta completar 16 caracteres con '@' y rellenar por la derecha ciudad hasta completar 18 caracteres con '@'.
+
+Asimismo, se deberá reemplazar la letra 'I' por 'W' en ciudad y transformar las vocales de nombre_producto mediante TRANSLATE. También se deberán aplicar ROUND y TRUNC sobre precio_unitario y calcular MOD sobre el identificador del pedido.
+
+El informe deberá obtener los valores máximo, mínimo, suma total y promedio de precio_unitario, así como la cantidad total de pedidos registrados. También se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_pedido en cinco meses, obtener LAST_DAY, calcular MONTHS_BETWEEN y determinar el siguiente jueves posterior a fecha_pedido, además de extraer el año, mes y día de SYSDATE.
+
+Solo se deberán incluir pedidos cuyos nombres de producto comiencen con la letra 'L', pertenecientes a las categorías Tecnología, Oficina y Muebles, con precios_unitarios entre 1000 y 50000 y correspondientes a las ciudades CDMX y Puebla. La información deberá agruparse por categoria_producto y ordenarse descendentemente por cantidad.
+*/
+select trim(upper(s.nombre_sucursal))||' '||trim(lower(p.nombre_producto)), length(s.nombre_sucursal), lpad(p.id_pedido,16,'@'),
+    rpad(p.id_pedido,18,'@'), replace(upper(s.ciudad),'I','W'), translate(upper(p.nombre_producto),'AEIOU','12345'),
+    round(p.precio_unitario), trunc(p.precio_unitario), mod(p.precio_unitario,3), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_pedido),current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(p.fecha_pedido,5), last_day(p.fecha_pedido), months_between(sysdate, p.fecha_pedido), next_day(p.fecha_pedido,'THURSDAY'),
+    extract(year from p.fecha_pedido), extract(month from p.fecha_pedido), extract(day from p.fecha_pedido)
+from pedidos p 
+join sucursales s on s.id_sucursal=p.id_sucursal
+where p.nombre_producto like 'L%' 
+    and p.categoria_producto in ('Tecnología','Oficina','Muebles')
+    and p.precio_unitario between 1000 and 50000
+    and s.ciudad in ('CDMX','Puebla')
+group by p.categoria_producto, s.nombre_sucursal, p.nombre_producto, p.id_pedido, s.ciudad, p.precio_unitario, p.fecha_pedido, p.cantidad
+order by p.cantidad desc;
+
+-- consulta 5
+/*
+El informe deberá incluir la información correspondiente a las sucursales y sus pedidos relacionados mediante una combinación LEFT JOIN entre ambas tablas, mostrando las columnas nombre_sucursal, ciudad, nombre_producto, precio_unitario, fecha_apertura y fecha_pedido.
+
+Además, se deberá mostrar el nombre de la sucursal concatenado con el nombre del producto, eliminando espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de ciudad, presentar el id_sucursal rellenado por la izquierda hasta completar 15 caracteres con '%', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'R' por 'Q' en nombre_sucursal y transformar las vocales del nombre_producto mediante TRANSLATE. También se deberán mostrar los precios_unitarios utilizando ROUND y TRUNC y calcular el residuo de dividir entre 100 el id_pedido.
+
+El informe deberá obtener el precio máximo, mínimo, suma total, promedio y cantidad total de pedidos. Igualmente, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_pedido en seis meses, obtener el último día del mes correspondiente, calcular MONTHS_BETWEEN con la fecha actual y determinar el siguiente miércoles posterior a fecha_pedido, además de extraer el año, mes y día de la fecha del sistema y considerar fechas convertidas mediante TO_DATE.
+
+Finalmente, solo se deberán considerar registros correspondientes a las ciudades CDMX, Guadalajara y Monterrey, con precios_unitarios entre 1000 y 50000, excluyendo aquellos asociados a la categoría Servicios o incluyendo los procedentes de Puebla. Posteriormente, la información deberá agruparse por categoria_producto y presentarse ordenada de forma descendente según precio_unitario.
+*/
+select trim(lower(s.nombre_sucursal))||' '||trim(lower(p.nombre_producto)), length(s.ciudad), lpad(s.id_sucursal,15,'%'),
+    rpad(s.id_sucursal,20,'%'), replace(lower(s.nombre_sucursal),'r','q'), translate(lower(p.nombre_producto),'aeiou','12345'),
+    round(p.precio_unitario,1), trunc(p.precio_unitario,1), mod(p.precio_unitario,100), max(p.precio_unitario), min(p.precio_unitario),
+    sum(p.precio_unitario), avg(p.precio_unitario), count(p.id_pedido), current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(p.fecha_pedido,6), last_day(sysdate), months_between(sysdate,p.fecha_pedido), next_day(sysdate,'WEDNESDAY'),
+    extract(year from sysdate), extract(month from sysdate), extract(day from sysdate)
+from sucursales s 
+inner join pedidos p on p.id_sucursal=s.id_sucursal 
+where s.ciudad in ('CDMX','Guadalajara','Monterrey') and p.precio_unitario between 1000 and 50000
+    and (p.categoria_producto<>'Servicios' or s.ciudad='Puebla')
+group by p.categoria_producto, s.nombre_sucursal, p.nombre_producto, s.ciudad, s.id_sucursal, p.id_pedido, p.fecha_pedido,
+    p.precio_unitario
+order by p.precio_unitario;
+
+
+
+-- ejercicio 4
+
+-- tablas
+
+CREATE TABLE proyectos (
+    id_proyecto NUMBER PRIMARY KEY,
+    nombre_proyecto VARCHAR2(60),
+    ciudad VARCHAR2(50),
+    area VARCHAR2(30),
+    presupuesto NUMBER(12,2),
+    fecha_inicio DATE
+);
+
+CREATE TABLE tareas (
+    id_tarea NUMBER PRIMARY KEY,
+    id_proyecto NUMBER,
+    nombre_tarea VARCHAR2(60),
+    responsable VARCHAR2(50),
+    costo NUMBER(10,2),
+    horas_estimadas NUMBER,
+    fecha_entrega DATE,
+    estado VARCHAR2(20),
+    CONSTRAINT fk_proyecto
+        FOREIGN KEY (id_proyecto)
+        REFERENCES proyectos(id_proyecto)
+);
+
+-- inserts
+
+INSERT INTO proyectos VALUES (1,'Sistema ERP','CDMX','Tecnología',850000.00,TO_DATE('2024-01-15','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (2,'Remodelación Oficina','Guadalajara','Oficina',420000.00,TO_DATE('2023-08-10','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (3,'Centro Logístico','Monterrey','Logística',690000.00,TO_DATE('2024-03-05','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (4,'Plataforma Web','Puebla','Tecnología',550000.00,TO_DATE('2024-05-20','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (5,'Ampliación Almacén','León','Logística',310000.00,TO_DATE('2023-11-18','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (6,'Automatización RH','CDMX','Oficina',470000.00,TO_DATE('2024-02-22','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (7,'Aplicación Móvil','Monterrey','Tecnología',780000.00,TO_DATE('2024-04-12','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (8,'Modernización Sucursal','Puebla','Oficina',360000.00,TO_DATE('2023-10-28','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (9,'Expansión Regional','Guadalajara','Logística',620000.00,TO_DATE('2024-06-01','YYYY-MM-DD'));
+INSERT INTO proyectos VALUES (10,'Infraestructura Cloud','CDMX','Tecnología',980000.00,TO_DATE('2024-07-15','YYYY-MM-DD'));
+
+INSERT INTO tareas VALUES (101,1,'Análisis de requerimientos','Carlos Ruiz',45000.50,120,TO_DATE('2025-01-10','YYYY-MM-DD'),'Finalizada');
+INSERT INTO tareas VALUES (102,1,'Diseño de base de datos','Ana López',38000.80,100,TO_DATE('2025-01-20','YYYY-MM-DD'),'En proceso');
+INSERT INTO tareas VALUES (103,2,'Compra de mobiliario','Miguel Pérez',25000.40,80,TO_DATE('2025-02-05','YYYY-MM-DD'),'Pendiente');
+INSERT INTO tareas VALUES (104,3,'Instalación de servidores','Luis García',69000.90,150,TO_DATE('2025-03-12','YYYY-MM-DD'),'En proceso');
+INSERT INTO tareas VALUES (105,4,'Programación backend','Andrea Torres',57000.30,130,TO_DATE('2025-04-08','YYYY-MM-DD'),'Finalizada');
+INSERT INTO tareas VALUES (106,5,'Reorganización de inventario','Pedro Vega',18000.20,60,TO_DATE('2025-02-28','YYYY-MM-DD'),'Pendiente');
+INSERT INTO tareas VALUES (107,6,'Capacitación de personal','Sonia Castillo',22000.60,70,TO_DATE('2025-05-04','YYYY-MM-DD'),'Finalizada');
+INSERT INTO tareas VALUES (108,7,'Desarrollo Android','Fernando Flores',64000.10,140,TO_DATE('2025-05-25','YYYY-MM-DD'),'En proceso');
+INSERT INTO tareas VALUES (109,8,'Actualización de equipos','Daniela Ramos',31000.75,90,TO_DATE('2025-03-18','YYYY-MM-DD'),'Pendiente');
+INSERT INTO tareas VALUES (110,10,'Migración a la nube','Gabriel Hernández',82000.50,180,TO_DATE('2025-06-06','YYYY-MM-DD'),'En proceso');
+commit;
+-- consultas
+
+-- consulta 1
+/*
+El informe deberá incluir la información correspondiente a los proyectos y sus tareas mediante una combinación INNER JOIN entre ambas tablas, mostrando las columnas nombre_proyecto, ciudad, area, nombre_tarea, responsable, costo y estado.
+
+Además, se deberá mostrar el nombre_proyecto concatenado con el responsable, eliminando los espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_tarea, presentar el id_proyecto rellenado por la izquierda hasta completar 15 caracteres con '*', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'A' por 'X' en ciudad y transformar las vocales 'AEIOU' del nombre_proyecto por los caracteres '12345'. También se deberán mostrar los valores de costo redondeados y truncados a dos decimales, así como calcular el residuo de dividir entre 100 el id_tarea.
+
+El informe deberá obtener el costo máximo, mínimo, la suma total y el promedio de los costos, además de la cantidad total de tareas registradas. Igualmente, deberá mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, la fecha_entrega incrementada en dos meses, el último día del mes correspondiente a fecha_entrega, la cantidad de meses transcurridos entre fecha_entrega y la fecha actual y el siguiente lunes posterior a fecha_entrega. También se deberá extraer el año, el mes y el día de la fecha del sistema.
+
+Finalmente, solo se considerarán registros correspondientes a las ciudades CDMX, Guadalajara y Monterrey, con costos entre 20000 y 90000, pertenecientes a las áreas Tecnología, Oficina y Logística. Además, se excluirán los registros asociados al área Servicios o se incluirán los procedentes de Puebla. Posteriormente, la información deberá agruparse por area y presentarse ordenada de forma descendente según costo.
+*/
+select p.NOMBRE_PROYECTO||' '||t.responsable, length(t.nombre_tarea), lpad(p.id_proyecto,15,'*'), rpad(p.id_proyecto,20,'*'),
+    replace(upper(p.ciudad),'A','X'), translate(upper(p.nombre_proyecto),'AEIOU', '12345'), round(t.costo), trunc(t.costo),
+    mod(t.costo,2), max(t.costo), min(t.costo), sum(t.costo), avg(t.costo), count(p.id_proyecto), current_date, sysdate,
+    current_timestamp, systimestamp, add_months(t.fecha_entrega,2), last_day(t.fecha_entrega), months_between(sysdate,t.fecha_entrega),
+    next_day(t.fecha_entrega,'MONDAY'), extract(year from sysdate), extract(month from sysdate), extract(day from sysdate)
+from proyectos p 
+inner join tareas t on t.id_proyecto=p.id_proyecto
+where p.ciudad in ('CDMX','Guadalajara','Monterrey') and t.costo between 20000 and 90000 
+    and p.area='Servicios' or p.ciudad='Puebla'
+group by p.area, p.NOMBRE_PROYECTO, t.responsable, t.nombre_tarea, p.id_proyecto, p.ciudad, t.fecha_entrega,t.costo
+order by t.costo;
+
+
+-- consulta 2
+/*
+El informe deberá incluir la información correspondiente a los proyectos y sus tareas relacionadas mediante una combinación LEFT JOIN, mostrando las columnas nombre_proyecto, area, nombre_tarea, responsable, horas_estimadas y fecha_entrega.
+
+Además, se deberá concatenar nombre_proyecto con area, eliminar espacios sobrantes, calcular la longitud del responsable, rellenar por la izquierda el id_tarea hasta completar 18 caracteres con '#', y rellenar por la derecha area hasta completar 20 caracteres con '#'.
+
+Asimismo, se deberá reemplazar la letra 'O' por 'Z' en nombre_tarea y transformar las vocales del nombre_proyecto mediante TRANSLATE. También se deberán mostrar los valores de costo utilizando ROUND y TRUNC y obtener el residuo de dividir entre 100 el id_tarea.
+
+El informe deberá calcular los valores máximo, mínimo, suma, promedio y cantidad total de tareas. Además, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_entrega en tres meses, obtener LAST_DAY correspondiente a fecha_entrega, calcular MONTHS_BETWEEN con la fecha actual y determinar el siguiente viernes posterior a fecha_entrega.
+
+Solo deberán considerarse tareas cuyos nombres contengan la cadena 'ción', con costos entre 18000 y 70000 y correspondientes a proyectos ubicados en CDMX, Guadalajara y Puebla. La información deberá agruparse por ciudad y ordenarse ascendentemente por nombre_tarea.
+*/
+select p.nombre_proyecto||' '||p.area, length(t.responsable), lpad(t.id_tarea,18,'#'), rpad(t.id_tarea,20,'#'), 
+    replace(t.nombre_tarea,'O','Z'), translate(p.nombre_proyecto,'AEIOU','12345'), round(t.costo), trunc(t.costo), mod(t.costo,100),
+    max(t.costo), min(t.costo), sum(t.costo), avg(t.costo), count(t.id_tarea), current_date, sysdate, current_timestamp, systimestamp, 
+    add_months(t.fecha_entrega,3), last_day(t.fecha_entrega), months_between(sysdate,t.fecha_entrega), next_day(t.fecha_entrega,'FIRSDAY')
+from tareas t 
+left join proyectos p on p.id_proyecto=t.id_proyecto
+WHERE lower(t.nombre_tarea) like '%cion%' and t.costo between 18000 and 70000 
+    and p.ciudad in ('CDMX','Guadalajara','Puebla')
+group by p.ciudad, p.nombre_proyecto, t.responsable, t.id_tarea, t.nombre_tarea, t.costo, t.fecha_entrega,p.area
+order by p.ciudad;
+
+
+-- consulta 3
+/*
+El informe deberá incluir la información correspondiente a los proyectos y sus tareas relacionadas mediante una combinación RIGHT JOIN, mostrando las columnas nombre_proyecto, ciudad, nombre_tarea, estado, costo y horas_estimadas.
+
+Además, se deberá mostrar el nombre del proyecto concatenado con nombre_tarea, eliminar espacios sobrantes, calcular la longitud del estado, rellenar por la izquierda el id_proyecto hasta completar 14 caracteres con '$', y rellenar por la derecha ciudad hasta completar 20 caracteres con '$'.
+
+También se deberá reemplazar la letra 'E' por 'Y' en nombre_tarea y transformar las vocales del nombre_proyecto mediante TRANSLATE. Los costos deberán presentarse utilizando ROUND y TRUNC y calcular MOD sobre el identificador de la tarea.
+
+El informe deberá obtener el costo máximo, mínimo, suma total, promedio y cantidad total de tareas. Igualmente, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_entrega en cuatro meses, obtener el último día del mes correspondiente, calcular los meses transcurridos entre fecha_entrega y la fecha actual y determinar el siguiente martes posterior a fecha_entrega.
+
+Solo se deberán considerar registros pertenecientes a las áreas Tecnología, Oficina y Logística, con costos entre 20000 y 90000 y correspondientes a las ciudades CDMX, Monterrey y Guadalajara. Finalmente, la información deberá agruparse por area y ordenarse descendentemente por costo.
+*/
+select p.nombre_proyecto||' '||t.nombre_tarea, length(t.estado), lpad(p.id_proyecto,15,'$'), rpad(p.id_proyecto,30,'$'),
+    replace(upper(t.nombre_tarea),'A','E'), translate(upper(t.nombre_tarea),'AEIOU','12345'), round(t.costo), trunc(t.costo),
+    mod(t.costo,2), count(t.id_tarea), current_date, sysdate, current_timestamp, systimestamp, add_months(t.fecha_entrega,4), 
+    last_day(sysdate), months_between(sysdate,t.fecha_entrega), next_day(sysdate,'WEDNESDAY'), extract(year from t.fecha_entrega),
+    extract(month from t.fecha_entrega), extract(day from t.fecha_entrega)
+from proyectos p 
+right join tareas t on t.id_proyecto=p.id_proyecto 
+where p.area in ('Tecnología','Oficina','Logística') and t.costo between 20000 and 90000
+    and p.ciudad in ('CDMX','Guadalajara','Monterrey')
+group by p.area,p.nombre_proyecto,t.nombre_tarea,t.estado,p.id_proyecto,t.costo,t.id_tarea,t.fecha_entrega,p.ciudad
+order by t.costo desc;
+
+
+
+-- consulta 4
+/*
+El informe deberá incluir la información correspondiente a los proyectos y sus tareas relacionadas mediante una combinación INNER JOIN, mostrando las columnas nombre_proyecto, ciudad, nombre_tarea, fecha_entrega, estado y horas_estimadas.
+
+Además, se deberá concatenar nombre_proyecto con nombre_tarea, eliminar espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de nombre_proyecto, rellenar por la izquierda el id_tarea hasta completar 16 caracteres con '@' y rellenar por la derecha ciudad hasta completar 18 caracteres con '@'.
+
+Asimismo, se deberá reemplazar la letra 'I' por 'W' en ciudad y transformar las vocales de nombre_tarea mediante TRANSLATE. También se deberán aplicar ROUND y TRUNC sobre costo y calcular MOD sobre el identificador de la tarea.
+
+El informe deberá obtener los valores máximo, mínimo, suma total y promedio de costo, así como la cantidad total de tareas registradas. También se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_entrega en cinco meses, obtener LAST_DAY, calcular MONTHS_BETWEEN y determinar el siguiente jueves posterior a fecha_entrega, además de extraer el año, mes y día de SYSDATE.
+
+Solo se deberán incluir tareas cuyos nombres comiencen con la letra 'D', pertenecientes a las áreas Tecnología, Oficina y Logística, con costos entre 20000 y 90000 y correspondientes a las ciudades CDMX y Puebla. La información deberá agruparse por area y ordenarse descendentemente por horas_estimadas.
+*/
+
+-- consulta 5
+/*
+El informe deberá incluir la información correspondiente a los proyectos y sus tareas relacionadas mediante una combinación LEFT JOIN, mostrando las columnas nombre_proyecto, ciudad, nombre_tarea, costo, fecha_inicio y fecha_entrega.
+
+Además, se deberá mostrar el nombre del proyecto concatenado con el nombre de la tarea, eliminando espacios sobrantes mediante LTRIM y RTRIM, calcular la longitud de ciudad, presentar el id_proyecto rellenado por la izquierda hasta completar 15 caracteres con '%', y la ciudad rellenada por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'R' por 'Q' en nombre_proyecto y transformar las vocales del nombre_tarea mediante TRANSLATE. También se deberán mostrar los costos utilizando ROUND y TRUNC y calcular el residuo de dividir entre 100 el id_tarea.
+
+El informe deberá obtener el costo máximo, mínimo, suma total, promedio y cantidad total de tareas. Igualmente, se deberán mostrar CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP y SYSTIMESTAMP, incrementar fecha_entrega en seis meses, obtener el último día del mes correspondiente, calcular MONTHS_BETWEEN con la fecha actual y determinar el siguiente miércoles posterior a fecha_entrega, además de extraer el año, mes y día de la fecha del sistema y considerar fechas convertidas mediante TO_DATE.
+
+Finalmente, solo se deberán considerar registros correspondientes a las ciudades CDMX, Guadalajara y Monterrey, con costos entre 20000 y 90000, excluyendo aquellos asociados al área Servicios o incluyendo los procedentes de Puebla. Posteriormente, la información deberá agruparse por area y presentarse ordenada de forma descendente según costo.
+*/
+

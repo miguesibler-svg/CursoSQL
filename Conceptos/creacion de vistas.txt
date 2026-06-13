@@ -1,0 +1,6 @@
+create view vista_articulos_01 as
+select a.codigo_ar, a.descripcion_ar, a.marca_ar, m.descripcion_me, c.descripcion_ca, a.stock, a.fecha_registro, a.activo
+from articulos a
+join medidas m on m.codigo_me=a.codigo_me
+join categorias c on c.codigo_ca=a.codigo_ca
+order by a.codigo_ar;

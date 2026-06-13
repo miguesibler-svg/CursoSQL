@@ -1,0 +1,132 @@
+-- INSTRUCCIÓN
+
+Crea un script SQL completo que incluya lo siguiente:
+
+1. TABLAS
+
+Dos sentencias SQL para la creación de tablas.
+
+Cada tabla debe contener al menos 6 columnas.
+
+Las tablas deben incluir distintos tipos de datos:
+
+* Numéricos
+* Cadenas de texto
+* Fechas (utilizando TO_DATE() para su inserción)
+
+2. INSERCIONES
+
+Por cada tabla, agrega 10 sentencias INSERT con datos coherentes y relacionados entre sí.
+
+Los datos deben tener relación lógica entre ambas tablas mediante una clave foránea funcional.
+
+3. CONSULTAS
+
+NO debes escribir consultas SQL.
+
+Únicamente debes generar 5 enunciados en lenguaje natural que describan lo que se desea consultar.
+
+Estos enunciados deben estar diseñados para que posteriormente puedan resolverse utilizando una combinación INNER JOIN, LEFT JOIN o RIGHT JOIN entre las dos tablas y empleando de forma variada las siguientes funciones:
+
+* MAX
+* MIN
+* LENGTH
+* COUNT
+* SUM
+* CONCAT
+* AVG
+* LPAD
+* RPAD
+* RTRIM
+* LTRIM
+* REPLACE
+* TRANSLATE
+* ROUND
+* TRUNC
+* MOD
+* CURRENT_DATE
+* ADD_MONTHS
+* LAST_DAY
+* MONTHS_BETWEEN
+* NEXT_DAY
+* SYSDATE
+* CURRENT_TIMESTAMP
+* SYSTIMESTAMP
+* EXTRACT
+* TO_DATE
+
+Asimismo, los enunciados deben permitir aplicar de forma variada:
+
+* IN
+* LIKE
+* BETWEEN
+* AND
+* NOT
+* OR
+* GROUP BY
+* ORDER BY
+
+REGLAS OBLIGATORIAS PARA LOS ENUNCIADOS
+
+Debes indicar exactamente qué columnas se deben mostrar utilizando los nombres reales de los campos de las tablas.
+
+Debes mencionar la relación entre ambas tablas indicando que la información corresponde a registros relacionados mediante una combinación INNER JOIN, LEFT JOIN o RIGHT JOIN.
+
+Las condiciones deben ser claras, específicas y medibles, por ejemplo:
+
+* Ciudades concretas como CDMX, Guadalajara y Monterrey.
+* Rangos de precios definidos, por ejemplo de 1000 a 5000.
+* Fechas exactas, por ejemplo entre 2025-01-01 y 2025-06-30.
+* Categorías concretas como Tecnología, Oficina y Muebles.
+* Filtros de texto sobre nombres o productos.
+
+FORMATO DE LOS ENUNCIADOS
+
+Cada uno de los 5 enunciados deberá redactarse de manera detallada, similar al siguiente esquema:
+
+El informe deberá incluir la información correspondiente a los clientes y sus pedidos mediante la relación entre ambas tablas, mostrando el nombre y apellido concatenados del cliente, eliminando los espacios sobrantes y convirtiendo el resultado a mayúsculas. Además, se deberá mostrar la longitud del nombre del cliente, presentar el código del cliente rellenado por la izquierda hasta completar 20 caracteres con el símbolo '*', y el nombre de la ciudad rellenado por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'E' por 'X' en el nombre de la ciudad y transformar las vocales 'AEIOU' del nombre del cliente por los caracteres '12345'. También se deberán mostrar los valores del precio unitario de los productos redondeados a dos decimales y truncados a dos posiciones decimales, así como calcular el residuo de dividir entre 100 el identificador del pedido.
+
+El informe deberá obtener el precio máximo, mínimo, la suma total y el promedio de los precios unitarios de los productos, además de la cantidad total de pedidos registrados. Igualmente, deberá mostrar la fecha actual, la fecha y hora del sistema, la fecha del pedido incrementada en dos meses, el último día del mes correspondiente a la fecha del pedido, la cantidad de meses transcurridos entre la fecha del pedido y la fecha actual, y el siguiente lunes posterior a la fecha del pedido. También se deberá extraer el año, el mes y el día de la fecha del sistema y mostrar las marcas de tiempo actuales.
+
+Finalmente, se deberán considerar únicamente los registros de los clientes cuyos nombres comiencen con la letra 'A', que pertenezcan a las categorías de productos 'Electrónica', 'Hogar' o 'Deportes', y cuyos precios unitarios se encuentren entre 100 y 1000. Además, se deberán incluir los registros correspondientes a clientes de la Ciudad de México con ingresos superiores a 8000 pesos, excluyendo aquellos asociados a la categoría 'Servicios', o bien incluyendo los procedentes de Puebla. Posteriormente, la información obtenida deberá agruparse por categoría de producto y presentarse ordenada de forma descendente según el precio unitario.
+
+PROHIBICIONES
+
+En los enunciados:
+
+* No debe aparecer código SQL.
+* No deben aparecer SELECT, FROM, WHERE ni ninguna otra instrucción propia de una consulta SQL.
+* Los enunciados no deben estar resueltos.
+* Solo deben describir lo que se desea consultar.
+
+FORMATO FINAL DEL SCRIPT
+
+-- ejercicio 1
+
+-- tablas
+(aquí van las tablas)
+
+-- inserts
+(aquí van los inserts)
+
+-- consultas
+
+-- consulta 1
+/* solo enunciado en lenguaje natural */
+
+...
+
+-- consulta 5
+/* solo enunciado en lenguaje natural */
+
+IMPORTANTE:
+
+Las consultas NO deben escribirse en SQL.
+
+Solo deben existir los enunciados en lenguaje natural.
+
+Cada enunciado debe ser lo suficientemente detallado para permitir el uso de todas las funciones y operadores indicados.
+
+El resultado completo debe entregarse en un único bloque para copiar y pegar directamente.
