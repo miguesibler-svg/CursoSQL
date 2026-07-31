@@ -1,0 +1,32 @@
+dame un ejercicio de sql 
+
+que contenga 
+
+que me pida crear 2 tablas vinculadas con foreign key 
+
+que alterar la tabla (add, drop, modify, rename column, rename table)
+
+
+que me pida insertar 10 en cada tabla 
+
+
+update
+
+
+delete
+
+
+generar 5 enunciados para consulta sql que contenga obligatorimente todo (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE con INNER JOIN)
+
+debe contener el siguiente formato 
+El informe deberá incluir la información correspondiente a los clientes y sus pedidos mediante la relación entre ambas tablas, mostrando el nombre y apellido concatenados del cliente, eliminando los espacios sobrantes y convirtiendo el resultado a mayúsculas. Además, se deberá mostrar la longitud del nombre del cliente, presentar el código del cliente rellenado por la izquierda hasta completar 20 caracteres con el símbolo '*', y el nombre de la ciudad rellenado por la derecha hasta completar 20 caracteres con el mismo símbolo.
+
+Asimismo, se deberá reemplazar la letra 'E' por 'X' en el nombre de la ciudad y transformar las vocales 'AEIOU' del nombre del cliente por los caracteres '12345'. También se deberán mostrar los valores del precio unitario de los productos redondeados a dos decimales y truncados a dos posiciones decimales, así como calcular el residuo de dividir entre 100 el identificador del pedido.
+
+El informe deberá obtener el precio máximo, mínimo, la suma total y el promedio de los precios unitarios de los productos, además de la cantidad total de pedidos registrados. Igualmente, deberá mostrar la fecha actual, la fecha y hora del sistema, la fecha del pedido incrementada en dos meses, el último día del mes correspondiente a la fecha del pedido, la cantidad de meses transcurridos entre la fecha del pedido y la fecha actual, y el siguiente lunes posterior a la fecha del pedido. También se deberá extraer el año, el mes y el día de la fecha del sistema y mostrar las marcas de tiempo actuales.
+
+Finalmente, se deberán considerar únicamente los registros de los clientes cuyos nombres comiencen con la letra 'A', que pertenezcan a las categorías de productos 'Electrónica', 'Hogar' o 'Deportes', y cuyos precios unitarios se encuentren entre 100 y 1000. Además, se deberán incluir los registros correspondientes a clientes de la Ciudad de México con ingresos superiores a 8000 pesos, excluyendo aquellos asociados a la categoría 'Servicios', o bien incluyendo los procedentes de Puebla. Posteriormente, la información obtenida deberá agruparse por categoría de producto y presentarse ordenada de forma descendente según el precio unitario.
+
+
+nota no deben de estar contestado la los enunciados 
+
