@@ -1,0 +1,83 @@
+créate table alumnos(
+
+	id_alumno number(10) primary key,
+	nombre_alumno varchar2(10) not null,
+	apellido_alumno varchar2(10) not null,
+	matricula number(9) not null,
+	correo varchar2(150) not null,
+	fecha_inscripcion date not null
+);
+
+
+créate table notas(
+	
+	id_notas number(10) primary key,
+	nota1 number(3,1) not null,
+	nota2 number(3,1) not null,
+	nota3 number(3,1) not null,
+	promedio number(3,1) not null,
+	id_alumno number(10) not null,
+
+	constraint fk_id_alumno
+	foreign key (id_alumno)
+	references alumnos(id_alumno)
+);
+
+alter table alumnos
+add constraint chk_matricula
+check (matricula > 0);
+
+alter table alumnos
+add cosntraint unq_correo
+unique (correo);
+
+alter table alumnos
+add telefono number(10) not null;
+
+alter table alumnos
+modify matricula number(20) not null;
+
+alter table alumnos
+drop column telefono;
+
+alter table alumnos
+rename column correo to email;
+
+alter table alumnos
+rename to estudiantes;
+
+insert into alumnos(id_alumno, nombre_alumno, apellido_alumnos, matricula, email, fecha_inscripcion)
+values(1, 'miguel', 'barragan', 243271008, 'migue.sibler@gmail.com', to_date('25/01/2022','dd/mm/yyyy'));
+
+update alumnos
+set nombre_alumno='angel', apellido_alumno='gutierrez'
+where id_alumno=1;
+
+delete from alumnos where id_alumnos=1;
+
+
+select * from alumnos where id_alumnos=1;
+
+
+select id_alumno, trim(upper(a.nombre_alumno))||' - '|| trim(lower(a.apellido_alumno)), lenght(a.nombre_alumno), lpad(a.nombre_alumno, 20, '$'), 
+	rpad(a.apellido_alumno, 20, '$'), replace(a.nombre_alumno, 'A', '#'), translate(a.nombre_alumno, 'aeiou', '12345'), round(n.nota1,2),
+ 	trunc(n.nota2), mod(n.promedio, 10), sum(n.promedio), max(n.promedio), min(n.promedio), avg(n.promedio), count(a.id_alumno), 
+	sysdate, current_date, systimestamp, current_timestamp, add_months(a.fecha_inscripcion, 4), last_day(sisdate), 
+	months_between(sysdate, a.fecha_inscripcion), next_day(sysdate, 'lunes'), extract(year from sysdate), extract(day from sysdate), 
+	extract(month from sysdate) 
+from alumnos a
+inner join notas n on n.id_alumno = a.id_alumno
+where between, like 'A%', like '%A%', like '%A', not , in , and, or, <> , >, <, <=, >=, 
+group by 
+order by
+
+
+créate view miguel as 
+ 
+
+
+
+créate or repalce procedure as
+begin
+
+end; 

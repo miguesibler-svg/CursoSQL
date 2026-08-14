@@ -1,32 +1,138 @@
-dame un ejercicio de sql 
+Genera un ejercicio completo de SQL compatible con Oracle Database.
 
-que contenga 
+El ejercicio debe cumplir estrictamente con las siguientes especificaciones:
 
-que me pida crear 2 tablas vinculadas con foreign key 
+## CREACIÓN DE TABLAS
 
-que alterar la tabla (add, drop, modify, rename column, rename table)
+Define dos tablas relacionadas entre sí.
 
+Para cada tabla se debe especificar un mínimo de 6 columnas.
 
-que me pida insertar 10 en cada tabla 
+Para cada columna indica:
 
+* Nombre de la columna.
+* Tipo de dato permitido únicamente entre NUMBER, VARCHAR2 o DATE.
+* Cantidad de caracteres o tamaño cuando corresponda.
+* Si permite valores NULL o si debe definirse como NOT NULL.
+* Si corresponde a una clave PRIMARY KEY o FOREIGN KEY.
 
-update
+La estructura de cada tabla debe presentarse exactamente con el siguiente formato:
 
+nombre_de_la_tabla
 
-delete
+* columna1 numerico 10 PRIMARY KEY o FOREIGN KEY, NULL o NOT NULL
+* columna2 caracteres, NULL o NOT NULL
+* columna3 fecha, NULL o NOT NULL
 
+Define claramente la relación entre ambas tablas mediante las claves PRIMARY KEY y FOREIGN KEY.
 
-generar 5 enunciados para consulta sql que contenga obligatorimente todo (WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG y BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT, TO_DATE con INNER JOIN)
+## MODIFICACIÓN DE TABLAS
 
-debe contener el siguiente formato 
+Redacta únicamente los enunciados de solicitudes de modificación de estructura.
+
+Las modificaciones deben incluir obligatoriamente:
+
+* Creación de un constraint UNIQUE indicando la columna donde se aplicará.
+* Creación de un constraint CHECK indicando la condición que debe cumplirse.
+* ADD indicando exactamente la nueva columna que debe agregarse, su tipo de dato y características.
+* MODIFY especificando la columna existente y el cambio requerido.
+* DROP COLUMN indicando la columna que debe eliminarse.
+* RENAME COLUMN indicando el nombre actual y el nuevo nombre.
+* RENAME TABLE indicando el nombre actual y el nuevo nombre.
+
+No escribas código SQL, únicamente redacta los enunciados.
+
+## INSERCIÓN DE DATOS
+
+Solicita la inserción de 10 registros para cada tabla.
+
+Proporciona únicamente los datos que deben registrarse.
+
+No escribas sentencias INSERT.
+
+Los datos deben:
+
+* Ser coherentes con los nombres de las columnas definidas.
+* Respetar los tipos de datos establecidos.
+* Mantener la relación entre PRIMARY KEY y FOREIGN KEY.
+* Usar fechas válidas compatibles con Oracle Database.
+
+## ACTUALIZACIÓN DE DATOS (UPDATE)
+
+Redacta instrucciones de actualización indicando:
+
+* La tabla que debe modificarse.
+* La columna que debe actualizarse.
+* El nuevo valor que debe asignarse.
+* La condición WHERE que determina los registros afectados.
+
+No escribas código SQL.
+
+## ELIMINACIÓN DE DATOS (DELETE)
+
+Redacta instrucciones de eliminación indicando:
+
+* La tabla sobre la cual se realizará la operación.
+* La condición que debe cumplirse para eliminar los registros.
+
+No escribas código SQL.
+
+## CONSULTAS SQL
+
+Genera 5 enunciados de consultas sin resolver.
+
+Cada consulta debe requerir obligatoriamente el uso de INNER JOIN.
+
+En conjunto, las cinco consultas deben incluir obligatoriamente el uso de todos los siguientes elementos:
+
+WHERE, MAX, MIN, LENGTH, LIKE, AND, OR, COUNT, IN, SUM, CONCAT, GROUP BY, ORDER BY, NOT, AVG, BETWEEN, LPAD, RPAD, RTRIM, LTRIM, REPLACE, TRANSLATE, ROUND, TRUNC, MOD, CURRENT_DATE, ADD_MONTHS, LAST_DAY, MONTHS_BETWEEN, NEXT_DAY, SYSDATE, CURRENT_TIMESTAMP, SYSTIMESTAMP, EXTRACT y TO_DATE.
+
+Cada consulta debe estar redactada como un requerimiento funcional, indicando qué información debe obtenerse y qué condiciones debe cumplir.
+
+No incluyas código SQL ni soluciones.
+
+Las consultas deben seguir exactamente el siguiente formato:
+
+consulta 1
+
+Redactar un enunciado detallado indicando:
+
+* La información que debe mostrarse.
+* Las relaciones entre las tablas mediante INNER JOIN.
+* Las funciones SQL que deben aplicarse.
+* Los filtros y condiciones requeridos.
+* Las agrupaciones y ordenamientos necesarios.
+
+Ejemplo del estilo requerido:
+
 El informe deberá incluir la información correspondiente a los clientes y sus pedidos mediante la relación entre ambas tablas, mostrando el nombre y apellido concatenados del cliente, eliminando los espacios sobrantes y convirtiendo el resultado a mayúsculas. Además, se deberá mostrar la longitud del nombre del cliente, presentar el código del cliente rellenado por la izquierda hasta completar 20 caracteres con el símbolo '*', y el nombre de la ciudad rellenado por la derecha hasta completar 20 caracteres con el mismo símbolo.
 
 Asimismo, se deberá reemplazar la letra 'E' por 'X' en el nombre de la ciudad y transformar las vocales 'AEIOU' del nombre del cliente por los caracteres '12345'. También se deberán mostrar los valores del precio unitario de los productos redondeados a dos decimales y truncados a dos posiciones decimales, así como calcular el residuo de dividir entre 100 el identificador del pedido.
 
 El informe deberá obtener el precio máximo, mínimo, la suma total y el promedio de los precios unitarios de los productos, además de la cantidad total de pedidos registrados. Igualmente, deberá mostrar la fecha actual, la fecha y hora del sistema, la fecha del pedido incrementada en dos meses, el último día del mes correspondiente a la fecha del pedido, la cantidad de meses transcurridos entre la fecha del pedido y la fecha actual, y el siguiente lunes posterior a la fecha del pedido. También se deberá extraer el año, el mes y el día de la fecha del sistema y mostrar las marcas de tiempo actuales.
 
-Finalmente, se deberán considerar únicamente los registros de los clientes cuyos nombres comiencen con la letra 'A', que pertenezcan a las categorías de productos 'Electrónica', 'Hogar' o 'Deportes', y cuyos precios unitarios se encuentren entre 100 y 1000. Además, se deberán incluir los registros correspondientes a clientes de la Ciudad de México con ingresos superiores a 8000 pesos, excluyendo aquellos asociados a la categoría 'Servicios', o bien incluyendo los procedentes de Puebla. Posteriormente, la información obtenida deberá agruparse por categoría de producto y presentarse ordenada de forma descendente según el precio unitario.
+Finalmente, se deberán considerar filtros utilizando condiciones con WHERE, LIKE, AND, OR, IN, BETWEEN y NOT, además de aplicar agrupaciones mediante GROUP BY y ordenamientos mediante ORDER BY.
 
+Genera únicamente la primera consulta y detente. No continúes con las siguientes consultas hasta que se soliciten explícitamente.
 
-nota no deben de estar contestado la los enunciados 
+## REQUISITOS GENERALES
 
+* Todo el código SQL, cuando corresponda, debe estar comentado utilizando --.
+* Todos los enunciados deben estar dentro de comentarios con la estructura /* ... */.
+* Mantén coherencia entre nombres de tablas, columnas, claves, datos y consultas.
+* El ejercicio debe ser totalmente compatible con Oracle SQL.
+* No resuelvas ninguna parte del ejercicio.
+* No repitas estas instrucciones dentro del ejercicio generado.
+
+## FORMATO DE ENTREGA OBLIGATORIO
+
+Mostrar únicamente los siguientes encabezados:
+
+/* CREACIÓN DE TABLAS */
+/* MODIFICACIÓN DE TABLAS */
+/* INSERCIÓN DE DATOS */
+/* ACTUALIZACIÓN DE DATOS (UPDATE) */
+/* ELIMINACIÓN DE DATOS (DELETE) */
+/* CONSULTAS SQL */
+
+Debajo de cada encabezado coloca únicamente los enunciados correspondientes.
