@@ -1,5 +1,4 @@
 créate table alumnos(
-
 	id_alumno number(10) primary key,
 	nombre_alumno varchar2(10) not null,
 	apellido_alumno varchar2(10) not null,
@@ -22,6 +21,7 @@ créate table notas(
 	foreign key (id_alumno)
 	references alumnos(id_alumno)
 );
+
 
 alter table alumnos
 add constraint chk_matricula
@@ -46,12 +46,15 @@ rename column correo to email;
 alter table alumnos
 rename to estudiantes;
 
+
 insert into alumnos(id_alumno, nombre_alumno, apellido_alumnos, matricula, email, fecha_inscripcion)
 values(1, 'miguel', 'barragan', 243271008, 'migue.sibler@gmail.com', to_date('25/01/2022','dd/mm/yyyy'));
+
 
 update alumnos
 set nombre_alumno='angel', apellido_alumno='gutierrez'
 where id_alumno=1;
+
 
 delete from alumnos where id_alumnos=1;
 
@@ -74,8 +77,12 @@ order by
 
 créate view miguel as 
  
+;
 
 
+créate index miguel as
+
+;
 
 créate or repalce procedure as
 begin
